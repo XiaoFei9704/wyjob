@@ -11,6 +11,9 @@ import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.selector.Html;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
@@ -52,6 +55,7 @@ public class ZLZP implements PageProcessor,Runnable {
         String exper=html.xpath("/html/body/div[6]/div[1]/ul/li[5]/strong/text()").get();
         String edu=html.xpath("/html/body/div[6]/div[1]/ul/li[6]/strong/text()").get();
         String t_total=html.xpath("/html/body/div[6]/div[1]/ul/li[7]/strong/text()").get();
+        String function=html.xpath("/html/body/div[6]/div[1]/ul/li[8]/strong/a/text()").get();
         Pattern pattern=Pattern.compile("[^(0-9)*]");
         Matcher matcher=pattern.matcher(t_total);
         t_total=matcher.replaceAll("").trim();
@@ -59,6 +63,54 @@ public class ZLZP implements PageProcessor,Runnable {
         Recruitment recruitment=new Recruitment();
         recruitment.setPost(name);
         recruitment.setDescription(desc.toString());
+        Pattern p = Pattern.compile("[0-9]");
+        Matcher m = p.matcher(salary);
+        if(m.find()){
+            int a=salary.indexOf("-");
+            int b=salary.indexOf("/");
+            int low=Integer.parseInt(salary.substring(0,a));
+            int high=Integer.parseInt(salary.substring(a+1,b));
+            int s_int=(low+high)/2;
+            recruitment.setSalary(s_int);
+        }else {recruitment.setSalary(0);}
+        Matcher matcher1=p.matcher(exper);
+        if(matcher1.find()){
+            int a=salary.indexOf("-");
+            int low=Integer.parseInt(salary.substring(0,a));
+            recruitment.setMinSeniority(low);
+        }else recruitment.setMinSeniority(0);
+        recruitment.setState((byte)1);
+        if(pubtime.length()>1){
+            SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                Date date=format.parse(pubtime);
+                recruitment.setTime(new Timestamp(date.getTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }else{
+            recruitment.setTime(new Timestamp(new Date().getTime()));
+        }
+        switch (feature){
+            case "全职":
+                recruitment.setType((byte)1);break;
+            case "兼职":
+                recruitment.setType((byte)2);break;
+            case "实习":
+                recruitment.setType((byte)3);break;
+        }
+        switch (edu){
+            case "高中":
+                recruitment.setType((byte)2);break;
+            case "大专":
+                recruitment.setType((byte)3);break;
+            case "本科":
+                recruitment.setType((byte)4);break;
+            case "硕士":
+                recruitment.setType((byte)5);break;
+            case "博士":
+                recruitment.setType((byte)6);break;
+        }
     }
 
     public Site getSite() {

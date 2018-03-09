@@ -1,5 +1,6 @@
 package com._51job.web;
 
+import com._51job.domain.Recruitment;
 import com._51job.service.MyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,9 +23,9 @@ public class MyController {
 
 	@RequestMapping(value = "/jobs", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Job> allJobs(int start, int end){
+	public List<Recruitment> allJobs(int start, int end){
 		if(end<=start)return null;
-		return myService.getJobs(start,end);
+		return null;
 	}
 
 	@RequestMapping(value = "/test")

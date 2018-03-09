@@ -6,10 +6,6 @@
   <session-factory>
     <property name="connection.url">jdbc:mysql://47.94.86.98:3306/wyjob</property>
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="connection.username">testuser</property>
-    <property name="connection.password">W1Hw4YuOuEqEC2Gu</property>
-      <mapping class="com._51job.listener.Table2"/>
-      <mapping resource="com/_51job/listener/Table2.hbm.xml"/>
       <mapping class="com._51job.domain.Applicant"/>
       <mapping resource="com/_51job/domain/Applicant.hbm.xml"/>
       <mapping resource="com/_51job/domain/Application.hbm.xml"/>

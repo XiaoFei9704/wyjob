@@ -20,6 +20,7 @@ public class Recruitment {
     private Collection<Application> applicationsByRecruitmentId;
     private Collection<Matrix> matricesByRecruitmentId;
     private Enterprise enterpriseByEnterpriseId;
+    private byte type;
 
     @Id
     @Column(name = "recruitment_id", nullable = false)
@@ -170,5 +171,15 @@ public class Recruitment {
 
     public void setEnterpriseByEnterpriseId(Enterprise enterpriseByEnterpriseId) {
         this.enterpriseByEnterpriseId = enterpriseByEnterpriseId;
+    }
+
+    @Basic
+    @Column(name = "type", nullable = false)
+    public byte getType() {
+        return type;
+    }
+
+    public void setType(byte type) {
+        this.type = type;
     }
 }
