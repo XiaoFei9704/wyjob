@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com._51job.domain.EducationExperience" table="education_experience" schema="wyjob">
+        <id name="eexperienceId">
+            <column name="eexperience_id" sql-type="int(11)"/>
+        </id>
+        <property name="name">
+            <column name="name" sql-type="varchar(45)" length="45"/>
+        </property>
+        <property name="major">
+            <column name="major" sql-type="varchar(45)" length="45"/>
+        </property>
+        <property name="studentType">
+            <column name="student_type" sql-type="int(11)"/>
+        </property>
+        <property name="degree">
+            <column name="degree" sql-type="int(11)"/>
+        </property>
+        <one-to-one name="experienceByEexperienceId" class="com._51job.domain.Experience"/>
+    </class>
+</hibernate-mapping>

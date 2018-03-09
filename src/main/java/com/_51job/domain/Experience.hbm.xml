@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com._51job.domain.Experience" table="experience" schema="wyjob">
+        <id name="experienceId">
+            <column name="experience_id" sql-type="int(11)"/>
+        </id>
+        <property name="userId">
+            <column name="user_id" sql-type="int(11)"/>
+        </property>
+        <property name="startTime">
+            <column name="start_time" sql-type="timestamp" not-null="true"/>
+        </property>
+        <property name="endTime">
+            <column name="end_time" sql-type="timestamp" not-null="true"/>
+        </property>
+        <many-to-one name="applicantByUserId" class="com._51job.domain.Applicant">
+            <column name="user_id"/>
+        </many-to-one>
+        <one-to-one name="educationExperienceByExperienceId" class="com._51job.domain.EducationExperience"/>
+        <one-to-one name="projectExperienceByExperienceId" class="com._51job.domain.ProjectExperience"/>
+        <one-to-one name="trainingExperienceByExperienceId" class="com._51job.domain.TrainingExperience"/>
+        <one-to-one name="workingExperienceByExperienceId" class="com._51job.domain.WorkingExperience"/>
+    </class>
+</hibernate-mapping>

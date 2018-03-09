@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com._51job.domain.Skill" table="skill" schema="wyjob">
+        <id name="skillId">
+            <column name="skill_id" sql-type="int(11)"/>
+        </id>
+        <property name="skillName">
+            <column name="skill_name" sql-type="int(11)"/>
+        </property>
+        <property name="time">
+            <column name="time" sql-type="float" precision="-1"/>
+        </property>
+        <property name="level">
+            <column name="level" sql-type="tinyint(1)"/>
+        </property>
+        <property name="userId">
+            <column name="user_id" sql-type="int(11)"/>
+        </property>
+        <many-to-one name="dictionaryBySkillName" class="com._51job.domain.Dictionary">
+            <column name="skill_name"/>
+        </many-to-one>
+        <many-to-one name="applicantByUserId" class="com._51job.domain.Applicant">
+            <column name="user_id"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com._51job.domain.Dictionary" table="dictionary" schema="wyjob">
+        <id name="dictionaryId">
+            <column name="dictionary_id" sql-type="int(11)"/>
+        </id>
+        <property name="dictionaryName">
+            <column name="dictionary_name" sql-type="varchar(20)" length="20"/>
+        </property>
+        <property name="type">
+            <column name="type" sql-type="int(11)"/>
+        </property>
+        <property name="parent">
+            <column name="parent" sql-type="int(11)" not-null="true"/>
+        </property>
+        <many-to-one name="dictionaryByParent" class="com._51job.domain.Dictionary">
+            <column name="parent" not-null="true"/>
+        </many-to-one>
+        <set name="applicantsByDictionaryId" inverse="true">
+            <key>
+                <column name="domicile" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="com._51job.domain.Applicant"/>
+        </set>
+        <set name="dictionariesByDictionaryId" inverse="true">
+            <key>
+                <column name="parent" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="com._51job.domain.Dictionary"/>
+        </set>
+        <set name="enterprisesByDictionaryId" inverse="true">
+            <key>
+                <column name="industry"/>
+            </key>
+            <one-to-many not-found="ignore" class="com._51job.domain.Enterprise"/>
+        </set>
+        <set name="enterprisesByDictionaryId_0" inverse="true">
+            <key>
+                <column name="type"/>
+            </key>
+            <one-to-many not-found="ignore" class="com._51job.domain.Enterprise"/>
+        </set>
+        <set name="languagesByDictionaryId" inverse="true">
+            <key>
+                <column name="language"/>
+            </key>
+            <one-to-many not-found="ignore" class="com._51job.domain.Language"/>
+        </set>
+        <set name="matricesByDictionaryId" inverse="true">
+            <key>
+                <column name="name"/>
+            </key>
+            <one-to-many not-found="ignore" class="com._51job.domain.Matrix"/>
+        </set>
+        <set name="preferredFunctionsByDictionaryId" inverse="true">
+            <key>
+                <column name="function"/>
+            </key>
+            <one-to-many not-found="ignore" class="com._51job.domain.PreferredFunction"/>
+        </set>
+        <set name="preferredIndustriesByDictionaryId" inverse="true">
+            <key>
+                <column name="industry"/>
+            </key>
+            <one-to-many not-found="ignore" class="com._51job.domain.PreferredIndustry"/>
+        </set>
+        <set name="preferredLocationsByDictionaryId" inverse="true">
+            <key>
+                <column name="loaction_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="com._51job.domain.PreferredLocation"/>
+        </set>
+        <set name="skillsByDictionaryId" inverse="true">
+            <key>
+                <column name="skill_name"/>
+            </key>
+            <one-to-many not-found="ignore" class="com._51job.domain.Skill"/>
+        </set>
+        <set name="workingExperiencesByDictionaryId" inverse="true">
+            <key>
+                <column name="enterprise_type"/>
+            </key>
+            <one-to-many not-found="ignore" class="com._51job.domain.WorkingExperience"/>
+        </set>
+        <set name="workingExperiencesByDictionaryId_0" inverse="true">
+            <key>
+                <column name="industry"/>
+            </key>
+            <one-to-many not-found="ignore" class="com._51job.domain.WorkingExperience"/>
+        </set>
+        <set name="workingExperiencesByDictionaryId_1" inverse="true">
+            <key>
+                <column name="function"/>
+            </key>
+            <one-to-many not-found="ignore" class="com._51job.domain.WorkingExperience"/>
+        </set>
+    </class>
+</hibernate-mapping>

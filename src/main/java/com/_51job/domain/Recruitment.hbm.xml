@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com._51job.domain.Recruitment" table="recruitment" schema="wyjob">
+        <id name="recruitmentId">
+            <column name="recruitment_id" sql-type="int(11)"/>
+        </id>
+        <property name="enterpriseId">
+            <column name="enterprise_id" sql-type="int(11)"/>
+        </property>
+        <property name="post">
+            <column name="post" sql-type="varchar(45)" length="45"/>
+        </property>
+        <property name="function">
+            <column name="function" sql-type="int(11)"/>
+        </property>
+        <property name="salary">
+            <column name="salary" sql-type="int(11)"/>
+        </property>
+        <property name="minDegree">
+            <column name="min_degree" sql-type="int(11)" not-null="true"/>
+        </property>
+        <property name="minSeniority">
+            <column name="min_seniority" sql-type="int(11)" not-null="true"/>
+        </property>
+        <property name="description">
+            <column name="description" sql-type="text" not-null="true"/>
+        </property>
+        <property name="state">
+            <column name="state" sql-type="tinyint(1)"/>
+        </property>
+        <property name="time">
+            <column name="time" sql-type="timestamp"/>
+        </property>
+        <many-to-one name="enterpriseByEnterpriseId" class="com._51job.domain.Enterprise">
+            <column name="enterprise_id"/>
+        </many-to-one>
+        <set name="applicationsByRecruitmentId" inverse="true">
+            <key>
+                <column name="recruitment_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="com._51job.domain.Application"/>
+        </set>
+        <set name="matricesByRecruitmentId" inverse="true">
+            <key>
+                <column name="recruitment_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="com._51job.domain.Matrix"/>
+        </set>
+    </class>
+</hibernate-mapping>

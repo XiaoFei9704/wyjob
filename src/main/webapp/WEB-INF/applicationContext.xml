@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package="com._51job.dao"/>
+    <context:component-scan base-package="com._51job.service"/>
+    <context:component-scan base-package="com._51job.web"/>
+    <mvc:annotation-driven/>
+    <mvc:default-servlet-handler/>
+    <context:annotation-config/>
+
+	<bean id="beanGetter" class="com._51job.tool.BeanGetter">
+        <property name="beanGetter"><ref bean="beanGetter"></ref></property>
+    </bean>
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://47.94.86.98/wyjob" />
+        <property name="username" value="testuser"/>
+        <property name="password" value="W1Hw4YuOuEqEC2Gu"/>
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" lazy-init="false">
+        <property name="dataSource" ref="dataSource" />
+        <!-- //加载实体类的映射文件位置及名称 -->
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:com/_51job/domain/Applicant.hbm.xml</value>
+                <value>classpath:com/_51job/domain/Application.hbm.xml</value>
+                <value>classpath:com/_51job/domain/Certificate.hbm.xml</value>
+                <value>classpath:com/_51job/domain/Dictionary.hbm.xml</value>
+                <value>classpath:com/_51job/domain/EducationExperience.hbm.xml</value>
+                <value>classpath:com/_51job/domain/Enterprise.hbm.xml</value>
+                <value>classpath:com/_51job/domain/Experience.hbm.xml</value>
+                <value>classpath:com/_51job/domain/Language.hbm.xml</value>
+                <value>classpath:com/_51job/domain/Matrix.hbm.xml</value>
+                <value>classpath:com/_51job/domain/PreferredFunction.hbm.xml</value>
+                <value>classpath:com/_51job/domain/PreferredIndustry.hbm.xml</value>
+                <value>classpath:com/_51job/domain/PreferredLocation.hbm.xml</value>
+                <value>classpath:com/_51job/domain/ProjectExperience.hbm.xml</value>
+                <value>classpath:com/_51job/domain/Recruitment.hbm.xml</value>
+                <value>classpath:com/_51job/domain/Skill.hbm.xml</value>
+                <value>classpath:com/_51job/domain/TrainingExperience.hbm.xml</value>
+                <value>classpath:com/_51job/domain/User.hbm.xml</value>
+                <value>classpath:com/_51job/domain/WorkingExperience.hbm.xml</value>
+            </list>
+        </property>
+        <property name="annotatedClasses">
+            <list>
+                <value>com._51job.domain.Applicant</value>
+                <value>com._51job.domain.Application</value>
+                <value>com._51job.domain.Certificate</value>
+                <value>com._51job.domain.Dictionary</value>
+                <value>com._51job.domain.EducationExperience</value>
+                <value>com._51job.domain.Enterprise</value>
+                <value>com._51job.domain.Experience</value>
+                <value>com._51job.domain.Language</value>
+                <value>com._51job.domain.Matrix</value>
+                <value>com._51job.domain.PreferredFunction</value>
+                <value>com._51job.domain.PreferredIndustry</value>
+                <value>com._51job.domain.PreferredLocation</value>
+                <value>com._51job.domain.ProjectExperience</value>
+                <value>com._51job.domain.Recruitment</value>
+                <value>com._51job.domain.Skill</value>
+                <value>com._51job.domain.TrainingExperience</value>
+                <value>com._51job.domain.User</value>
+                <value>com._51job.domain.WorkingExperience</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/wyjob</prop>
+                <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>
