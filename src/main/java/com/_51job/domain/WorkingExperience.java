@@ -1,10 +1,7 @@
 package com._51job.domain;
 
-import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
-@Table(name = "working_experience", schema = "wyjob", catalog = "")
 public class WorkingExperience {
     private int wexperienceId;
     private String enterpriseName;
@@ -16,13 +13,7 @@ public class WorkingExperience {
     private int salary;
     private byte workType;
     private String workDescription;
-    private Experience experienceByWexperienceId;
-    private Dictionary dictionaryByEnterpriseType;
-    private Dictionary dictionaryByIndustry;
-    private Dictionary dictionaryByFunction;
 
-    @Id
-    @Column(name = "wexperience_id", nullable = false)
     public int getWexperienceId() {
         return wexperienceId;
     }
@@ -31,8 +22,6 @@ public class WorkingExperience {
         this.wexperienceId = wexperienceId;
     }
 
-    @Basic
-    @Column(name = "enterprise_name", nullable = false, length = 45)
     public String getEnterpriseName() {
         return enterpriseName;
     }
@@ -41,8 +30,6 @@ public class WorkingExperience {
         this.enterpriseName = enterpriseName;
     }
 
-    @Basic
-    @Column(name = "enterprise_type", nullable = false)
     public int getEnterpriseType() {
         return enterpriseType;
     }
@@ -51,8 +38,6 @@ public class WorkingExperience {
         this.enterpriseType = enterpriseType;
     }
 
-    @Basic
-    @Column(name = "enterprise_scale", nullable = false)
     public int getEnterpriseScale() {
         return enterpriseScale;
     }
@@ -61,8 +46,6 @@ public class WorkingExperience {
         this.enterpriseScale = enterpriseScale;
     }
 
-    @Basic
-    @Column(name = "industry", nullable = false)
     public int getIndustry() {
         return industry;
     }
@@ -71,8 +54,6 @@ public class WorkingExperience {
         this.industry = industry;
     }
 
-    @Basic
-    @Column(name = "function", nullable = false)
     public int getFunction() {
         return function;
     }
@@ -81,8 +62,6 @@ public class WorkingExperience {
         this.function = function;
     }
 
-    @Basic
-    @Column(name = "post", nullable = false, length = 45)
     public String getPost() {
         return post;
     }
@@ -91,8 +70,6 @@ public class WorkingExperience {
         this.post = post;
     }
 
-    @Basic
-    @Column(name = "salary", nullable = false)
     public int getSalary() {
         return salary;
     }
@@ -101,8 +78,6 @@ public class WorkingExperience {
         this.salary = salary;
     }
 
-    @Basic
-    @Column(name = "work_type", nullable = false)
     public byte getWorkType() {
         return workType;
     }
@@ -111,8 +86,6 @@ public class WorkingExperience {
         this.workType = workType;
     }
 
-    @Basic
-    @Column(name = "work_description", nullable = false, length = -1)
     public String getWorkDescription() {
         return workDescription;
     }
@@ -142,45 +115,5 @@ public class WorkingExperience {
     public int hashCode() {
 
         return Objects.hash(wexperienceId, enterpriseName, enterpriseType, enterpriseScale, industry, function, post, salary, workType, workDescription);
-    }
-
-    @OneToOne
-    @JoinColumn(name = "wexperience_id", referencedColumnName = "experience_id", nullable = false)
-    public Experience getExperienceByWexperienceId() {
-        return experienceByWexperienceId;
-    }
-
-    public void setExperienceByWexperienceId(Experience experienceByWexperienceId) {
-        this.experienceByWexperienceId = experienceByWexperienceId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "enterprise_type", referencedColumnName = "dictionary_id", nullable = false)
-    public Dictionary getDictionaryByEnterpriseType() {
-        return dictionaryByEnterpriseType;
-    }
-
-    public void setDictionaryByEnterpriseType(Dictionary dictionaryByEnterpriseType) {
-        this.dictionaryByEnterpriseType = dictionaryByEnterpriseType;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "industry", referencedColumnName = "dictionary_id", nullable = false)
-    public Dictionary getDictionaryByIndustry() {
-        return dictionaryByIndustry;
-    }
-
-    public void setDictionaryByIndustry(Dictionary dictionaryByIndustry) {
-        this.dictionaryByIndustry = dictionaryByIndustry;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "function", referencedColumnName = "dictionary_id", nullable = false)
-    public Dictionary getDictionaryByFunction() {
-        return dictionaryByFunction;
-    }
-
-    public void setDictionaryByFunction(Dictionary dictionaryByFunction) {
-        this.dictionaryByFunction = dictionaryByFunction;
     }
 }

@@ -74,12 +74,10 @@
                 <value>com._51job.domain.WorkingExperience</value>
             </list>
         </property>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/wyjob</prop>
-                <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
-            </props>
-        </property>
+    </bean>
+    <!-- 配置redis服务 -->
+    <bean name="jedis" class="redis.clients.jedis.Jedis">
+        <constructor-arg name="host" value="localhost"/>
     </bean>
 
 </beans>

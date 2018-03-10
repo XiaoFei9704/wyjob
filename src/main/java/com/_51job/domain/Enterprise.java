@@ -1,11 +1,8 @@
 package com._51job.domain;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.Objects;
 
-@Entity
 public class Enterprise {
     private int enterpriseId;
     private String name;
@@ -18,13 +15,7 @@ public class Enterprise {
     private String description;
     private String userName;
     private String userMobile;
-    private User userByEnterpriseId;
-    private Dictionary dictionaryByIndustry;
-    private Dictionary dictionaryByType;
-    private Collection<Recruitment> recruitmentsByEnterpriseId;
 
-    @Id
-    @Column(name = "enterprise_id", nullable = false)
     public int getEnterpriseId() {
         return enterpriseId;
     }
@@ -33,8 +24,6 @@ public class Enterprise {
         this.enterpriseId = enterpriseId;
     }
 
-    @Basic
-    @Column(name = "name", nullable = false, length = 45)
     public String getName() {
         return name;
     }
@@ -43,8 +32,6 @@ public class Enterprise {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "domicile", nullable = false)
     public int getDomicile() {
         return domicile;
     }
@@ -53,8 +40,6 @@ public class Enterprise {
         this.domicile = domicile;
     }
 
-    @Basic
-    @Column(name = "address", nullable = false, length = 45)
     public String getAddress() {
         return address;
     }
@@ -63,8 +48,6 @@ public class Enterprise {
         this.address = address;
     }
 
-    @Basic
-    @Column(name = "founding_time", nullable = true)
     public Timestamp getFoundingTime() {
         return foundingTime;
     }
@@ -73,8 +56,6 @@ public class Enterprise {
         this.foundingTime = foundingTime;
     }
 
-    @Basic
-    @Column(name = "scale", nullable = false)
     public int getScale() {
         return scale;
     }
@@ -83,8 +64,6 @@ public class Enterprise {
         this.scale = scale;
     }
 
-    @Basic
-    @Column(name = "industry", nullable = false)
     public int getIndustry() {
         return industry;
     }
@@ -93,8 +72,6 @@ public class Enterprise {
         this.industry = industry;
     }
 
-    @Basic
-    @Column(name = "type", nullable = false)
     public int getType() {
         return type;
     }
@@ -103,8 +80,6 @@ public class Enterprise {
         this.type = type;
     }
 
-    @Basic
-    @Column(name = "description", nullable = true, length = -1)
     public String getDescription() {
         return description;
     }
@@ -113,8 +88,6 @@ public class Enterprise {
         this.description = description;
     }
 
-    @Basic
-    @Column(name = "user_name", nullable = true, length = 45)
     public String getUserName() {
         return userName;
     }
@@ -123,8 +96,6 @@ public class Enterprise {
         this.userName = userName;
     }
 
-    @Basic
-    @Column(name = "user_mobile", nullable = true, length = 15)
     public String getUserMobile() {
         return userMobile;
     }
@@ -155,44 +126,5 @@ public class Enterprise {
     public int hashCode() {
 
         return Objects.hash(enterpriseId, name, domicile, address, foundingTime, scale, industry, type, description, userName, userMobile);
-    }
-
-    @OneToOne
-    @JoinColumn(name = "enterprise_id", referencedColumnName = "user_id", nullable = false)
-    public User getUserByEnterpriseId() {
-        return userByEnterpriseId;
-    }
-
-    public void setUserByEnterpriseId(User userByEnterpriseId) {
-        this.userByEnterpriseId = userByEnterpriseId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "industry", referencedColumnName = "dictionary_id", nullable = false)
-    public Dictionary getDictionaryByIndustry() {
-        return dictionaryByIndustry;
-    }
-
-    public void setDictionaryByIndustry(Dictionary dictionaryByIndustry) {
-        this.dictionaryByIndustry = dictionaryByIndustry;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "type", referencedColumnName = "dictionary_id", nullable = false)
-    public Dictionary getDictionaryByType() {
-        return dictionaryByType;
-    }
-
-    public void setDictionaryByType(Dictionary dictionaryByType) {
-        this.dictionaryByType = dictionaryByType;
-    }
-
-    @OneToMany(mappedBy = "enterpriseByEnterpriseId")
-    public Collection<Recruitment> getRecruitmentsByEnterpriseId() {
-        return recruitmentsByEnterpriseId;
-    }
-
-    public void setRecruitmentsByEnterpriseId(Collection<Recruitment> recruitmentsByEnterpriseId) {
-        this.recruitmentsByEnterpriseId = recruitmentsByEnterpriseId;
     }
 }

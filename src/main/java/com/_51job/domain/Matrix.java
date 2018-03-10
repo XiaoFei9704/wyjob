@@ -1,20 +1,14 @@
 package com._51job.domain;
 
-import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
 public class Matrix {
     private int matrixId;
     private int recruitmentId;
     private int name;
     private Integer time;
     private Integer level;
-    private Recruitment recruitmentByRecruitmentId;
-    private Dictionary dictionaryByName;
 
-    @Id
-    @Column(name = "matrix_id", nullable = false)
     public int getMatrixId() {
         return matrixId;
     }
@@ -23,8 +17,6 @@ public class Matrix {
         this.matrixId = matrixId;
     }
 
-    @Basic
-    @Column(name = "recruitment_id", nullable = false)
     public int getRecruitmentId() {
         return recruitmentId;
     }
@@ -33,8 +25,6 @@ public class Matrix {
         this.recruitmentId = recruitmentId;
     }
 
-    @Basic
-    @Column(name = "name", nullable = false)
     public int getName() {
         return name;
     }
@@ -43,8 +33,6 @@ public class Matrix {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "time", nullable = true)
     public Integer getTime() {
         return time;
     }
@@ -53,8 +41,6 @@ public class Matrix {
         this.time = time;
     }
 
-    @Basic
-    @Column(name = "level", nullable = true)
     public Integer getLevel() {
         return level;
     }
@@ -79,25 +65,5 @@ public class Matrix {
     public int hashCode() {
 
         return Objects.hash(matrixId, recruitmentId, name, time, level);
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "recruitment_id", referencedColumnName = "recruitment_id", nullable = false)
-    public Recruitment getRecruitmentByRecruitmentId() {
-        return recruitmentByRecruitmentId;
-    }
-
-    public void setRecruitmentByRecruitmentId(Recruitment recruitmentByRecruitmentId) {
-        this.recruitmentByRecruitmentId = recruitmentByRecruitmentId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "name", referencedColumnName = "dictionary_id", nullable = false)
-    public Dictionary getDictionaryByName() {
-        return dictionaryByName;
-    }
-
-    public void setDictionaryByName(Dictionary dictionaryByName) {
-        this.dictionaryByName = dictionaryByName;
     }
 }

@@ -7,7 +7,6 @@
     <class name="com._51job.domain.Applicant" table="applicant" schema="wyjob">
         <id name="userId">
             <column name="user_id" sql-type="int(11)"/>
-            <generator class="identity"/>
         </id>
         <property name="name">
             <column name="name" sql-type="varchar(45)" length="45"/>
@@ -36,57 +35,5 @@
         <property name="birthdate">
             <column name="birthdate" sql-type="timestamp" not-null="true"/>
         </property>
-        <many-to-one name="dictionaryByDomicile" class="com._51job.domain.Dictionary">
-            <column name="domicile" not-null="true"/>
-        </many-to-one>
-        <one-to-one name="userByUserId" class="com._51job.domain.User"/>
-        <set name="applicationsByUserId" inverse="true">
-            <key>
-                <column name="applicant_id"/>
-            </key>
-            <one-to-many not-found="ignore" class="com._51job.domain.Application"/>
-        </set>
-        <set name="certificatesByUserId" inverse="true">
-            <key>
-                <column name="user_id"/>
-            </key>
-            <one-to-many not-found="ignore" class="com._51job.domain.Certificate"/>
-        </set>
-        <set name="experiencesByUserId" inverse="true">
-            <key>
-                <column name="user_id"/>
-            </key>
-            <one-to-many not-found="ignore" class="com._51job.domain.Experience"/>
-        </set>
-        <set name="languagesByUserId" inverse="true">
-            <key>
-                <column name="user_id"/>
-            </key>
-            <one-to-many not-found="ignore" class="com._51job.domain.Language"/>
-        </set>
-        <set name="preferredFunctionsByUserId" inverse="true">
-            <key>
-                <column name="user_id"/>
-            </key>
-            <one-to-many not-found="ignore" class="com._51job.domain.PreferredFunction"/>
-        </set>
-        <set name="preferredIndustriesByUserId" inverse="true">
-            <key>
-                <column name="user_id"/>
-            </key>
-            <one-to-many not-found="ignore" class="com._51job.domain.PreferredIndustry"/>
-        </set>
-        <set name="preferredLocationsByUserId" inverse="true">
-            <key>
-                <column name="user_id"/>
-            </key>
-            <one-to-many not-found="ignore" class="com._51job.domain.PreferredLocation"/>
-        </set>
-        <set name="skillsByUserId" inverse="true">
-            <key>
-                <column name="user_id"/>
-            </key>
-            <one-to-many not-found="ignore" class="com._51job.domain.Skill"/>
-        </set>
     </class>
 </hibernate-mapping>

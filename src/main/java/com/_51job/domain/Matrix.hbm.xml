@@ -20,11 +20,5 @@
         <property name="level">
             <column name="level" sql-type="int(11)" not-null="true"/>
         </property>
-        <many-to-one name="recruitmentByRecruitmentId" class="com._51job.domain.Recruitment">
-            <column name="recruitment_id"/>
-        </many-to-one>
-        <many-to-one name="dictionaryByName" class="com._51job.domain.Dictionary">
-            <column name="name"/>
-        </many-to-one>
     </class>
 </hibernate-mapping>

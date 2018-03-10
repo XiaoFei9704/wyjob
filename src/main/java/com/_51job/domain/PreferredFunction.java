@@ -1,19 +1,12 @@
 package com._51job.domain;
 
-import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
-@Table(name = "preferred_function", schema = "wyjob", catalog = "")
 public class PreferredFunction {
     private int pfunctionId;
     private int userId;
     private int function;
-    private Applicant applicantByUserId;
-    private Dictionary dictionaryByFunction;
 
-    @Id
-    @Column(name = "pfunction_id", nullable = false)
     public int getPfunctionId() {
         return pfunctionId;
     }
@@ -22,8 +15,6 @@ public class PreferredFunction {
         this.pfunctionId = pfunctionId;
     }
 
-    @Basic
-    @Column(name = "user_id", nullable = false)
     public int getUserId() {
         return userId;
     }
@@ -32,8 +23,6 @@ public class PreferredFunction {
         this.userId = userId;
     }
 
-    @Basic
-    @Column(name = "function", nullable = false)
     public int getFunction() {
         return function;
     }
@@ -56,25 +45,5 @@ public class PreferredFunction {
     public int hashCode() {
 
         return Objects.hash(pfunctionId, userId, function);
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
-    public Applicant getApplicantByUserId() {
-        return applicantByUserId;
-    }
-
-    public void setApplicantByUserId(Applicant applicantByUserId) {
-        this.applicantByUserId = applicantByUserId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "function", referencedColumnName = "dictionary_id", nullable = false)
-    public Dictionary getDictionaryByFunction() {
-        return dictionaryByFunction;
-    }
-
-    public void setDictionaryByFunction(Dictionary dictionaryByFunction) {
-        this.dictionaryByFunction = dictionaryByFunction;
     }
 }

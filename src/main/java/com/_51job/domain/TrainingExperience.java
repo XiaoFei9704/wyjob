@@ -1,19 +1,13 @@
 package com._51job.domain;
 
-import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
-@Table(name = "training_experience", schema = "wyjob", catalog = "")
 public class TrainingExperience {
     private int texperienceId;
     private String name;
     private String lecture;
     private String discription;
-    private Experience experienceByTexperienceId;
 
-    @Id
-    @Column(name = "texperience_id", nullable = false)
     public int getTexperienceId() {
         return texperienceId;
     }
@@ -22,8 +16,6 @@ public class TrainingExperience {
         this.texperienceId = texperienceId;
     }
 
-    @Basic
-    @Column(name = "name", nullable = false, length = 45)
     public String getName() {
         return name;
     }
@@ -32,8 +24,6 @@ public class TrainingExperience {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "lecture", nullable = false, length = 45)
     public String getLecture() {
         return lecture;
     }
@@ -42,8 +32,6 @@ public class TrainingExperience {
         this.lecture = lecture;
     }
 
-    @Basic
-    @Column(name = "discription", nullable = true, length = -1)
     public String getDiscription() {
         return discription;
     }
@@ -67,15 +55,5 @@ public class TrainingExperience {
     public int hashCode() {
 
         return Objects.hash(texperienceId, name, lecture, discription);
-    }
-
-    @OneToOne
-    @JoinColumn(name = "texperience_id", referencedColumnName = "experience_id", nullable = false)
-    public Experience getExperienceByTexperienceId() {
-        return experienceByTexperienceId;
-    }
-
-    public void setExperienceByTexperienceId(Experience experienceByTexperienceId) {
-        this.experienceByTexperienceId = experienceByTexperienceId;
     }
 }

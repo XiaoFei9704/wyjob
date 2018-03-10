@@ -4,12 +4,14 @@
     "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
-    <property name="connection.url">jdbc:mysql://47.94.86.98:3306/wyjob</property>
+      <property name="connection.url"><![CDATA[jdbc:mysql://47.94.86.98:3306/wyjob?useUnicode=true&characterEncoding=utf8]]></property>
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+      <property name="connection.username">testuser</property>
+      <property name="connection.password">W1Hw4YuOuEqEC2Gu</property>
       <mapping class="com._51job.domain.Applicant"/>
       <mapping resource="com/_51job/domain/Applicant.hbm.xml"/>
-      <mapping resource="com/_51job/domain/Application.hbm.xml"/>
       <mapping class="com._51job.domain.Application"/>
+    <mapping resource="com/_51job/domain/Application.hbm.xml"/>
       <mapping class="com._51job.domain.Certificate"/>
       <mapping resource="com/_51job/domain/Certificate.hbm.xml"/>
       <mapping class="com._51job.domain.Dictionary"/>
@@ -26,25 +28,24 @@
       <mapping resource="com/_51job/domain/Matrix.hbm.xml"/>
       <mapping class="com._51job.domain.PreferredFunction"/>
       <mapping resource="com/_51job/domain/PreferredFunction.hbm.xml"/>
-      <mapping resource="com/_51job/domain/PreferredIndustry.hbm.xml"/>
       <mapping class="com._51job.domain.PreferredIndustry"/>
-      <mapping resource="com/_51job/domain/PreferredLocation.hbm.xml"/>
+      <mapping resource="com/_51job/domain/PreferredIndustry.hbm.xml"/>
       <mapping class="com._51job.domain.PreferredLocation"/>
+      <mapping resource="com/_51job/domain/PreferredLocation.hbm.xml"/>
       <mapping class="com._51job.domain.ProjectExperience"/>
       <mapping resource="com/_51job/domain/ProjectExperience.hbm.xml"/>
       <mapping class="com._51job.domain.Recruitment"/>
       <mapping resource="com/_51job/domain/Recruitment.hbm.xml"/>
-      <mapping resource="com/_51job/domain/Skill.hbm.xml"/>
       <mapping class="com._51job.domain.Skill"/>
-      <mapping resource="com/_51job/domain/TrainingExperience.hbm.xml"/>
+      <mapping resource="com/_51job/domain/Skill.hbm.xml"/>
       <mapping class="com._51job.domain.TrainingExperience"/>
+      <mapping resource="com/_51job/domain/TrainingExperience.hbm.xml"/>
       <mapping class="com._51job.domain.User"/>
       <mapping resource="com/_51job/domain/User.hbm.xml"/>
-      <mapping resource="com/_51job/domain/WorkingExperience.hbm.xml"/>
       <mapping class="com._51job.domain.WorkingExperience"/>
+      <mapping resource="com/_51job/domain/WorkingExperience.hbm.xml"/>
 
-
-    <!-- DB schema will be updated if needed -->
+      <!-- DB schema will be updated if needed -->
     <!-- <property name="hbm2ddl.auto">update</property> -->
   </session-factory>
 </hibernate-configuration>

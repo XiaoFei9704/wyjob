@@ -20,6 +20,5 @@
         <property name="dutyDescription">
             <column name="duty_description" sql-type="text" not-null="true"/>
         </property>
-        <one-to-one name="experienceByPexperienceId" class="com._51job.domain.Experience"/>
     </class>
 </hibernate-mapping>

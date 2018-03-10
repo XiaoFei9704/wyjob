@@ -7,6 +7,7 @@
     <class name="com._51job.domain.Enterprise" table="enterprise" schema="wyjob">
         <id name="enterpriseId">
             <column name="enterprise_id" sql-type="int(11)"/>
+            <generator class="identity"/>
         </id>
         <property name="name">
             <column name="name" sql-type="varchar(45)" length="45"/>
@@ -38,18 +39,5 @@
         <property name="userMobile">
             <column name="user_mobile" sql-type="varchar(15)" length="15" not-null="true"/>
         </property>
-        <many-to-one name="dictionaryByIndustry" class="com._51job.domain.Dictionary">
-            <column name="industry"/>
-        </many-to-one>
-        <many-to-one name="dictionaryByType" class="com._51job.domain.Dictionary">
-            <column name="type"/>
-        </many-to-one>
-        <one-to-one name="userByEnterpriseId" class="com._51job.domain.User"/>
-        <set name="recruitmentsByEnterpriseId" inverse="true">
-            <key>
-                <column name="enterprise_id"/>
-            </key>
-            <one-to-many not-found="ignore" class="com._51job.domain.Recruitment"/>
-        </set>
     </class>
 </hibernate-mapping>

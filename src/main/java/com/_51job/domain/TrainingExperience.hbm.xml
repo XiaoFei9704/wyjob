@@ -17,6 +17,5 @@
         <property name="discription">
             <column name="discription" sql-type="text" not-null="true"/>
         </property>
-        <one-to-one name="experienceByTexperienceId" class="com._51job.domain.Experience"/>
     </class>
 </hibernate-mapping>

@@ -1,11 +1,8 @@
 package com._51job.domain;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.Objects;
 
-@Entity
 public class Recruitment {
     private int recruitmentId;
     private int enterpriseId;
@@ -17,13 +14,8 @@ public class Recruitment {
     private String description;
     private byte state;
     private Timestamp time;
-    private Collection<Application> applicationsByRecruitmentId;
-    private Collection<Matrix> matricesByRecruitmentId;
-    private Enterprise enterpriseByEnterpriseId;
     private byte type;
 
-    @Id
-    @Column(name = "recruitment_id", nullable = false)
     public int getRecruitmentId() {
         return recruitmentId;
     }
@@ -32,8 +24,6 @@ public class Recruitment {
         this.recruitmentId = recruitmentId;
     }
 
-    @Basic
-    @Column(name = "enterprise_id", nullable = false)
     public int getEnterpriseId() {
         return enterpriseId;
     }
@@ -42,8 +32,6 @@ public class Recruitment {
         this.enterpriseId = enterpriseId;
     }
 
-    @Basic
-    @Column(name = "post", nullable = false, length = 45)
     public String getPost() {
         return post;
     }
@@ -52,8 +40,6 @@ public class Recruitment {
         this.post = post;
     }
 
-    @Basic
-    @Column(name = "function", nullable = false)
     public int getFunction() {
         return function;
     }
@@ -62,8 +48,6 @@ public class Recruitment {
         this.function = function;
     }
 
-    @Basic
-    @Column(name = "salary", nullable = false)
     public int getSalary() {
         return salary;
     }
@@ -72,8 +56,6 @@ public class Recruitment {
         this.salary = salary;
     }
 
-    @Basic
-    @Column(name = "min_degree", nullable = true)
     public Integer getMinDegree() {
         return minDegree;
     }
@@ -82,8 +64,6 @@ public class Recruitment {
         this.minDegree = minDegree;
     }
 
-    @Basic
-    @Column(name = "min_seniority", nullable = true)
     public Integer getMinSeniority() {
         return minSeniority;
     }
@@ -92,8 +72,6 @@ public class Recruitment {
         this.minSeniority = minSeniority;
     }
 
-    @Basic
-    @Column(name = "description", nullable = true, length = -1)
     public String getDescription() {
         return description;
     }
@@ -102,8 +80,6 @@ public class Recruitment {
         this.description = description;
     }
 
-    @Basic
-    @Column(name = "state", nullable = false)
     public byte getState() {
         return state;
     }
@@ -112,14 +88,20 @@ public class Recruitment {
         this.state = state;
     }
 
-    @Basic
-    @Column(name = "time", nullable = false)
     public Timestamp getTime() {
         return time;
     }
 
     public void setTime(Timestamp time) {
         this.time = time;
+    }
+
+    public byte getType() {
+        return type;
+    }
+
+    public void setType(byte type) {
+        this.type = type;
     }
 
     @Override
@@ -132,6 +114,7 @@ public class Recruitment {
                 function == that.function &&
                 salary == that.salary &&
                 state == that.state &&
+                type == that.type &&
                 Objects.equals(post, that.post) &&
                 Objects.equals(minDegree, that.minDegree) &&
                 Objects.equals(minSeniority, that.minSeniority) &&
@@ -142,44 +125,6 @@ public class Recruitment {
     @Override
     public int hashCode() {
 
-        return Objects.hash(recruitmentId, enterpriseId, post, function, salary, minDegree, minSeniority, description, state, time);
-    }
-
-    @OneToMany(mappedBy = "recruitmentByRecruitmentId")
-    public Collection<Application> getApplicationsByRecruitmentId() {
-        return applicationsByRecruitmentId;
-    }
-
-    public void setApplicationsByRecruitmentId(Collection<Application> applicationsByRecruitmentId) {
-        this.applicationsByRecruitmentId = applicationsByRecruitmentId;
-    }
-
-    @OneToMany(mappedBy = "recruitmentByRecruitmentId")
-    public Collection<Matrix> getMatricesByRecruitmentId() {
-        return matricesByRecruitmentId;
-    }
-
-    public void setMatricesByRecruitmentId(Collection<Matrix> matricesByRecruitmentId) {
-        this.matricesByRecruitmentId = matricesByRecruitmentId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "enterprise_id", referencedColumnName = "enterprise_id", nullable = false)
-    public Enterprise getEnterpriseByEnterpriseId() {
-        return enterpriseByEnterpriseId;
-    }
-
-    public void setEnterpriseByEnterpriseId(Enterprise enterpriseByEnterpriseId) {
-        this.enterpriseByEnterpriseId = enterpriseByEnterpriseId;
-    }
-
-    @Basic
-    @Column(name = "type", nullable = false)
-    public byte getType() {
-        return type;
-    }
-
-    public void setType(byte type) {
-        this.type = type;
+        return Objects.hash(recruitmentId, enterpriseId, post, function, salary, minDegree, minSeniority, description, state, time, type);
     }
 }

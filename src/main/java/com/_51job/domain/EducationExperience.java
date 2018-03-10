@@ -1,20 +1,14 @@
 package com._51job.domain;
 
-import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
-@Table(name = "education_experience", schema = "wyjob", catalog = "")
 public class EducationExperience {
     private int eexperienceId;
     private String name;
     private String major;
     private int studentType;
     private int degree;
-    private Experience experienceByEexperienceId;
 
-    @Id
-    @Column(name = "eexperience_id", nullable = false)
     public int getEexperienceId() {
         return eexperienceId;
     }
@@ -23,8 +17,6 @@ public class EducationExperience {
         this.eexperienceId = eexperienceId;
     }
 
-    @Basic
-    @Column(name = "name", nullable = false, length = 45)
     public String getName() {
         return name;
     }
@@ -33,8 +25,6 @@ public class EducationExperience {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "major", nullable = false, length = 45)
     public String getMajor() {
         return major;
     }
@@ -43,8 +33,6 @@ public class EducationExperience {
         this.major = major;
     }
 
-    @Basic
-    @Column(name = "student_type", nullable = false)
     public int getStudentType() {
         return studentType;
     }
@@ -53,8 +41,6 @@ public class EducationExperience {
         this.studentType = studentType;
     }
 
-    @Basic
-    @Column(name = "degree", nullable = false)
     public int getDegree() {
         return degree;
     }
@@ -79,15 +65,5 @@ public class EducationExperience {
     public int hashCode() {
 
         return Objects.hash(eexperienceId, name, major, studentType, degree);
-    }
-
-    @OneToOne
-    @JoinColumn(name = "eexperience_id", referencedColumnName = "experience_id", nullable = false)
-    public Experience getExperienceByEexperienceId() {
-        return experienceByEexperienceId;
-    }
-
-    public void setExperienceByEexperienceId(Experience experienceByEexperienceId) {
-        this.experienceByEexperienceId = experienceByEexperienceId;
     }
 }

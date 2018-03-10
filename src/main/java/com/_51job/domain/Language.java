@@ -1,20 +1,14 @@
 package com._51job.domain;
 
-import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
 public class Language {
     private int languageId;
     private int userId;
     private int language;
     private byte rwAbility;
     private byte xAbility;
-    private Applicant applicantByUserId;
-    private Dictionary dictionaryByLanguage;
 
-    @Id
-    @Column(name = "language_id", nullable = false)
     public int getLanguageId() {
         return languageId;
     }
@@ -23,8 +17,6 @@ public class Language {
         this.languageId = languageId;
     }
 
-    @Basic
-    @Column(name = "user_id", nullable = false)
     public int getUserId() {
         return userId;
     }
@@ -33,8 +25,6 @@ public class Language {
         this.userId = userId;
     }
 
-    @Basic
-    @Column(name = "language", nullable = false)
     public int getLanguage() {
         return language;
     }
@@ -43,8 +33,6 @@ public class Language {
         this.language = language;
     }
 
-    @Basic
-    @Column(name = "rw_ability", nullable = false)
     public byte getRwAbility() {
         return rwAbility;
     }
@@ -53,8 +41,6 @@ public class Language {
         this.rwAbility = rwAbility;
     }
 
-    @Basic
-    @Column(name = "x_ability", nullable = false)
     public byte getxAbility() {
         return xAbility;
     }
@@ -79,25 +65,5 @@ public class Language {
     public int hashCode() {
 
         return Objects.hash(languageId, userId, language, rwAbility, xAbility);
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
-    public Applicant getApplicantByUserId() {
-        return applicantByUserId;
-    }
-
-    public void setApplicantByUserId(Applicant applicantByUserId) {
-        this.applicantByUserId = applicantByUserId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "language", referencedColumnName = "dictionary_id", nullable = false)
-    public Dictionary getDictionaryByLanguage() {
-        return dictionaryByLanguage;
-    }
-
-    public void setDictionaryByLanguage(Dictionary dictionaryByLanguage) {
-        this.dictionaryByLanguage = dictionaryByLanguage;
     }
 }

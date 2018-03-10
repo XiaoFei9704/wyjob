@@ -23,6 +23,7 @@ public class ZLZP implements PageProcessor,Runnable {
     private static CopyOnWriteArrayList<Recruitment> jobs;
     private static Session session;
     private static Transaction transaction;
+    private static ZLZP zlzp;
 
     private Site site=Site.me()
             .setDomain("http://www.zhaopin.com")
@@ -45,6 +46,7 @@ public class ZLZP implements PageProcessor,Runnable {
         List<String> links=html.links().regex("^http://jobs.zhaopin.com.*htm$").all();
         page.addTargetRequests(links);
         String name=html.xpath("/html/body/div[5]/div[1]/div[1]/h1/text()").get();
+        System.out.println(name);
         List<String> fulis=html.xpath("/html/body/div[5]/div[1]/div[1]/div[1]/span/text()").all();
         List<String> desc=html.xpath("/html/body/div[6]/div[1]/div[1]/div/div[1]/p/text()").all();
         String company=html.xpath("/html/body/div[5]/div[1]/div[1]/h2/a/text()").get();
@@ -69,19 +71,19 @@ public class ZLZP implements PageProcessor,Runnable {
             int a=salary.indexOf("-");
             int b=salary.indexOf("/");
             int low=Integer.parseInt(salary.substring(0,a));
-            int high=Integer.parseInt(salary.substring(a+1,b));
+            int high=Integer.parseInt(salary.substring(a+1,b-1));
             int s_int=(low+high)/2;
             recruitment.setSalary(s_int);
         }else {recruitment.setSalary(0);}
         Matcher matcher1=p.matcher(exper);
         if(matcher1.find()){
             int a=salary.indexOf("-");
-            int low=Integer.parseInt(salary.substring(0,a));
+            int low=Integer.parseInt(exper.substring(0,a));
             recruitment.setMinSeniority(low);
         }else recruitment.setMinSeniority(0);
         recruitment.setState((byte)1);
-        if(pubtime.length()>1){
-            SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if(pubtime.length()>10&&pubtime.startsWith("2")){
             try {
                 Date date=format.parse(pubtime);
                 recruitment.setTime(new Timestamp(date.getTime()));
@@ -111,6 +113,7 @@ public class ZLZP implements PageProcessor,Runnable {
             case "博士":
                 recruitment.setType((byte)6);break;
         }
+        jobs.add(recruitment);
     }
 
     public Site getSite() {
@@ -118,7 +121,8 @@ public class ZLZP implements PageProcessor,Runnable {
     }
 
     public static void main(String[] args) {
-        new Thread(new ZLZP()).start();
+        zlzp=new ZLZP();
+        new Thread(zlzp).start();
         Timer timer=new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -137,7 +141,7 @@ public class ZLZP implements PageProcessor,Runnable {
     @Override
     public void run() {
         String url="http://jobs.zhaopin.com/294467035250112.htm";
-        Spider.create(new ZLZP())
+        Spider.create(zlzp)
                 .addUrl(url)
                 .thread(20)
                 .run();

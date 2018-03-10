@@ -1,21 +1,15 @@
 package com._51job.domain;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-@Entity
 public class Application {
     private int applicationId;
     private int applicantId;
     private int recruitmentId;
     private Timestamp applicationTime;
     private int applicationState;
-    private Applicant applicantByApplicantId;
-    private Recruitment recruitmentByRecruitmentId;
 
-    @Id
-    @Column(name = "application_id", nullable = false)
     public int getApplicationId() {
         return applicationId;
     }
@@ -24,8 +18,6 @@ public class Application {
         this.applicationId = applicationId;
     }
 
-    @Basic
-    @Column(name = "applicant_id", nullable = false)
     public int getApplicantId() {
         return applicantId;
     }
@@ -34,8 +26,6 @@ public class Application {
         this.applicantId = applicantId;
     }
 
-    @Basic
-    @Column(name = "recruitment_id", nullable = false)
     public int getRecruitmentId() {
         return recruitmentId;
     }
@@ -44,8 +34,6 @@ public class Application {
         this.recruitmentId = recruitmentId;
     }
 
-    @Basic
-    @Column(name = "application_time", nullable = false)
     public Timestamp getApplicationTime() {
         return applicationTime;
     }
@@ -54,8 +42,6 @@ public class Application {
         this.applicationTime = applicationTime;
     }
 
-    @Basic
-    @Column(name = "application_state", nullable = false)
     public int getApplicationState() {
         return applicationState;
     }
@@ -80,25 +66,5 @@ public class Application {
     public int hashCode() {
 
         return Objects.hash(applicationId, applicantId, recruitmentId, applicationTime, applicationState);
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "applicant_id", referencedColumnName = "user_id", nullable = false)
-    public Applicant getApplicantByApplicantId() {
-        return applicantByApplicantId;
-    }
-
-    public void setApplicantByApplicantId(Applicant applicantByApplicantId) {
-        this.applicantByApplicantId = applicantByApplicantId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "recruitment_id", referencedColumnName = "recruitment_id", nullable = false)
-    public Recruitment getRecruitmentByRecruitmentId() {
-        return recruitmentByRecruitmentId;
-    }
-
-    public void setRecruitmentByRecruitmentId(Recruitment recruitmentByRecruitmentId) {
-        this.recruitmentByRecruitmentId = recruitmentByRecruitmentId;
     }
 }

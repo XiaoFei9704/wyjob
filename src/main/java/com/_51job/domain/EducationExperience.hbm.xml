@@ -20,6 +20,5 @@
         <property name="degree">
             <column name="degree" sql-type="int(11)"/>
         </property>
-        <one-to-one name="experienceByEexperienceId" class="com._51job.domain.Experience"/>
     </class>
 </hibernate-mapping>

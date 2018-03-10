@@ -20,11 +20,5 @@
         <property name="userId">
             <column name="user_id" sql-type="int(11)"/>
         </property>
-        <many-to-one name="dictionaryBySkillName" class="com._51job.domain.Dictionary">
-            <column name="skill_name"/>
-        </many-to-one>
-        <many-to-one name="applicantByUserId" class="com._51job.domain.Applicant">
-            <column name="user_id"/>
-        </many-to-one>
     </class>
 </hibernate-mapping>

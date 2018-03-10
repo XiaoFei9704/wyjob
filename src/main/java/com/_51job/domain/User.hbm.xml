@@ -17,7 +17,5 @@
         <property name="role">
             <column name="role" sql-type="int(11)" not-null="true"/>
         </property>
-        <one-to-one name="applicantByUserId" class="com._51job.domain.Applicant"/>
-        <one-to-one name="enterpriseByUserId" class="com._51job.domain.Enterprise"/>
     </class>
 </hibernate-mapping>

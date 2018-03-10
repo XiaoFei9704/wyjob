@@ -20,11 +20,5 @@
         <property name="xAbility">
             <column name="x_ability" sql-type="tinyint(1)"/>
         </property>
-        <many-to-one name="applicantByUserId" class="com._51job.domain.Applicant">
-            <column name="user_id"/>
-        </many-to-one>
-        <many-to-one name="dictionaryByLanguage" class="com._51job.domain.Dictionary">
-            <column name="language"/>
-        </many-to-one>
     </class>
 </hibernate-mapping>

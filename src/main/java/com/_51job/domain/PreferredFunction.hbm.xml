@@ -14,11 +14,5 @@
         <property name="function">
             <column name="function" sql-type="int(11)"/>
         </property>
-        <many-to-one name="applicantByUserId" class="com._51job.domain.Applicant">
-            <column name="user_id"/>
-        </many-to-one>
-        <many-to-one name="dictionaryByFunction" class="com._51job.domain.Dictionary">
-            <column name="function"/>
-        </many-to-one>
     </class>
 </hibernate-mapping>

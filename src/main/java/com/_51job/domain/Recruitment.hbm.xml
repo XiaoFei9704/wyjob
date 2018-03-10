@@ -7,7 +7,11 @@
     <class name="com._51job.domain.Recruitment" table="recruitment" schema="wyjob">
         <id name="recruitmentId">
             <column name="recruitment_id" sql-type="int(11)"/>
+            <generator class="identity"/>
         </id>
+        <property name="enterpriseId">
+            <column name="enterprise_id" sql-type="int(11)"/>
+        </property>
         <property name="post">
             <column name="post" sql-type="varchar(45)" length="45"/>
         </property>
@@ -18,10 +22,10 @@
             <column name="salary" sql-type="int(11)"/>
         </property>
         <property name="minDegree">
-            <column name="min_degree" sql-type="int(11)" not-null="true"/>
+            <column name="min_degree" sql-type="int(11)" not-null="false"/>
         </property>
         <property name="minSeniority">
-            <column name="min_seniority" sql-type="int(11)" not-null="true"/>
+            <column name="min_seniority" sql-type="int(11)" not-null="false"/>
         </property>
         <property name="description">
             <column name="description" sql-type="text" not-null="true"/>

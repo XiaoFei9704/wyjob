@@ -1,19 +1,14 @@
 package com._51job.domain;
 
-import javax.persistence.*;
 import java.sql.Date;
 import java.util.Objects;
 
-@Entity
 public class Certificate {
     private int certificateId;
     private String name;
     private Date time;
     private int userId;
-    private Applicant applicantByUserId;
 
-    @Id
-    @Column(name = "certificate_id", nullable = false)
     public int getCertificateId() {
         return certificateId;
     }
@@ -22,8 +17,6 @@ public class Certificate {
         this.certificateId = certificateId;
     }
 
-    @Basic
-    @Column(name = "name", nullable = false, length = 45)
     public String getName() {
         return name;
     }
@@ -32,8 +25,6 @@ public class Certificate {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "time", nullable = false)
     public Date getTime() {
         return time;
     }
@@ -42,8 +33,6 @@ public class Certificate {
         this.time = time;
     }
 
-    @Basic
-    @Column(name = "user_id", nullable = false)
     public int getUserId() {
         return userId;
     }
@@ -67,15 +56,5 @@ public class Certificate {
     public int hashCode() {
 
         return Objects.hash(certificateId, name, time, userId);
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
-    public Applicant getApplicantByUserId() {
-        return applicantByUserId;
-    }
-
-    public void setApplicantByUserId(Applicant applicantByUserId) {
-        this.applicantByUserId = applicantByUserId;
     }
 }

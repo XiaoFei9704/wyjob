@@ -1,11 +1,8 @@
 package com._51job.domain;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.Objects;
 
-@Entity
 public class Applicant {
     private int userId;
     private String name;
@@ -17,19 +14,7 @@ public class Applicant {
     private Byte workType;
     private Integer salaryLowerBound;
     private Timestamp birthdate;
-    private User userByUserId;
-    private Dictionary dictionaryByDomicile;
-    private Collection<Application> applicationsByUserId;
-    private Collection<Certificate> certificatesByUserId;
-    private Collection<Experience> experiencesByUserId;
-    private Collection<Language> languagesByUserId;
-    private Collection<PreferredFunction> preferredFunctionsByUserId;
-    private Collection<PreferredIndustry> preferredIndustriesByUserId;
-    private Collection<PreferredLocation> preferredLocationsByUserId;
-    private Collection<Skill> skillsByUserId;
 
-    @Id
-    @Column(name = "user_id", nullable = false)
     public int getUserId() {
         return userId;
     }
@@ -38,8 +23,6 @@ public class Applicant {
         this.userId = userId;
     }
 
-    @Basic
-    @Column(name = "name", nullable = false, length = 45)
     public String getName() {
         return name;
     }
@@ -48,8 +31,6 @@ public class Applicant {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "gender", nullable = false)
     public byte getGender() {
         return gender;
     }
@@ -58,8 +39,6 @@ public class Applicant {
         this.gender = gender;
     }
 
-    @Basic
-    @Column(name = "domicile", nullable = true)
     public Integer getDomicile() {
         return domicile;
     }
@@ -68,8 +47,6 @@ public class Applicant {
         this.domicile = domicile;
     }
 
-    @Basic
-    @Column(name = "working_status", nullable = true)
     public Byte getWorkingStatus() {
         return workingStatus;
     }
@@ -78,8 +55,6 @@ public class Applicant {
         this.workingStatus = workingStatus;
     }
 
-    @Basic
-    @Column(name = "mobile", nullable = true, length = 15)
     public String getMobile() {
         return mobile;
     }
@@ -88,8 +63,6 @@ public class Applicant {
         this.mobile = mobile;
     }
 
-    @Basic
-    @Column(name = "email", nullable = true, length = 45)
     public String getEmail() {
         return email;
     }
@@ -98,8 +71,6 @@ public class Applicant {
         this.email = email;
     }
 
-    @Basic
-    @Column(name = "work_type", nullable = true)
     public Byte getWorkType() {
         return workType;
     }
@@ -108,8 +79,6 @@ public class Applicant {
         this.workType = workType;
     }
 
-    @Basic
-    @Column(name = "salary_lower_bound", nullable = true)
     public Integer getSalaryLowerBound() {
         return salaryLowerBound;
     }
@@ -118,8 +87,6 @@ public class Applicant {
         this.salaryLowerBound = salaryLowerBound;
     }
 
-    @Basic
-    @Column(name = "birthdate", nullable = true)
     public Timestamp getBirthdate() {
         return birthdate;
     }
@@ -149,97 +116,5 @@ public class Applicant {
     public int hashCode() {
 
         return Objects.hash(userId, name, gender, domicile, workingStatus, mobile, email, workType, salaryLowerBound, birthdate);
-    }
-
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
-    public User getUserByUserId() {
-        return userByUserId;
-    }
-
-    public void setUserByUserId(User userByUserId) {
-        this.userByUserId = userByUserId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "domicile", referencedColumnName = "dictionary_id")
-    public Dictionary getDictionaryByDomicile() {
-        return dictionaryByDomicile;
-    }
-
-    public void setDictionaryByDomicile(Dictionary dictionaryByDomicile) {
-        this.dictionaryByDomicile = dictionaryByDomicile;
-    }
-
-    @OneToMany(mappedBy = "applicantByApplicantId")
-    public Collection<Application> getApplicationsByUserId() {
-        return applicationsByUserId;
-    }
-
-    public void setApplicationsByUserId(Collection<Application> applicationsByUserId) {
-        this.applicationsByUserId = applicationsByUserId;
-    }
-
-    @OneToMany(mappedBy = "applicantByUserId")
-    public Collection<Certificate> getCertificatesByUserId() {
-        return certificatesByUserId;
-    }
-
-    public void setCertificatesByUserId(Collection<Certificate> certificatesByUserId) {
-        this.certificatesByUserId = certificatesByUserId;
-    }
-
-    @OneToMany(mappedBy = "applicantByUserId")
-    public Collection<Experience> getExperiencesByUserId() {
-        return experiencesByUserId;
-    }
-
-    public void setExperiencesByUserId(Collection<Experience> experiencesByUserId) {
-        this.experiencesByUserId = experiencesByUserId;
-    }
-
-    @OneToMany(mappedBy = "applicantByUserId")
-    public Collection<Language> getLanguagesByUserId() {
-        return languagesByUserId;
-    }
-
-    public void setLanguagesByUserId(Collection<Language> languagesByUserId) {
-        this.languagesByUserId = languagesByUserId;
-    }
-
-    @OneToMany(mappedBy = "applicantByUserId")
-    public Collection<PreferredFunction> getPreferredFunctionsByUserId() {
-        return preferredFunctionsByUserId;
-    }
-
-    public void setPreferredFunctionsByUserId(Collection<PreferredFunction> preferredFunctionsByUserId) {
-        this.preferredFunctionsByUserId = preferredFunctionsByUserId;
-    }
-
-    @OneToMany(mappedBy = "applicantByUserId")
-    public Collection<PreferredIndustry> getPreferredIndustriesByUserId() {
-        return preferredIndustriesByUserId;
-    }
-
-    public void setPreferredIndustriesByUserId(Collection<PreferredIndustry> preferredIndustriesByUserId) {
-        this.preferredIndustriesByUserId = preferredIndustriesByUserId;
-    }
-
-    @OneToMany(mappedBy = "applicantByUserId")
-    public Collection<PreferredLocation> getPreferredLocationsByUserId() {
-        return preferredLocationsByUserId;
-    }
-
-    public void setPreferredLocationsByUserId(Collection<PreferredLocation> preferredLocationsByUserId) {
-        this.preferredLocationsByUserId = preferredLocationsByUserId;
-    }
-
-    @OneToMany(mappedBy = "applicantByUserId")
-    public Collection<Skill> getSkillsByUserId() {
-        return skillsByUserId;
-    }
-
-    public void setSkillsByUserId(Collection<Skill> skillsByUserId) {
-        this.skillsByUserId = skillsByUserId;
     }
 }
