@@ -56,4 +56,9 @@ public class MyController {
 	public String print(){
 		return "ok";
 	}
+    @RequestMapping(value = "/print1")
+    @ResponseBody
+    public String print1(){
+        return "ok";
+    }
 }
