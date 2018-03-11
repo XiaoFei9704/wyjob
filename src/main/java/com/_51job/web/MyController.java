@@ -51,5 +51,9 @@ public class MyController {
         Jedis jedis=beanGetter.getBean("jedis", Jedis.class);
         return jedis.set(key,value);
     }
-
+    @RequestMapping(value = "/print")
+    @ResponseBody
+    public String print(){
+	    return "ok";
+    }
 }
