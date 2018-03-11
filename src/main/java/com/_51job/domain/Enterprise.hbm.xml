@@ -19,7 +19,7 @@
             <column name="address" sql-type="varchar(45)" length="45"/>
         </property>
         <property name="foundingTime">
-            <column name="founding_time" sql-type="timestamp" not-null="true"/>
+            <column name="founding_time" sql-type="timestamp" not-null="false"/>
         </property>
         <property name="scale">
             <column name="scale" sql-type="int(11)"/>
