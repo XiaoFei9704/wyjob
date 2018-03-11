@@ -1,8 +1,6 @@
 package com._51job.spider;
 
 import com._51job.domain.Dictionary;
-import com._51job.domain.Enterprise;
-import com._51job.domain.Recruitment;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -14,6 +12,7 @@ import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.selector.Html;
 
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
@@ -147,6 +146,7 @@ public class ZLZP implements PageProcessor,Runnable {
                 enterprise.setAddress(addr);
                 enterprise.setDescription(desc);
                 enterprise.setDomicile(80);
+                enterprise.setFoundingTime(new Timestamp(new Date().getTime()));
                 if(enterprise.getIndustry()!=0&&enterprise.getType()!=0)enterprises.add(enterprise);
             }
 
@@ -184,7 +184,7 @@ public class ZLZP implements PageProcessor,Runnable {
     public void run() {
         String[] urls=new String[90];
         for(int i=0;i<90;i++){
-            urls[i]="http://sou.zhaopin.com/jobs/searchresult.ashx?jl=深圳&kw=java&isadv=0&sg=0390cfbf86794329aa5a271e7fb4029d&p="+(i+1);
+            urls[i]="http://sou.zhaopin.com/jobs/searchresult.ashx?jl=深圳&kw=c&isadv=0&sg=0390cfbf86794329aa5a271e7fb4029d&p="+(i+1);
         }
         Spider.create(zlzp)
                 .addUrl(urls)

@@ -7,7 +7,6 @@
     <class name="com._51job.domain.Enterprise" table="enterprise" schema="wyjob">
         <id name="enterpriseId">
             <column name="enterprise_id" sql-type="int(11)"/>
-            <generator class="identity"/>
         </id>
         <property name="name">
             <column name="name" sql-type="varchar(45)" length="45"/>
@@ -16,28 +15,22 @@
             <column name="domicile" sql-type="int(11)"/>
         </property>
         <property name="address">
-            <column name="address" sql-type="varchar(45)" length="45"/>
+            <column name="address" sql-type="varchar(255)"/>
         </property>
         <property name="foundingTime">
-            <column name="founding_time" sql-type="timestamp" not-null="false"/>
+            <column name="founding_time" sql-type="timestamp" not-null="true"/>
         </property>
         <property name="scale">
             <column name="scale" sql-type="int(11)"/>
         </property>
-        <property name="industry">
-            <column name="industry" sql-type="int(11)"/>
-        </property>
-        <property name="type">
-            <column name="type" sql-type="int(11)"/>
-        </property>
         <property name="description">
             <column name="description" sql-type="text" not-null="true"/>
         </property>
-        <property name="userName">
-            <column name="user_name" sql-type="varchar(45)" length="45" not-null="false"/>
+        <property name="hrName">
+            <column name="hr_name" sql-type="varchar(45)" length="45" not-null="true"/>
         </property>
-        <property name="userMobile">
-            <column name="user_mobile" sql-type="varchar(15)" length="15" not-null="false"/>
+        <property name="hrMobile">
+            <column name="hr_mobile" sql-type="varchar(15)" length="15" not-null="true"/>
         </property>
     </class>
 </hibernate-mapping>

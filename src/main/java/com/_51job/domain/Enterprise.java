@@ -10,11 +10,9 @@ public class Enterprise {
     private String address;
     private Timestamp foundingTime;
     private int scale;
-    private int industry;
-    private int type;
     private String description;
-    private String userName;
-    private String userMobile;
+    private String hrName;
+    private String hrMobile;
 
     public int getEnterpriseId() {
         return enterpriseId;
@@ -64,22 +62,6 @@ public class Enterprise {
         this.scale = scale;
     }
 
-    public int getIndustry() {
-        return industry;
-    }
-
-    public void setIndustry(int industry) {
-        this.industry = industry;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -88,20 +70,20 @@ public class Enterprise {
         this.description = description;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getHrName() {
+        return hrName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setHrName(String hrName) {
+        this.hrName = hrName;
     }
 
-    public String getUserMobile() {
-        return userMobile;
+    public String getHrMobile() {
+        return hrMobile;
     }
 
-    public void setUserMobile(String userMobile) {
-        this.userMobile = userMobile;
+    public void setHrMobile(String hrMobile) {
+        this.hrMobile = hrMobile;
     }
 
     @Override
@@ -112,19 +94,17 @@ public class Enterprise {
         return enterpriseId == that.enterpriseId &&
                 domicile == that.domicile &&
                 scale == that.scale &&
-                industry == that.industry &&
-                type == that.type &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(address, that.address) &&
                 Objects.equals(foundingTime, that.foundingTime) &&
                 Objects.equals(description, that.description) &&
-                Objects.equals(userName, that.userName) &&
-                Objects.equals(userMobile, that.userMobile);
+                Objects.equals(hrName, that.hrName) &&
+                Objects.equals(hrMobile, that.hrMobile);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(enterpriseId, name, domicile, address, foundingTime, scale, industry, type, description, userName, userMobile);
+        return Objects.hash(enterpriseId, name, domicile, address, foundingTime, scale, description, hrName, hrMobile);
     }
 }

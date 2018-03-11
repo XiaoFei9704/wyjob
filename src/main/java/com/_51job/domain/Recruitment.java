@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Recruitment {
     private int recruitmentId;
-    private int enterpriseId;
+    private Integer enterpriseId;
     private String post;
     private int function;
     private int salary;
@@ -14,7 +14,7 @@ public class Recruitment {
     private String description;
     private byte state;
     private Timestamp time;
-    private byte type;
+    private byte workType;
 
     public int getRecruitmentId() {
         return recruitmentId;
@@ -24,11 +24,11 @@ public class Recruitment {
         this.recruitmentId = recruitmentId;
     }
 
-    public int getEnterpriseId() {
+    public Integer getEnterpriseId() {
         return enterpriseId;
     }
 
-    public void setEnterpriseId(int enterpriseId) {
+    public void setEnterpriseId(Integer enterpriseId) {
         this.enterpriseId = enterpriseId;
     }
 
@@ -96,12 +96,12 @@ public class Recruitment {
         this.time = time;
     }
 
-    public byte getType() {
-        return type;
+    public byte getWorkType() {
+        return workType;
     }
 
-    public void setType(byte type) {
-        this.type = type;
+    public void setWorkType(byte workType) {
+        this.workType = workType;
     }
 
     @Override
@@ -110,11 +110,11 @@ public class Recruitment {
         if (o == null || getClass() != o.getClass()) return false;
         Recruitment that = (Recruitment) o;
         return recruitmentId == that.recruitmentId &&
-                enterpriseId == that.enterpriseId &&
                 function == that.function &&
                 salary == that.salary &&
                 state == that.state &&
-                type == that.type &&
+                workType == that.workType &&
+                Objects.equals(enterpriseId, that.enterpriseId) &&
                 Objects.equals(post, that.post) &&
                 Objects.equals(minDegree, that.minDegree) &&
                 Objects.equals(minSeniority, that.minSeniority) &&
@@ -125,6 +125,6 @@ public class Recruitment {
     @Override
     public int hashCode() {
 
-        return Objects.hash(recruitmentId, enterpriseId, post, function, salary, minDegree, minSeniority, description, state, time, type);
+        return Objects.hash(recruitmentId, enterpriseId, post, function, salary, minDegree, minSeniority, description, state, time, workType);
     }
 }
