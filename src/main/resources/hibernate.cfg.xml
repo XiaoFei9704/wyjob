@@ -6,7 +6,7 @@
   <session-factory>
       <property name="connection.url"><![CDATA[jdbc:mysql://47.94.86.98:3306/wyjob]]></property>
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-      <mapping class="com._51job.domain.Applicant"/>
+    <mapping class="com._51job.domain.Applicant"/>
       <mapping resource="com/_51job/domain/Applicant.hbm.xml"/>
       <mapping class="com._51job.domain.Application"/>
     <mapping resource="com/_51job/domain/Application.hbm.xml"/>

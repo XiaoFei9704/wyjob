@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
-<<<<<<< Updated upstream
     <facet type="Spring" name="Spring">
       <configuration />
     </facet>
-=======
->>>>>>> Stashed changes
     <facet type="web" name="Web">
       <configuration>
         <descriptors>
@@ -17,34 +14,23 @@
         </webroots>
       </configuration>
     </facet>
-<<<<<<< Updated upstream
-=======
-    <facet type="Spring" name="Spring">
-      <configuration />
-    </facet>
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="hibernate.cfg.xml" value="acc4970b-053a-44b5-947a-9ccf8aee5abb" />
+          <unit-entry name="hibernate.cfg.xml" value="0f9ae850-9082-43ec-b7f7-ac8535e09f48" />
           <unit-entry name="sessionFactory" />
         </datasource-map>
         <naming-strategy-map />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/resources/hibernate.cfg.xml" />
       </configuration>
     </facet>
->>>>>>> Stashed changes
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
-<<<<<<< Updated upstream
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
-=======
-      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
->>>>>>> Stashed changes
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />

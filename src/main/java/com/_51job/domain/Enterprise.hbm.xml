@@ -23,6 +23,12 @@
         <property name="scale">
             <column name="scale" sql-type="int(11)"/>
         </property>
+        <property name="industry">
+            <column name="industry" sql-type="int(11)"/>
+        </property>
+        <property name="type">
+            <column name="type" sql-type="int(11)"/>
+        </property>
         <property name="description">
             <column name="description" sql-type="text" not-null="true"/>
         </property>

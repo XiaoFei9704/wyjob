@@ -11,8 +11,8 @@
         <property name="recruitmentId">
             <column name="recruitment_id" sql-type="int(11)"/>
         </property>
-        <property name="name">
-            <column name="name" sql-type="int(11)"/>
+        <property name="skillName">
+            <column name="skill_name" sql-type="int(11)"/>
         </property>
         <property name="time">
             <column name="time" sql-type="int(11)" not-null="true"/>

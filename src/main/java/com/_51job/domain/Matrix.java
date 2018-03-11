@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Matrix {
     private int matrixId;
     private int recruitmentId;
-    private int name;
+    private int skillName;
     private Integer time;
     private Integer level;
 
@@ -25,12 +25,12 @@ public class Matrix {
         this.recruitmentId = recruitmentId;
     }
 
-    public int getName() {
-        return name;
+    public int getSkillName() {
+        return skillName;
     }
 
-    public void setName(int name) {
-        this.name = name;
+    public void setSkillName(int skillName) {
+        this.skillName = skillName;
     }
 
     public Integer getTime() {
@@ -56,7 +56,7 @@ public class Matrix {
         Matrix matrix = (Matrix) o;
         return matrixId == matrix.matrixId &&
                 recruitmentId == matrix.recruitmentId &&
-                name == matrix.name &&
+                skillName == matrix.skillName &&
                 Objects.equals(time, matrix.time) &&
                 Objects.equals(level, matrix.level);
     }
@@ -64,6 +64,6 @@ public class Matrix {
     @Override
     public int hashCode() {
 
-        return Objects.hash(matrixId, recruitmentId, name, time, level);
+        return Objects.hash(matrixId, recruitmentId, skillName, time, level);
     }
 }

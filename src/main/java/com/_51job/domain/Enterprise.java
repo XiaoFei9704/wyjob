@@ -10,6 +10,8 @@ public class Enterprise {
     private String address;
     private Timestamp foundingTime;
     private int scale;
+    private int industry;
+    private int type;
     private String description;
     private String hrName;
     private String hrMobile;
@@ -62,6 +64,22 @@ public class Enterprise {
         this.scale = scale;
     }
 
+    public int getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(int industry) {
+        this.industry = industry;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -94,6 +112,8 @@ public class Enterprise {
         return enterpriseId == that.enterpriseId &&
                 domicile == that.domicile &&
                 scale == that.scale &&
+                industry == that.industry &&
+                type == that.type &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(address, that.address) &&
                 Objects.equals(foundingTime, that.foundingTime) &&
@@ -105,6 +125,6 @@ public class Enterprise {
     @Override
     public int hashCode() {
 
-        return Objects.hash(enterpriseId, name, domicile, address, foundingTime, scale, description, hrName, hrMobile);
+        return Objects.hash(enterpriseId, name, domicile, address, foundingTime, scale, industry, type, description, hrName, hrMobile);
     }
 }

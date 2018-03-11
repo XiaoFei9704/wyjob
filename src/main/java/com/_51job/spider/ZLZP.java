@@ -1,5 +1,6 @@
 package com._51job.spider;
 
+import com._51job.domain.*;
 import com._51job.domain.Dictionary;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
