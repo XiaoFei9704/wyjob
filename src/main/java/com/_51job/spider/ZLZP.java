@@ -3,7 +3,6 @@ package com._51job.spider;
 import com._51job.domain.Dictionary;
 import com._51job.domain.Enterprise;
 import com._51job.domain.Recruitment;
-import com._51job.tool.DataUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -131,9 +130,9 @@ public class ZLZP implements PageProcessor,Runnable {
                 comName.add(name);
                 System.out.println(name);
                 String type=html.xpath("/html/body/div[2]/div[1]/div[1]/table/tbody/tr[1]/td[2]/span/text()").get();
-                int i_type_id=DataUtil.enterpriseType(type);
+                int i_type_id=enterpriseType(type);
                 String scale=html.xpath("/html/body/div[2]/div[1]/div[1]/table/tbody/tr[2]/td[2]/span/text()").get();
-                int i_scale_id= DataUtil.enterPriseScale(scale);
+                int i_scale_id=enterPriseScale(scale);
                 String industry=html.xpath("/html/body/div[2]/div[1]/div[1]/table/tbody/tr[4]/td[2]/span/text()").get();
                 String[] inds=industry.split(",");
                 int inds_id=industry(inds[0]);
@@ -147,7 +146,7 @@ public class ZLZP implements PageProcessor,Runnable {
                 enterprise.setIndustry(inds_id);
                 enterprise.setAddress(addr);
                 enterprise.setDescription(desc);
-                enterprise.setDomicile(9);
+                enterprise.setDomicile(80);
                 if(enterprise.getIndustry()!=0&&enterprise.getType()!=0)enterprises.add(enterprise);
             }
 
@@ -160,12 +159,12 @@ public class ZLZP implements PageProcessor,Runnable {
 
     public static void main(String[] args) {
         zlzp=new ZLZP();
-        new Thread(zlzp).start();
         Query<Enterprise> query=zlzp.getSession().createQuery("from Enterprise",Enterprise.class);
         List<Enterprise> list=query.list();
         for(Enterprise enterprise:list){
             comName.add(enterprise.getName());
         }
+        new Thread(zlzp).start();
         Timer timer=new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -185,7 +184,7 @@ public class ZLZP implements PageProcessor,Runnable {
     public void run() {
         String[] urls=new String[90];
         for(int i=0;i<90;i++){
-            urls[i]="http://sou.zhaopin.com/jobs/searchresult.ashx?jl=上海&kw=前端&isadv=0&sg=0390cfbf86794329aa5a271e7fb4029d&p="+(i+1);
+            urls[i]="http://sou.zhaopin.com/jobs/searchresult.ashx?jl=深圳&kw=java&isadv=0&sg=0390cfbf86794329aa5a271e7fb4029d&p="+(i+1);
         }
         Spider.create(zlzp)
                 .addUrl(urls)
@@ -222,5 +221,20 @@ public class ZLZP implements PageProcessor,Runnable {
         htmlStr=m_htm.replaceAll(""); //过滤html标签
 
         return htmlStr.trim(); //返回文本字符串
+    }
+    private int enterpriseType(String s_type){
+        Query<Dictionary> query=getSession().createQuery("from Dictionary where type=4",Dictionary.class);
+        for (Dictionary dictionary:query.list()){
+            if(dictionary.getDictionaryName().equals(s_type))return dictionary.getDictionaryId();
+        }
+        return 0;
+    }
+
+    private int enterPriseScale(String s_scale){
+        Query<Dictionary> query=getSession().createQuery("from Dictionary where type=7",Dictionary.class);
+        for (Dictionary dictionary:query.list()){
+            if(dictionary.getDictionaryName().equals(s_scale))return dictionary.getDictionaryId();
+        }
+        return 0;
     }
 }

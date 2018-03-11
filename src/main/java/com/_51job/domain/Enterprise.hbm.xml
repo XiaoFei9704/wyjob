@@ -34,10 +34,10 @@
             <column name="description" sql-type="text" not-null="true"/>
         </property>
         <property name="userName">
-            <column name="user_name" sql-type="varchar(45)" length="45" not-null="true"/>
+            <column name="user_name" sql-type="varchar(45)" length="45" not-null="false"/>
         </property>
         <property name="userMobile">
-            <column name="user_mobile" sql-type="varchar(15)" length="15" not-null="true"/>
+            <column name="user_mobile" sql-type="varchar(15)" length="15" not-null="false"/>
         </property>
     </class>
 </hibernate-mapping>
