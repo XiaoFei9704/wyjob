@@ -51,5 +51,5 @@ public class MyController {
         Jedis jedis=beanGetter.getBean("jedis", Jedis.class);
         return jedis.set(key,value);
     }
-
+	public int testPush(){return 1;}
 }
