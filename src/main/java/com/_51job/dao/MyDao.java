@@ -88,7 +88,7 @@ public class MyDao {
      * @param manyClass 多个的class
      */
 	public <T> List<T> oneToMany(int id_one, Class oneClass, Class<T> manyClass){
-	    Query<T> query=getSession().createQuery("from "+manyClass.getSimpleName()+" where "+oneClass.getSimpleName()+"id="+id_one,manyClass);
+	    Query<T> query=getSession().createQuery("from "+manyClass.getSimpleName()+" where "+oneClass.getSimpleName()+"_id="+id_one,manyClass);
 	    return query.list();
     }
 

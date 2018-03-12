@@ -2,6 +2,7 @@ package com._51job.spider;
 
 import com._51job.domain.*;
 import com._51job.domain.Dictionary;
+import com._51job.tool.Pair;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -33,6 +34,9 @@ public class ZLZP implements PageProcessor,Runnable {
     private static List<Dictionary> enterType;
     private static List<Dictionary> enterIndus;
     private static List<Dictionary> enterScale;
+    private static List<Dictionary> places;
+    private static List<Dictionary> skills;
+    private static int now_place_id;
 
     private Site site=Site.me()
             .setDomain("http://www.zhaopin.com")
@@ -53,6 +57,8 @@ public class ZLZP implements PageProcessor,Runnable {
         enterType=new ArrayList<>();
         enterIndus=new ArrayList<>();
         enterScale=new ArrayList<>();
+        places=new ArrayList<>();
+        skills=new ArrayList<>();
     }
     public Session getSession(){return sessionFactory.openSession();}
 
@@ -157,9 +163,9 @@ public class ZLZP implements PageProcessor,Runnable {
                 enterprise.setIndustry(inds_id);
                 enterprise.setAddress(addr);
                 enterprise.setDescription(desc);
-                enterprise.setDomicile(80);
+                enterprise.setDomicile(now_place_id);
                 enterprise.setFoundingTime(new Timestamp(new Date().getTime()));
-                if(enterprise.getIndustry()!=0&&enterprise.getType()!=0)enterprises.add(enterprise);
+                if(enterprise.getIndustry()!=0&&enterprise.getType()!=0&&enterprise.getAddress()!=null)enterprises.add(enterprise);
             }
 
         }
@@ -182,6 +188,10 @@ public class ZLZP implements PageProcessor,Runnable {
         enterType=query2.list();
         Query<Dictionary> query3=zlzp.getSession().createQuery("from Dictionary  where type=7",Dictionary.class);
         enterScale=query3.list();
+        Query<Dictionary> query4=zlzp.getSession().createQuery("from Dictionary where type=1", Dictionary.class);
+        places=query4.list();
+        Query<Dictionary> query5=zlzp.getSession().createQuery("from Dictionary where type=5", Dictionary.class);
+        skills=query5.list();
         new Thread(zlzp).start();
         Timer timer=new Timer();
         timer.schedule(new TimerTask() {
@@ -200,12 +210,23 @@ public class ZLZP implements PageProcessor,Runnable {
 
     @Override
     public void run() {
-        String[] urls=new String[90];
+        List<String> urls=new ArrayList<>();
         for(int i=0;i<90;i++){
-            urls[i]="http://sou.zhaopin.com/jobs/searchresult.ashx?jl=深圳&kw=c&isadv=0&sg=0390cfbf86794329aa5a271e7fb4029d&p="+(i+1);
+            for(Dictionary dictionary:places){
+                String place=dictionary.getDictionaryName();
+                if(place.contains("北京")||place.contains("上海")||place.contains("广州")||place.contains("深圳")||place.contains("杭州")
+                        ||place.contains("成都")||place.contains("武汉")||place.contains("重庆")||place.contains("香港")){
+                    now_place_id=dictionary.getDictionaryId();
+                    for (Dictionary dictionary1:skills){
+                        String skill=dictionary1.getDictionaryName();
+                        urls.add("http://sou.zhaopin.com/jobs/searchresult.ashx?jl="+place+"&kw="+skill+"&isadv=0&sg=0390cfbf86794329aa5a271e7fb4029d&p="+(i+1));
+                    }
+                }
+            }
         }
+        String n="http://sou.zhaopin.com/jobs/searchresult.ashx?jl=深圳&kw=python&isadv=0&sg=0390cfbf86794329aa5a271e7fb4029d&p=";
         Spider.create(zlzp)
-                .addUrl(urls)
+                .addUrl(urls.toArray(new String[urls.size()]))
                 .thread(20)
                 .run();
     }
