@@ -146,6 +146,7 @@ public class ZLZP implements PageProcessor,Runnable {
                     inds_id=industry(s);
                     if(inds_id>0)break;
                 }
+                if(inds_id==0)inds_id=967;
                 String addr=html.xpath("/html/body/div[2]/div[1]/div[1]/table/tbody/tr[5]/td[2]/span/text()").get();
                 String desc=html.xpath("/html/body/div[2]/div[1]/div[2]/div/text()").get();
                 desc+=delHTMLTag(html.xpath("/html/body/div[2]/div[1]/div[2]/div").get());
