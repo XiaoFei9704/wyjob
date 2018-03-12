@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class MyDao {
+public abstract class MyDao {
 
 	private final SessionFactory sessionFactory;
 
