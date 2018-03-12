@@ -30,6 +30,9 @@ public class ZLZP implements PageProcessor,Runnable {
     private static String regCompany="http://company\\.zhaopin\\.com.*htm$";
     private static String regJob="^http://jobs.zhaopin.com.*htm$";
     private static Set<String> comName;
+    private static List<Dictionary> enterType;
+    private static List<Dictionary> enterIndus;
+    private static List<Dictionary> enterScale;
 
     private Site site=Site.me()
             .setDomain("http://www.zhaopin.com")
@@ -47,6 +50,9 @@ public class ZLZP implements PageProcessor,Runnable {
         session=sessionFactory.openSession();
         transaction=session.beginTransaction();
         comName=new HashSet<>();
+        enterType=new ArrayList<>();
+        enterIndus=new ArrayList<>();
+        enterScale=new ArrayList<>();
     }
     public Session getSession(){return sessionFactory.openSession();}
 
@@ -135,7 +141,11 @@ public class ZLZP implements PageProcessor,Runnable {
                 int i_scale_id=enterPriseScale(scale);
                 String industry=html.xpath("/html/body/div[2]/div[1]/div[1]/table/tbody/tr[4]/td[2]/span/text()").get();
                 String[] inds=industry.split(",");
-                int inds_id=industry(inds[0]);
+                int inds_id=0;
+                for(String s:inds){
+                    inds_id=industry(s);
+                    if(inds_id>0)break;
+                }
                 String addr=html.xpath("/html/body/div[2]/div[1]/div[1]/table/tbody/tr[5]/td[2]/span/text()").get();
                 String desc=html.xpath("/html/body/div[2]/div[1]/div[2]/div/text()").get();
                 desc+=delHTMLTag(html.xpath("/html/body/div[2]/div[1]/div[2]/div").get());
@@ -165,6 +175,12 @@ public class ZLZP implements PageProcessor,Runnable {
         for(Enterprise enterprise:list){
             comName.add(enterprise.getName());
         }
+        Query<Dictionary> query1=zlzp.getSession().createQuery("from Dictionary where type=2",Dictionary.class);
+        enterIndus=query1.list();
+        Query<Dictionary> query2=zlzp.getSession().createQuery("from Dictionary  where type=4", Dictionary.class);
+        enterType=query2.list();
+        Query<Dictionary> query3=zlzp.getSession().createQuery("from Dictionary  where type=7",Dictionary.class);
+        enterScale=query3.list();
         new Thread(zlzp).start();
         Timer timer=new Timer();
         timer.schedule(new TimerTask() {
@@ -193,8 +209,7 @@ public class ZLZP implements PageProcessor,Runnable {
                 .run();
     }
     private static int industry(String s_industry){
-        Query<com._51job.domain.Dictionary> query=zlzp.getSession().createQuery("from Dictionary where type=2", com._51job.domain.Dictionary.class);
-        for(Dictionary dictionary: query.list()){
+        for(Dictionary dictionary: enterIndus){
             if(dictionary.getDictionaryName().equals(s_industry))return dictionary.getDictionaryId();
         }
         return 0;
@@ -224,16 +239,14 @@ public class ZLZP implements PageProcessor,Runnable {
         return htmlStr.trim(); //返回文本字符串
     }
     private int enterpriseType(String s_type){
-        Query<Dictionary> query=getSession().createQuery("from Dictionary where type=4",Dictionary.class);
-        for (Dictionary dictionary:query.list()){
+        for (Dictionary dictionary: enterType){
             if(dictionary.getDictionaryName().equals(s_type))return dictionary.getDictionaryId();
         }
         return 0;
     }
 
     private int enterPriseScale(String s_scale){
-        Query<Dictionary> query=getSession().createQuery("from Dictionary where type=7",Dictionary.class);
-        for (Dictionary dictionary:query.list()){
+        for (Dictionary dictionary: enterScale){
             if(dictionary.getDictionaryName().equals(s_scale))return dictionary.getDictionaryId();
         }
         return 0;
