@@ -1,13 +1,11 @@
 package com._51job.web;
 
 import com._51job.service.MyService;
-import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import redis.clients.jedis.Jedis;
 
 @Controller
 @RequestMapping(value = "/company")
@@ -17,28 +15,6 @@ public class EnterpriseController {
     public EnterpriseController(MyService myService) {
         this.myService = myService;
     }
-
-    //保存/修改企业信息
-    @RequestMapping(value = "/saveInfo",method = RequestMethod.POST)
-    @ResponseBody
-    public boolean saveInfo(){
-        return false;
-    }
-
-    //保存/修改招聘信息
-    @RequestMapping(value = "saveJob",method = RequestMethod.POST)
-    @ResponseBody
-    public boolean saveJob(){
-        return false;
-    }
-
-    //获取所发布的岗位列表以及状态
-    @RequestMapping(value = "/jobs", method = RequestMethod.GET)
-    @ResponseBody
-    public void jobs(int start,int end){
-        //return JSON;指定的岗位列表，其他的相关信息，比如发布的岗位总数，岗位开放状态
-    }
-
 
     //获取指定岗位投递来的简历列表
     @RequestMapping(value = "/resumes", method = RequestMethod.GET)
@@ -69,11 +45,4 @@ public class EnterpriseController {
         //返回关闭结果
         return false;
     }
-
-
-    /*public static void main(String[] args) {
-        Jedis jedis;
-        jedis =new Jedis("localhost");
-        System.out.println(jedis.get("key2"));
-    }*/
 }
