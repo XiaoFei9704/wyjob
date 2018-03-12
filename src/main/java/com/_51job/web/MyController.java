@@ -1,5 +1,6 @@
 package com._51job.web;
 
+import com._51job.domain.Recruitment;
 import com._51job.service.MyService;
 import com._51job.tool.BeanGetter;
 import org.springframework.beans.factory.annotation.Autowired;

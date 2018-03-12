@@ -1,5 +1,6 @@
 package com._51job.web;
 
+import com._51job.domain.Applicant;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
