@@ -45,4 +45,5 @@ public class EnterpriseController {
         //返回关闭结果
         return false;
     }
+     public boolean test(){return false;}
 }
