@@ -11,16 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class MyDao {
+public abstract class  MyDao {
 
-	private final SessionFactory sessionFactory;
+	private static  SessionFactory sessionFactory;
 
 	@Autowired
 	public MyDao(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 
-	private Session getSession(){
+	public Session getSession(){
 		return sessionFactory.openSession();
 	}
 
