@@ -51,4 +51,10 @@ public class MyController {
         return jedis.set(key,value);
     }
 
+    @RequestMapping(value = "/search")
+    @ResponseBody
+	public List<Recruitment> search(String key, int count, int low){
+		return myService.search(key,count,low);
+	}
+
 }

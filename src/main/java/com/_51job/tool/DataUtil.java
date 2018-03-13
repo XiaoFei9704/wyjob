@@ -15,26 +15,34 @@ import java.util.Map;
 public class DataUtil {
     private static Configuration configuration;
     private static SessionFactory sessionFactory;
-    private static List<Recruitment> recruitments;
-    private static Jedis jedis;
-    static {
-        jedis=new Jedis("localhost");
-        configuration=new Configuration().configure();
-        sessionFactory=configuration.buildSessionFactory();
-        Session session=getSession();
-        Query<Recruitment> query=session.createQuery("from Recruitment ",Recruitment.class);
-        recruitments=query.list();
-        for(Recruitment recruitment: recruitments){
-            jedis.set(("rec" + recruitment.getRecruitmentId()).getBytes(),SerializeUtil.serialize(recruitment));
-        }
-    }
+    private static int rec_total;
+//    private static Jedis jedis;
+//    static {
+//        jedis=new Jedis("localhost");
+//        configuration=new Configuration().configure();
+//        sessionFactory=configuration.buildSessionFactory();
+//        Session session=getSession();
+//
+//        Query<Recruitment> query=session.createQuery("from Recruitment",Recruitment.class);
+//        query.setFirstResult(0);
+//        query.setMaxResults(10000);
+//        List<Recruitment> recruitments=query.list();
+//        rec_total=recruitments.size();
+//        for(int i=0;i<rec_total;i++){
+//            Recruitment recruitment=recruitments.get(i);
+//            jedis.set(("rec" + i).getBytes(),SerializeUtil.serialize(recruitment));
+//        }
+//    }
     private static Session getSession(){
         return sessionFactory.openSession();
     }
 
-    public static void main(String[] args) {
-        System.out.println(jedis.get("rec10000"));
-    }
+//
+//    public static List<Recruitment> allRecruitments(){
+//        for(int i=0;i<rec_total;i++){
+//
+//        }
+//    }
 
 
 }

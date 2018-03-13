@@ -1,26 +1,50 @@
 package com._51job.dao;
 
+import com._51job.domain.Recruitment;
+import com._51job.tool.SerializeUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public abstract class MyDao {
+public class MyDao {
 
-	private final SessionFactory sessionFactory;
+    private static Configuration configuration;
+    private static SessionFactory sessionFactory;
 
 	@Autowired
 	public MyDao(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 
-	private Session getSession(){
+   private static int rec_total;
+   private static Jedis jedis;
+   static {
+       jedis=new Jedis("localhost");
+       configuration=new Configuration().configure();
+       sessionFactory=configuration.buildSessionFactory();
+       Session session=getSession();
+
+       Query<Recruitment> query=session.createQuery("from Recruitment",Recruitment.class);
+       query.setFirstResult(0);
+       query.setMaxResults(10000);
+       List<Recruitment> recruitments=query.list();
+       rec_total=recruitments.size();
+       for(int i=0;i<rec_total;i++){
+           Recruitment recruitment=recruitments.get(i);
+           jedis.set(("rec" + i).getBytes(), SerializeUtil.serialize(recruitment));
+       }
+   }
+
+	public static Session getSession(){
 		return sessionFactory.openSession();
 	}
 
@@ -77,7 +101,12 @@ public abstract class MyDao {
 	}
 
 	public <T> List<T> allObjects(Class<T> tClass){
-		Query<T> query=getSession().createQuery("from "+tClass.getName()+" order by id asc ",tClass);
+		Query<T> query=getSession().createQuery("from "+tClass.getName(),tClass);
+		return query.list();
+	}
+
+	public <T> List<T> objectsWithCondition(Class<T> tClass, String condition){
+		Query<T> query=getSession().createQuery("from "+tClass.getSimpleName()+" "+condition, tClass);
 		return query.list();
 	}
 
@@ -88,7 +117,7 @@ public abstract class MyDao {
      * @param manyClass 多个的class
      */
 	public <T> List<T> oneToMany(int id_one, Class oneClass, Class<T> manyClass){
-	    Query<T> query=getSession().createQuery("from "+manyClass.getSimpleName()+" where "+oneClass.getSimpleName()+"_id="+id_one,manyClass);
+	    Query<T> query=getSession().createQuery("from "+manyClass.getSimpleName()+" where "+oneClass.getSimpleName()+"_id = "+id_one,manyClass);
 	    return query.list();
     }
 
