@@ -9,6 +9,43 @@ public class EducationExperience {
     private int studentType;
     private int degree;
 
+    private String startTime;
+    private String endTime;
+    private String actualStudentType;
+    private String actualDegree;
+
+    public String getActualStudentType() {
+        return actualStudentType;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setActualStudentType(String actualStudentType) {
+        this.actualStudentType = actualStudentType;
+    }
+
+    public String getActualDegree() {
+        return actualDegree;
+    }
+
+    public void setActualDegree(String actualDegree) {
+        this.actualDegree = actualDegree;
+    }
+
     public int getEexperienceId() {
         return eexperienceId;
     }

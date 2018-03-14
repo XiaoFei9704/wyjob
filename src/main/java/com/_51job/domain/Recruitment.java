@@ -16,6 +16,52 @@ public class Recruitment {
     private Timestamp time;
     private byte workType;
 
+    private String actualMinDegree;
+    private String actualFunction;
+    private String actualState;
+    private String actualTime;
+    private String actualWorkType;
+
+    public String getActualMinDegree() {
+        return actualMinDegree;
+    }
+
+    public void setActualMinDegree(String actualMinDegree) {
+        this.actualMinDegree = actualMinDegree;
+    }
+
+    public String getActualFunction() {
+        return actualFunction;
+    }
+
+    public void setActualFunction(String actualFunction) {
+        this.actualFunction = actualFunction;
+    }
+
+    public String getActualState() {
+        return actualState;
+    }
+
+    public void setActualState(String actualState) {
+        this.actualState = actualState;
+    }
+
+    public String getActualTime() {
+        return actualTime;
+    }
+
+    public void setActualTime(String actualTime) {
+        this.actualTime = actualTime;
+    }
+
+    public String getActualWorkType() {
+        return actualWorkType;
+    }
+
+    public void setActualWorkType(String actualWorkType) {
+        this.actualWorkType = actualWorkType;
+    }
+
     public int getRecruitmentId() {
         return recruitmentId;
     }

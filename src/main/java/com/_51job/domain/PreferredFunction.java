@@ -7,6 +7,16 @@ public class PreferredFunction {
     private int userId;
     private int function;
 
+    private String actualFunction;
+
+    public String getActualFunction() {
+        return actualFunction;
+    }
+
+    public void setActualFunction(String actualFunction) {
+        this.actualFunction = actualFunction;
+    }
+
     public int getPfunctionId() {
         return pfunctionId;
     }

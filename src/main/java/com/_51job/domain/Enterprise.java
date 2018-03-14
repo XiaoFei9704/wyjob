@@ -16,6 +16,52 @@ public class Enterprise {
     private String hrName;
     private String hrMobile;
 
+    private String actualDomicile;
+    private String actualFoundingTime;
+    private String actualScale;
+    private String actualIndustry;
+    private String actualType;
+
+    public String getActualDomicile() {
+        return actualDomicile;
+    }
+
+    public void setActualDomicile(String actualDomicile) {
+        this.actualDomicile = actualDomicile;
+    }
+
+    public String getActualFoundingTime() {
+        return actualFoundingTime;
+    }
+
+    public void setActualFoundingTime(String actualFoundingTime) {
+        this.actualFoundingTime = actualFoundingTime;
+    }
+
+    public String getActualScale() {
+        return actualScale;
+    }
+
+    public void setActualScale(String actualScale) {
+        this.actualScale = actualScale;
+    }
+
+    public String getActualIndustry() {
+        return actualIndustry;
+    }
+
+    public void setActualIndustry(String actualIndustry) {
+        this.actualIndustry = actualIndustry;
+    }
+
+    public String getActualType() {
+        return actualType;
+    }
+
+    public void setActualType(String actualType) {
+        this.actualType = actualType;
+    }
+
     public int getEnterpriseId() {
         return enterpriseId;
     }
