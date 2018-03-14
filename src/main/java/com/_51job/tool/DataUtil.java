@@ -92,7 +92,7 @@ public class DataUtil implements Runnable{
         return dictionaries;
     }
 
-    private static List<Dictionary> allDegrees(){
+    public static List<Dictionary> allDegrees(){
         Set<byte[]> keys=jedis.keys("dic*".getBytes());
         List<Dictionary> dictionaries=new ArrayList<>();
         for(byte[] key: keys){
