@@ -75,9 +75,6 @@
             </list>
         </property>
     </bean>
-    <!-- 配置redis服务 -->
-    <bean name="jedis" class="redis.clients.jedis.Jedis">
-        <constructor-arg name="host" value="localhost"/>
-    </bean>
+    <bean name="dataUtil" class="com._51job.tool.DataUtil"/>
 
 </beans>

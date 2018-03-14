@@ -17,34 +17,14 @@ import java.util.List;
 @Repository
 public class MyDao {
 
-    private static Configuration configuration;
-    private static SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
 	@Autowired
 	public MyDao(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 
-   private static int rec_total;
-   private static Jedis jedis;
-   static {
-       jedis=new Jedis("localhost");
-       configuration=new Configuration().configure();
-       sessionFactory=configuration.buildSessionFactory();
-       Session session=getSession();
-
-       Query<Recruitment> query=session.createQuery("from Recruitment",Recruitment.class);
-       query.setFirstResult(0);
-       query.setMaxResults(10000);
-       List<Recruitment> recruitments=query.list();
-       rec_total=recruitments.size();
-       for(int i=0;i<rec_total;i++){
-           Recruitment recruitment=recruitments.get(i);
-           jedis.set(("rec" + i).getBytes(), SerializeUtil.serialize(recruitment));
-       }
-   }
-
-	public static Session getSession(){
+	public Session getSession(){
 		return sessionFactory.openSession();
 	}
 
