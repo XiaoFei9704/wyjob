@@ -1,33 +1,14 @@
 package com._51job.domain;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class Recruitment implements Serializable{
+public class Recruitment {
     private int recruitmentId;
     private Integer enterpriseId;
     private String post;
     private int function;
     private int salary;
-
-    @Override
-    public String toString() {
-        return "Recruitment{" +
-                "recruitmentId=" + recruitmentId +
-                ", enterpriseId=" + enterpriseId +
-                ", post='" + post + '\'' +
-                ", function=" + function +
-                ", salary=" + salary +
-                ", minDegree=" + minDegree +
-                ", minSeniority=" + minSeniority +
-                ", description='" + description + '\'' +
-                ", state=" + state +
-                ", time=" + time +
-                ", workType=" + workType +
-                '}';
-    }
-
     private Integer minDegree;
     private Integer minSeniority;
     private String description;
@@ -35,11 +16,11 @@ public class Recruitment implements Serializable{
     private Timestamp time;
     private byte workType;
 
-    private String actualMinDegree;
     private String actualFunction;
     private String actualState;
     private String actualTime;
     private String actualWorkType;
+    private String actualMinDegree;
 
     public String getActualMinDegree() {
         return actualMinDegree;
@@ -80,6 +61,7 @@ public class Recruitment implements Serializable{
     public void setActualWorkType(String actualWorkType) {
         this.actualWorkType = actualWorkType;
     }
+
 
     public int getRecruitmentId() {
         return recruitmentId;

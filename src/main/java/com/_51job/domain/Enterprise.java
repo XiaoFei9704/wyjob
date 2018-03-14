@@ -16,11 +16,13 @@ public class Enterprise {
     private String hrName;
     private String hrMobile;
 
+
     private String actualDomicile;
     private String actualFoundingTime;
     private String actualScale;
     private String actualIndustry;
     private String actualType;
+
 
     public String getActualDomicile() {
         return actualDomicile;
@@ -50,7 +52,7 @@ public class Enterprise {
         return actualIndustry;
     }
 
-    public void setActualIndustry(String actualIndustry) {
+    public void setActualIndustry(StringBuffer actualIndustry) {
         this.actualIndustry = actualIndustry;
     }
 
@@ -61,6 +63,8 @@ public class Enterprise {
     public void setActualType(String actualType) {
         this.actualType = actualType;
     }
+
+
 
     public int getEnterpriseId() {
         return enterpriseId;

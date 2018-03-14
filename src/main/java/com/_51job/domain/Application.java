@@ -29,6 +29,7 @@ public class Application {
         this.actualApplicationState = actualApplicationState;
     }
 
+
     public int getApplicationId() {
         return applicationId;
     }
