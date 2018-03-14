@@ -10,6 +10,25 @@ public class Application {
     private Timestamp applicationTime;
     private int applicationState;
 
+    private String actualApplicationTime;
+    private String actualApplicationState;
+
+    public String getActualApplicationTime() {
+        return actualApplicationTime;
+    }
+
+    public void setActualApplicationTime(String actualApplicationTime) {
+        this.actualApplicationTime = actualApplicationTime;
+    }
+
+    public String getActualApplicationState() {
+        return actualApplicationState;
+    }
+
+    public void setActualApplicationState(String actualApplicationState) {
+        this.actualApplicationState = actualApplicationState;
+    }
+
     public int getApplicationId() {
         return applicationId;
     }

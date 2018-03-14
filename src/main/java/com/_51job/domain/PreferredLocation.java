@@ -7,6 +7,16 @@ public class PreferredLocation {
     private int loactionId;
     private int userId;
 
+    private String actualLocation;
+
+    public String getActualLocation() {
+        return actualLocation;
+    }
+
+    public void setActualLocation(String actualLocation) {
+        this.actualLocation = actualLocation;
+    }
+
     public int getPlocationId() {
         return plocationId;
     }
