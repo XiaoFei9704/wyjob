@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @Service
-public class MyService {
+public abstract class MyService {
 	private final MyDao myDao;
 
 	@Autowired

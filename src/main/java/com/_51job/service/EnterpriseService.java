@@ -1,18 +1,16 @@
 package com._51job.service;
-
 import com._51job.dao.EnterpriseDao;
-import com._51job.domain.*;
-import com._51job.web.PostInfo;
-import com._51job.web.ResumeInfo;
-import com._51job.web.SimpleResume;
+import com._51job.domain.Enterprise;
+import com._51job.domain.Recruitment;
+import com._51job.domain.User;
+import com._51job.web.PostInfoState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
+import java.security.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 public class EnterpriseService {
@@ -25,8 +23,8 @@ public class EnterpriseService {
     }
 
     //获取所发布的岗位列表以及状态
-    public List<PostInfo> getPost(int companyId){
-        PostInfo post=new PostInfo();
+    public List<PostInfoState> getPost(int companyId){
+        PostInfoState post=new PostInfoState();
         Enterprise en=enterpriseDao.get(Enterprise.class,companyId);
         //获得实际的地址、规模、行业
         String address=getActualAttribute1(en.getDomicile());
@@ -34,10 +32,10 @@ public class EnterpriseService {
         String industry=getActualAttribute2(en.getIndustry());
         en.setActualDomicile(address);
         en.setActualScale(scale);
-        en.setActualIndustry(new StringBuffer(industry));
+        en.setActualIndustry(industry);
         //获得企业发布的招聘信息
         List<Recruitment> list=enterpriseDao.getRecruitmentList(companyId);
-        List<PostInfo> list1 = null;
+        List<PostInfoState> list1 = null;
         for (int i = 0; i < list.size(); i++) {
             post.setEnterprise(en);
             //获得实际的岗位开放状态和时间
@@ -311,7 +309,7 @@ public class EnterpriseService {
     }
 
     //获得经验的时间区段
-    public String getExperienceTime(Timestamp start,Timestamp end){
+    public String getExperienceTime(Timestamp start, Timestamp end){
         String et=getActualTime(start)+getActualTime(end);
         return et;
     }
@@ -369,3 +367,4 @@ public class EnterpriseService {
         return asl;
     }
 }
+

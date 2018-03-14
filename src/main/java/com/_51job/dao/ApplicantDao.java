@@ -30,7 +30,7 @@ public class ApplicantDao extends MyDao{
             postInfoState.setRecruitment(lst2.get(i));
             postInfoState.setEnterprise(lst3.get(i));
             lst.add(postInfoState);
-        }
+        }s
         return lst;
   }
   public List<EnterpriseResume> post_info(List<Recruitment> lst1,List<Enterprise> lst2,int lsize){
