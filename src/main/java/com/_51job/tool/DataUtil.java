@@ -1,5 +1,6 @@
 package com._51job.tool;
 
+import com._51job.domain.Dictionary;
 import com._51job.domain.Enterprise;
 import com._51job.domain.Recruitment;
 import org.hibernate.Session;
@@ -52,6 +53,55 @@ public class DataUtil implements Runnable{
         return enterprises;
     }
 
+    public static List<Dictionary> allDictionaries(){
+        Set<byte[]> keys=jedis.keys("dic*".getBytes());
+        List<Dictionary> dictionaries=new ArrayList<>();
+        for(byte[] key: keys){
+            dictionaries.add((Dictionary) SerializeUtil.unserialize(jedis.get(key)));
+        }
+        return dictionaries;
+    }
+
+    public static List<Dictionary> allCities(){
+        Set<byte[]> keys=jedis.keys("dic*".getBytes());
+        List<Dictionary> dictionaries=new ArrayList<>();
+        for(byte[] key: keys){
+            Dictionary dictionary = (Dictionary) SerializeUtil.unserialize(jedis.get(key));
+            if(dictionary.getType()==1)dictionaries.add(dictionary);
+        }
+        return dictionaries;
+    }
+
+    public static List<Dictionary> allSkills(){
+        Set<byte[]> keys=jedis.keys("dic*".getBytes());
+        List<Dictionary> dictionaries=new ArrayList<>();
+        for(byte[] key: keys){
+            Dictionary dictionary = (Dictionary) SerializeUtil.unserialize(jedis.get(key));
+            if(dictionary.getType()==5)dictionaries.add(dictionary);
+        }
+        return dictionaries;
+    }
+
+    public static List<Dictionary> allScales(){
+        Set<byte[]> keys=jedis.keys("dic*".getBytes());
+        List<Dictionary> dictionaries=new ArrayList<>();
+        for(byte[] key: keys){
+            Dictionary dictionary = (Dictionary) SerializeUtil.unserialize(jedis.get(key));
+            if(dictionary.getType()==7)dictionaries.add(dictionary);
+        }
+        return dictionaries;
+    }
+
+    private static List<Dictionary> allDegrees(){
+        Set<byte[]> keys=jedis.keys("dic*".getBytes());
+        List<Dictionary> dictionaries=new ArrayList<>();
+        for(byte[] key: keys){
+            Dictionary dictionary = (Dictionary) SerializeUtil.unserialize(jedis.get(key));
+            if(dictionary.getType()==9)dictionaries.add(dictionary);
+        }
+        return dictionaries;
+    }
+
     public static List<Recruitment> recruitmentsOfAnEnterprise(int enterpriseId){
         List<Recruitment> recruitments=new ArrayList<>();
         Set<byte[]> keys=jedis.keys("rec*".getBytes());
@@ -86,6 +136,10 @@ public class DataUtil implements Runnable{
     @Override
     public void run() {
         Session session=sessionFactory.openSession();
+        Query<Dictionary> query=session.createQuery("from Dictionary ", Dictionary.class);
+        for(Dictionary dictionary: query.list()){
+            jedis.set(("dic"+dictionary.getDictionaryId()).getBytes(),SerializeUtil.serialize(dictionary));
+        }
         long redis_count=jedis.dbSize();
         if(redis_count<50000){
             Query c_query=session.createQuery("select count(*) from Recruitment ");
