@@ -1,9 +1,10 @@
 package com._51job.domain;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class Recruitment {
+public class Recruitment implements Serializable {
     private int recruitmentId;
     private Integer enterpriseId;
     private String post;

@@ -1,9 +1,10 @@
 package com._51job.domain;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class Enterprise {
+public class Enterprise implements Serializable {
     private int enterpriseId;
     private String name;
     private int domicile;
