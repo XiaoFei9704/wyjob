@@ -34,7 +34,7 @@ public class EnterpriseService {
         String industry=getActualAttribute2(en.getIndustry());
         en.setActualDomicile(address);
         en.setActualScale(scale);
-        en.setActualIndustry(industry);
+        en.setActualIndustry(new StringBuffer(industry));
         //获得企业发布的招聘信息
         List<Recruitment> list=enterpriseDao.getRecruitmentList(companyId);
         List<PostInfo> list1 = null;
