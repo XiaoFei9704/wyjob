@@ -2,6 +2,7 @@ package com._51job.service;
 
 import com._51job.dao.EnterpriseDao;
 import com._51job.domain.*;
+import com._51job.tool.DataUtil;
 import com._51job.web.PostInfo;
 import com._51job.web.ResumeInfo;
 import com._51job.web.SimpleResume;
@@ -12,6 +13,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -367,5 +369,33 @@ public class EnterpriseService {
             default: asl="精通";
         }
         return asl;
+    }
+
+    //保存职位
+    public boolean saveJob(Recruitment recruitment, List<Matrix> matrices){
+        switch (recruitment.getActualWorkType()){
+            case "全职":
+                recruitment.setWorkType((byte)1);break;
+            case "兼职":
+                recruitment.setWorkType((byte)2);break;
+            case "实习":
+                recruitment.setWorkType((byte)3);break;
+        }
+        for(Dictionary dictionary: DataUtil.allDegrees()){
+            if(recruitment.getActualMinDegree().equals(dictionary.getDictionaryName()))recruitment.setMinDegree(dictionary.getDictionaryId());
+        }
+        for(Dictionary dictionary: DataUtil.allDictionaries()){
+            if(recruitment.getDescription().contains(dictionary.getDictionaryName()))recruitment.setFunction(dictionary.getDictionaryId());
+        }
+        recruitment.setTime(new Timestamp(new Date().getTime()));
+        int r_id=enterpriseDao.save(recruitment);
+        for(Matrix matrix: matrices){
+            matrix.setRecruitmentId(r_id);
+            for(Dictionary dictionary: DataUtil.allSkills()){
+                if(dictionary.getDictionaryName().equals(matrix.getActualSkillName()))matrix.setSkillName(dictionary.getDictionaryId());
+            }
+            enterpriseDao.save(matrix);
+        }
+        return true;
     }
 }

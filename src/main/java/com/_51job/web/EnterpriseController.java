@@ -1,7 +1,10 @@
 package com._51job.web;
 
-import com._51job.domain.User;
+import com._51job.domain.*;
 import com._51job.service.EnterpriseService;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -77,5 +80,16 @@ public class EnterpriseController {
         HttpSession session=request.getSession();
         session.setAttribute("user",user);
         return flag;
+    }
+
+    @RequestMapping(value = "/saveJob" ,method = RequestMethod.GET)
+    @ResponseBody
+    public boolean saveJob(String str_recruitment, String str_matrix, HttpServletRequest request){
+        JSONObject jsonObject= JSON.parseObject(str_recruitment);
+        Recruitment recruitment=jsonObject.toJavaObject(Recruitment.class);
+        recruitment.setEnterpriseId(((User)request.getSession().getAttribute("user")).getUserId());
+        JSONArray jsonArray=JSON.parseArray(str_matrix);
+        List<Matrix> matrices=jsonArray.toJavaList(Matrix.class);
+        return enterpriseService.saveJob(recruitment,matrices);
     }
 }
