@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import java.util.List;
 
 @RequestMapping(value = "/applicant")
@@ -22,12 +23,11 @@ public class ApplicantController {
     public boolean saveResume(int user_id,String str_applicant,String str_language,
                               String str_skill, String str_workexp,
                               String str_eduexp, String prelocation,
-                              String preindustry, String prefunction){
+                              String preindustry, String prefunction) throws ParseException {
 
-        int save_size = applicantService.saveResume(user_id,str_applicant, str_language,str_skill,str_workexp,
+        boolean result  = applicantService.saveResume(user_id,str_applicant, str_language,str_skill,str_workexp,
                 str_eduexp,prelocation,preindustry,prefunction);
-        if(save_size ==8){return true;}
-        return false;
+        return result;
     }
     //OK
     // 获取匹配的岗位
@@ -44,6 +44,7 @@ public class ApplicantController {
     @RequestMapping(value = "/sentJobs")
     @ResponseBody
     public List<PostInfoState> appliedJobs(int user_id){
+
         return applicantService.sentJobstate(user_id);
     }
     //OK

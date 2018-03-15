@@ -20,7 +20,7 @@ public class Enterprise {
     private String actualDomicile;
     private String actualFoundingTime;
     private String actualScale;
-    private StringBuffer actualIndustry;
+    private String actualIndustry;
     private String actualType;
 
 
@@ -48,11 +48,11 @@ public class Enterprise {
         this.actualScale = actualScale;
     }
 
-    public StringBuffer getActualIndustry() {
+    public String getActualIndustry() {
         return actualIndustry;
     }
 
-    public void setActualIndustry(StringBuffer actualIndustry) {
+    public void setActualIndustry(String actualIndustry) {
         this.actualIndustry = actualIndustry;
     }
 

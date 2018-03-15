@@ -2,6 +2,7 @@ package com._51job.tool;
 
 import com._51job.domain.Dictionary;
 import com._51job.domain.Enterprise;
+import com._51job.domain.Language;
 import com._51job.domain.Recruitment;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -102,6 +103,51 @@ public class DataUtil implements Runnable{
         return dictionaries;
     }
 
+    public static List<Dictionary> allIndystries(){
+        Set<byte[]> keys=jedis.keys("dic*".getBytes());
+        List<Dictionary> dictionaries=new ArrayList<>();
+        for(byte[] key: keys){
+            Dictionary dictionary = (Dictionary) SerializeUtil.unserialize(jedis.get(key));
+            if(dictionary.getType()==2)dictionaries.add(dictionary);
+        }
+        return dictionaries;
+    }
+
+    public static List<Dictionary> allLanguages(){
+        Set<byte[]> keys=jedis.keys("dic*".getBytes());
+        List<Dictionary> dictionaries=new ArrayList<>();
+        for(byte[] key: keys){
+            Dictionary dictionary = (Dictionary) SerializeUtil.unserialize(jedis.get(key));
+            if(dictionary.getType()==6)dictionaries.add(dictionary);
+        }
+        return dictionaries;
+    }
+
+    public static List<Dictionary> allFuctions(){
+        Set<byte[]> keys=jedis.keys("dic*".getBytes());
+        List<Dictionary> dictionaries=new ArrayList<>();
+        for(byte[] key: keys){
+            Dictionary dictionary = (Dictionary) SerializeUtil.unserialize(jedis.get(key));
+            if(dictionary.getType()==3)dictionaries.add(dictionary);
+        }
+        return dictionaries;
+    }
+
+
+
+    public static List<Dictionary> allEnterpriseType(){
+        Set<byte[]> keys=jedis.keys("dic*".getBytes());
+        List<Dictionary> dictionaries=new ArrayList<>();
+        for(byte[] key: keys){
+            Dictionary dictionary = (Dictionary) SerializeUtil.unserialize(jedis.get(key));
+            if(dictionary.getType()==4)dictionaries.add(dictionary);
+        }
+        return dictionaries;
+    }
+
+
+
+
     public static List<Recruitment> recruitmentsOfAnEnterprise(int enterpriseId){
         List<Recruitment> recruitments=new ArrayList<>();
         Set<byte[]> keys=jedis.keys("rec*".getBytes());
@@ -111,6 +157,8 @@ public class DataUtil implements Runnable{
         }
         return recruitments;
     }
+
+
 
     private static void query(int min, int count,int t){
         Session session=getSession();
