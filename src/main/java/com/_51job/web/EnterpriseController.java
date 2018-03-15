@@ -24,9 +24,9 @@ public class EnterpriseController {
     //获取所发布的岗位列表以及状态
     @RequestMapping(value = "/jobs", method = RequestMethod.GET)
     @ResponseBody
-    public List<PostInfo> jobs(int company_id){
+    public PostInfo jobs(int company_id){
         //指定的岗位列表
-        List<PostInfo> list=enterpriseService.getPost(company_id);
+        PostInfo list=enterpriseService.getPost(company_id);
         return list;
     }
 
@@ -58,7 +58,7 @@ public class EnterpriseController {
     }
 
     //关闭招聘信息
-    @RequestMapping(value = "/closeJob", method = RequestMethod.GET,produces="text/html;charset=UTF-8")
+    @RequestMapping(value = "/closeJob", method = RequestMethod.POST)
     @ResponseBody
     public boolean closeJob(int jobId){
         //返回关闭结果
