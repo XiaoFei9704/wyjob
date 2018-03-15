@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping("/common")
@@ -24,7 +25,7 @@ public class CommonController {
         this.commonService = commonService;
     }
     //登陆
-    @RequestMapping(value="/signin",method = RequestMethod.POST)
+    @RequestMapping(value="/signin",method = RequestMethod.GET)
     @ResponseBody
     public int signin(String account, String password, HttpServletRequest request){
         User user=commonService.signin(account,password);
@@ -63,8 +64,8 @@ public class CommonController {
     //搜索岗位
     @RequestMapping(value="/search",method = RequestMethod.GET)
     @ResponseBody
-    public void search(String key,int page,int count){
-        //return ：JSON，岗位列表
+    public List<SearchResults> search(String city, String key, int salary, String degree, int seniority, int page, int count){
+        return commonService.search(city, key, salary, degree, seniority, page, count);
     }
     //  获取岗位类型列表
     @RequestMapping(value="/jobNavi",method = RequestMethod.GET)

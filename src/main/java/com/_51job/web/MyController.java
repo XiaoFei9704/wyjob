@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.Jedis;
-
+import java.util.Set;
+import java.util.Iterator;
 import java.util.List;
 
 @Controller
@@ -50,5 +51,12 @@ public class MyController {
         Jedis jedis=beanGetter.getBean("jedis", Jedis.class);
         return jedis.set(key,value);
     }
+	@RequestMapping(value = "/testRedis")
+	@ResponseBody
+	public List<Recruitment> testRedis(String keyWord, int min_salary,int min_degree,int min_seniority,int count){
+
+		return myService.search(keyWord,min_salary,min_degree,min_seniority,count);
+	}
+
 
 }
