@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com._51job.domain.Application" table="application" schema="wyjob">
+        <id name="applicationId">
+            <column name="application_id" sql-type="int(11)"/>
+        </id>
+        <property name="applicantId">
+            <column name="applicant_id" sql-type="int(11)"/>
+        </property>
+        <property name="recruitmentId">
+            <column name="recruitment_id" sql-type="int(11)"/>
+        </property>
+        <property name="applicationTime">
+            <column name="application_time" sql-type="timestamp"/>
+        </property>
+        <property name="applicationState">
+            <column name="application_state" sql-type="int(11)"/>
+        </property>
+    </class>
+</hibernate-mapping>

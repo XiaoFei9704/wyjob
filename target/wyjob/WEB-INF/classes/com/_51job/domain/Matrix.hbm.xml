@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com._51job.domain.Matrix" table="matrix" schema="wyjob">
+        <id name="matrixId">
+            <column name="matrix_id" sql-type="int(11)"/>
+        </id>
+        <property name="recruitmentId">
+            <column name="recruitment_id" sql-type="int(11)"/>
+        </property>
+        <property name="skillName">
+            <column name="skill_name" sql-type="int(11)"/>
+        </property>
+        <property name="time">
+            <column name="time" sql-type="int(11)" not-null="true"/>
+        </property>
+        <property name="level">
+            <column name="level" sql-type="int(11)" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

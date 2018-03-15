@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com._51job.domain.Applicant" table="applicant" schema="wyjob">
+        <id name="userId">
+            <column name="user_id" sql-type="int(11)"/>
+        </id>
+        <property name="name">
+            <column name="name" sql-type="varchar(45)" length="45"/>
+        </property>
+        <property name="gender">
+            <column name="gender" sql-type="tinyint(1) unsigned"/>
+        </property>
+        <property name="domicile">
+            <column name="domicile" sql-type="int(11)" not-null="true"/>
+        </property>
+        <property name="workingStatus">
+            <column name="working_status" sql-type="tinyint(1) unsigned" not-null="true"/>
+        </property>
+        <property name="mobile">
+            <column name="mobile" sql-type="varchar(15)" length="15" not-null="true"/>
+        </property>
+        <property name="email">
+            <column name="email" sql-type="varchar(45)" length="45" not-null="true"/>
+        </property>
+        <property name="workType">
+            <column name="work_type" sql-type="tinyint(1)" not-null="true"/>
+        </property>
+        <property name="salaryLowerBound">
+            <column name="salary_lower_bound" sql-type="int(11)" not-null="true"/>
+        </property>
+        <property name="birthdate">
+            <column name="birthdate" sql-type="timestamp" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

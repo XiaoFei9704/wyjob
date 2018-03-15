@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com._51job.domain.Dictionary" table="dictionary" schema="wyjob">
+        <id name="dictionaryId">
+            <column name="dictionary_id" sql-type="int(11)"/>
+        </id>
+        <property name="dictionaryName">
+            <column name="dictionary_name" sql-type="varchar(20)" length="20"/>
+        </property>
+        <property name="type">
+            <column name="type" sql-type="int(11)"/>
+        </property>
+        <property name="parent">
+            <column name="parent" sql-type="int(11)" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

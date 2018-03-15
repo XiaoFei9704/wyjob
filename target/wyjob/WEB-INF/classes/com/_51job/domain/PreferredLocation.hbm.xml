@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com._51job.domain.PreferredLocation" table="preferred_location" schema="wyjob">
+        <id name="plocationId">
+            <column name="plocation_id" sql-type="int(11)"/>
+        </id>
+        <property name="loactionId">
+            <column name="loaction_id" sql-type="int(11)"/>
+        </property>
+        <property name="userId">
+            <column name="user_id" sql-type="int(11)"/>
+        </property>
+    </class>
+</hibernate-mapping>
