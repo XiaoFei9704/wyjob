@@ -58,10 +58,11 @@ public class EnterpriseController {
     }
 
     //关闭招聘信息
-    @RequestMapping(value = "/closeJob", method = RequestMethod.POST)
+    @RequestMapping(value = "/closeJob", method = RequestMethod.GET,produces="text/html;charset=UTF-8")
     @ResponseBody
     public boolean closeJob(int jobId){
         //返回关闭结果
+        System.out.println("D1-start");
         boolean result=enterpriseService.closeRecruit(jobId);
         return result;
     }

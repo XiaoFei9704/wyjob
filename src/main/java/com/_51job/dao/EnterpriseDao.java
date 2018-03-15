@@ -1,18 +1,11 @@
 package com._51job.dao;
 
 import com._51job.domain.*;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.taglibs.standard.lang.jstl.NullLiteral;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.Query;
-import java.util.List;
 
 @Repository
 public class EnterpriseDao extends MyDao {
@@ -63,5 +56,11 @@ public class EnterpriseDao extends MyDao {
     //获得某个求职者的期望工作地点
     public List<PreferredLocation> getExpectedLocation(int userId){
         return getSession().createQuery("from PreferredLocation where userId="+userId,PreferredLocation.class).list();
+    }
+
+    //根据账号和密码获取userID
+    public int getUserId(String account,String password){
+        User user=getSession().createQuery("from User where userName="+account+" and password="+password,User.class).list().get(0);
+        return user.getUserId();
     }
 }

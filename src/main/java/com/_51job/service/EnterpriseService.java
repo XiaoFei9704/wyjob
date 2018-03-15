@@ -110,12 +110,19 @@ public class EnterpriseService {
 
     //关闭招聘信息
     public boolean closeRecruit(int jobId){
-        //Recruitment ru=enterpriseDao.getSession().createQuery("from Recruitment where recruitmentId="+jobId+"",Recruitment.class).list().get(0);
+        System.out.println("进入关闭函数");
         Recruitment ru=enterpriseDao.get(Recruitment.class,jobId);
+        System.out.println("获得招聘信息ru"+ru.getRecruitmentId());
+        System.out.println(ru.getPost());
         Byte st=2;
+        System.out.println("准备set招聘信息的状态,现在为"+ru.getPost());
         ru.setState(st);
-        enterpriseDao.getSession().update(ru);
-        return true;
+        enterpriseDao.update(ru);
+        System.out.println("设置完成");
+        System.out.println(ru.getPost());
+        System.out.println("更新完成"+ru.getState());
+        if(ru.getState()==2) return true;
+        else return false;
     }
 
     //注册公司
@@ -124,12 +131,15 @@ public class EnterpriseService {
         user.setUserName(account);
         user.setPassword(password);
         user.setRole(2);
-        int user_id=enterpriseDao.save(user);
+        enterpriseDao.save(user);
+        int user_id=enterpriseDao.getUserId(account,password);
         User user1=enterpriseDao.get(User.class,user_id);
-        Enterprise enterprise=new Enterprise();
-        enterprise.setEnterpriseId(user_id);
-        enterprise.setName(name);
-        enterpriseDao.save(enterprise);
+        if(user1!=null){
+            Enterprise enterprise=new Enterprise();
+            enterprise.setEnterpriseId(user_id);
+            enterprise.setName(name);
+            enterpriseDao.save(enterprise);
+        }
         return user1;
     }
 
