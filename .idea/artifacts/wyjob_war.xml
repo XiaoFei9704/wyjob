@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="wyjob:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="wyjob.war">
-      <element id="artifact" artifact-name="wyjob:war exploded" />
-    </root>
-  </artifact>
-</component>
