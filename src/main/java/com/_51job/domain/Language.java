@@ -9,6 +9,34 @@ public class Language {
     private byte rwAbility;
     private byte xAbility;
 
+    private String actualLanguage;
+    private String actualRwAbility;
+    private String actualXAbility;
+
+    public String getActualLanguage() {
+        return actualLanguage;
+    }
+
+    public void setActualLanguage(String actualLanguage) {
+        this.actualLanguage = actualLanguage;
+    }
+
+    public String getActualRwAbility() {
+        return actualRwAbility;
+    }
+
+    public void setActualRwAbility(String actualRwAbility) {
+        this.actualRwAbility = actualRwAbility;
+    }
+
+    public String getActualXAbility() {
+        return actualXAbility;
+    }
+
+    public void setActualXAbility(String actualXAbility) {
+        this.actualXAbility = actualXAbility;
+    }
+
     public int getLanguageId() {
         return languageId;
     }

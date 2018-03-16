@@ -15,6 +15,52 @@ public class Applicant {
     private Integer salaryLowerBound;
     private Timestamp birthdate;
 
+    private String actualGender;
+    private String actualDomicile;
+    private String actualWorkingStatus;
+    private String actualWorkType;
+    private String actualBirthdate;
+
+    public String getActualGender() {
+        return actualGender;
+    }
+
+    public void setActualGender(String actualGender) {
+        this.actualGender = actualGender;
+    }
+
+    public String getActualDomicile() {
+        return actualDomicile;
+    }
+
+    public void setActualDomicile(String actualDomicile) {
+        this.actualDomicile = actualDomicile;
+    }
+
+    public String getActualWorkingStatus() {
+        return actualWorkingStatus;
+    }
+
+    public void setActualWorkingStatus(String actualWorkingStatus) {
+        this.actualWorkingStatus = actualWorkingStatus;
+    }
+
+    public String getActualWorkType() {
+        return actualWorkType;
+    }
+
+    public void setActualWorkType(String actualWorkType) {
+        this.actualWorkType = actualWorkType;
+    }
+
+    public String getActualBirthdate() {
+        return actualBirthdate;
+    }
+
+    public void setActualBirthdate(String actualBirthdate) {
+        this.actualBirthdate = actualBirthdate;
+    }
+
     public int getUserId() {
         return userId;
     }

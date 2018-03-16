@@ -9,6 +9,25 @@ public class Experience {
     private Timestamp startTime;
     private Timestamp endTime;
 
+    private String actualStartTime;
+    private String actualEndTime;
+
+    public String getActualStartTime() {
+        return actualStartTime;
+    }
+
+    public void setActualStartTime(String actualStartTime) {
+        this.actualStartTime = actualStartTime;
+    }
+
+    public String getActualEndTime() {
+        return actualEndTime;
+    }
+
+    public void setActualEndTime(String actualEndTime) {
+        this.actualEndTime = actualEndTime;
+    }
+
     public int getExperienceId() {
         return experienceId;
     }

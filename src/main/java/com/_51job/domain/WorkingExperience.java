@@ -14,6 +14,70 @@ public class WorkingExperience {
     private byte workType;
     private String workDescription;
 
+    private String startTime;
+    private String endTime;
+    private String actualEnterpriseType;
+    private String actualEnterpriseScale;
+    private String actualIndustry;
+    private String actualFunction;
+    private String actualWorkType;
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getActualEnterpriseType() {
+        return actualEnterpriseType;
+    }
+
+    public void setActualEnterpriseType(String actualEnterpriseType) {
+        this.actualEnterpriseType = actualEnterpriseType;
+    }
+
+    public String getActualEnterpriseScale() {
+        return actualEnterpriseScale;
+    }
+
+    public void setActualEnterpriseScale(String actualEnterpriseScale) {
+        this.actualEnterpriseScale = actualEnterpriseScale;
+    }
+
+    public String getActualIndustry() {
+        return actualIndustry;
+    }
+
+    public void setActualIndustry(String actualIndustry) {
+        this.actualIndustry = actualIndustry;
+    }
+
+    public String getActualFunction() {
+        return actualFunction;
+    }
+
+    public void setActualFunction(String actualFunction) {
+        this.actualFunction = actualFunction;
+    }
+
+    public String getActualWorkType() {
+        return actualWorkType;
+    }
+
+    public void setActualWorkType(String actualWorkType) {
+        this.actualWorkType = actualWorkType;
+    }
+
     public int getWexperienceId() {
         return wexperienceId;
     }

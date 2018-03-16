@@ -9,6 +9,25 @@ public class Matrix {
     private Integer time;
     private Integer level;
 
+    private String actualSkillName;
+    private String actualLevel;
+
+    public String getActualSkillName() {
+        return actualSkillName;
+    }
+
+    public void setActualSkillName(String actualSkillName) {
+        this.actualSkillName = actualSkillName;
+    }
+
+    public String getActualLevel() {
+        return actualLevel;
+    }
+
+    public void setActualLevel(String actualLevel) {
+        this.actualLevel = actualLevel;
+    }
+
     public int getMatrixId() {
         return matrixId;
     }

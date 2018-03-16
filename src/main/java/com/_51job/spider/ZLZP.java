@@ -2,7 +2,6 @@ package com._51job.spider;
 
 import com._51job.domain.*;
 import com._51job.domain.Dictionary;
-import com._51job.tool.Pair;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -15,6 +14,8 @@ import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.selector.Html;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
@@ -26,17 +27,22 @@ public class ZLZP implements PageProcessor,Runnable {
     private static Configuration configuration;
     private static SessionFactory sessionFactory;
     private static Session session;
+    private static Session session2;
     private static Transaction transaction;
+    private static Transaction transaction2;
     private static ZLZP zlzp;
     private static String regCompany="http://company\\.zhaopin\\.com.*htm$";
     private static String regJob="^http://jobs.zhaopin.com.*htm$";
     private static Set<String> comName;
+    private static Set<String> jobDesc;
     private static List<Dictionary> enterType;
     private static List<Dictionary> enterIndus;
     private static List<Dictionary> enterScale;
     private static List<Dictionary> places;
     private static List<Dictionary> skills;
-    private static int now_place_id;
+    private static List<Dictionary> xueli;
+    private static List<Enterprise> enterPrise_e;
+    private static List<Recruitment> recruitments;
 
     private Site site=Site.me()
             .setDomain("http://www.zhaopin.com")
@@ -52,95 +58,107 @@ public class ZLZP implements PageProcessor,Runnable {
         configuration=new Configuration().configure("hibernate.cfg.xml");
         sessionFactory=configuration.buildSessionFactory();
         session=sessionFactory.openSession();
+        session2=sessionFactory.openSession();
         transaction=session.beginTransaction();
+        transaction2=session2.beginTransaction();
         comName=new HashSet<>();
         enterType=new ArrayList<>();
         enterIndus=new ArrayList<>();
         enterScale=new ArrayList<>();
         places=new ArrayList<>();
         skills=new ArrayList<>();
+        xueli=new ArrayList<>();
+        enterPrise_e=new ArrayList<>();
+        recruitments=new ArrayList<>();
+        jobDesc=new HashSet<>();
     }
     public Session getSession(){return sessionFactory.openSession();}
 
     public void process(Page page) {
         Html html=page.getHtml();
         List<String> links=html.links().regex(regCompany).all();
+        List<String> links2=html.links().regex(regJob).all();
         page.addTargetRequests(links);
+        page.addTargetRequests(links2);
         if(page.getUrl().regex(regJob).match()){
-//            String name=html.xpath("/html/body/div[5]/div[1]/div[1]/h1/text()").get();
-//            System.out.println(name);
-//            List<String> fulis=html.xpath("/html/body/div[5]/div[1]/div[1]/div[1]/span/text()").all();
-//            List<String> desc=html.xpath("/html/body/div[6]/div[1]/div[1]/div/div[1]/p/text()").all();
-//            String company=html.xpath("/html/body/div[5]/div[1]/div[1]/h2/a/text()").get();
-//            String salary=html.xpath("/html/body/div[6]/div[1]/ul/li[1]/strong/text()").get();
-//            String addr=html.xpath("/html/body/div[6]/div[1]/ul/li[2]/strong/a/text()").get();
-//            String pubtime=html.xpath("/html/body/div[6]/div[1]/ul/li[3]/strong/span/text()").get();
-//            String feature=html.xpath("/html/body/div[6]/div[1]/ul/li[4]/strong/text()").get();
-//            String exper=html.xpath("/html/body/div[6]/div[1]/ul/li[5]/strong/text()").get();
-//            String edu=html.xpath("/html/body/div[6]/div[1]/ul/li[6]/strong/text()").get();
-//            String t_total=html.xpath("/html/body/div[6]/div[1]/ul/li[7]/strong/text()").get();
-//            String function=html.xpath("/html/body/div[6]/div[1]/ul/li[8]/strong/a/text()").get();
-//            Pattern pattern=Pattern.compile("[^(0-9)*]");
-//            Matcher matcher=pattern.matcher(t_total);
-//            t_total=matcher.replaceAll("").trim();
-//            int total =Integer.parseInt(t_total);
-//            Recruitment recruitment=new Recruitment();
-//            recruitment.setPost(name);
-//            recruitment.setDescription(desc.toString());
-//            Pattern p = Pattern.compile("[0-9]");
-//            Matcher m = p.matcher(salary);
-//            if(m.find()){
-//                int a=salary.indexOf("-");
-//                int b=salary.indexOf("/");
-//                int low=Integer.parseInt(salary.substring(0,a));
-//                int high=Integer.parseInt(salary.substring(a+1,b-1));
-//                int s_int=(low+high)/2;
-//                recruitment.setSalary(s_int);
-//            }else {recruitment.setSalary(0);}
-//            Matcher matcher1=p.matcher(exper);
-//            if(matcher1.find()){
-//                int a=salary.indexOf("-");
-//                int low=Integer.parseInt(exper.substring(0,a));
-//                recruitment.setMinSeniority(low);
-//            }else recruitment.setMinSeniority(0);
-//            recruitment.setState((byte)1);
-//            SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//            if(pubtime.length()>10&&pubtime.startsWith("2")){
-//                try {
-//                    Date date=format.parse(pubtime);
-//                    recruitment.setTime(new Timestamp(date.getTime()));
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                }
-//            }else{
-//                recruitment.setTime(new Timestamp(new Date().getTime()));
-//            }
-//            switch (feature){
-//                case "全职":
-//                    recruitment.setType((byte)1);break;
-//                case "兼职":
-//                    recruitment.setType((byte)2);break;
-//                case "实习":
-//                    recruitment.setType((byte)3);break;
-//            }
-//            switch (edu){
-//                case "高中":
-//                    recruitment.setType((byte)2);break;
-//                case "大专":
-//                    recruitment.setType((byte)3);break;
-//                case "本科":
-//                    recruitment.setType((byte)4);break;
-//                case "硕士":
-//                    recruitment.setType((byte)5);break;
-//                case "博士":
-//                    recruitment.setType((byte)6);break;
-//            }
-//            jobs.add(recruitment);
+            String name=html.xpath("/html/body/div[5]/div[1]/div[1]/h1/text()").get();
+            List<String> fulis=html.xpath("/html/body/div[5]/div[1]/div[1]/div[1]/span/text()").all();
+            String description=delHTMLTag(html.xpath("/html/body/div[6]/div[1]/div[1]/div/div[1]/p").all().toString());
+            String company=html.xpath("/html/body/div[5]/div[1]/div[1]/h2/a/text()").get();
+            String salary=html.xpath("/html/body/div[6]/div[1]/ul/li[1]/strong/text()").get();
+            String addr=html.xpath("/html/body/div[6]/div[1]/ul/li[2]/strong/a/text()").get();
+            String pubtime=html.xpath("/html/body/div[6]/div[1]/ul/li[3]/strong/span/text()").get();
+            String feature=html.xpath("/html/body/div[6]/div[1]/ul/li[4]/strong/text()").get();
+            String exper=html.xpath("/html/body/div[6]/div[1]/ul/li[5]/strong/text()").get();
+            String edu=html.xpath("/html/body/div[6]/div[1]/ul/li[6]/strong/text()").get();
+            String t_total=html.xpath("/html/body/div[6]/div[1]/ul/li[7]/strong/text()").get();
+            String function=html.xpath("/html/body/div[6]/div[1]/ul/li[8]/strong/a/text()").get();
+            Pattern pattern=Pattern.compile("[^(0-9)*]");
+            Matcher matcher=pattern.matcher(t_total);
+            t_total=matcher.replaceAll("").trim();
+            int total =Integer.parseInt(t_total);
+            Recruitment recruitment=new Recruitment();
+            recruitment.setPost(name);
+            description=description.replace("[","");
+            description=description.replace("]","");
+            description=description.replace("：, ",":");
+            description=description.replace("。, ","。 ");
+            description=description.replace(", ,",",");
+            recruitment.setDescription(description);
+            for(Dictionary dictionary:skills){
+                if(name.contains(dictionary.getDictionaryName())||description.contains(dictionary.getDictionaryName())||name.toUpperCase().contains(dictionary.getDictionaryName().toUpperCase())||description.toUpperCase().contains(dictionary.getDictionaryName().toUpperCase())){
+                    recruitment.setFunction(dictionary.getDictionaryId());
+                }
+            }
+            Pattern p = Pattern.compile("[0-9]");
+            Matcher m = p.matcher(salary);
+            if(m.find()){
+                int a=salary.indexOf("-");
+                int b=salary.indexOf("/");
+                int low=Integer.parseInt(salary.substring(0,a));
+                int high=Integer.parseInt(salary.substring(a+1,b-1));
+                int s_int=(low+high)/2;
+                recruitment.setSalary(s_int);
+            }else {recruitment.setSalary(0);}
+            Matcher matcher1=p.matcher(exper);
+            if(matcher1.find()){
+                int a=exper.indexOf("-");
+                if(a>-1){
+                    int low=Integer.parseInt(exper.substring(0,a));
+                    recruitment.setMinSeniority(low);
+                }
+            }else recruitment.setMinSeniority(0);
+            recruitment.setState((byte)1);
+            SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            if(pubtime.length()>10&&pubtime.startsWith("2")){
+                try {
+                    Date date=format.parse(pubtime);
+                    recruitment.setTime(new Timestamp(date.getTime()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                recruitment.setTime(new Timestamp(new Date().getTime()));
+            }
+            switch (feature){
+                case "全职":
+                    recruitment.setWorkType((byte)1);break;
+                case "兼职":
+                    recruitment.setWorkType((byte)2);break;
+                case "实习":
+                    recruitment.setWorkType((byte)3);break;
+            }
+            for(Dictionary dictionary:xueli){
+                if(edu.equals(dictionary.getDictionaryName()))recruitment.setMinDegree(dictionary.getDictionaryId());
+            }
+            for(Enterprise enterprise: enterPrise_e){
+                if(enterprise.getName().equals(company)||company.contains(enterprise.getName())||enterprise.getName().contains(company))recruitment.setEnterpriseId(enterprise.getEnterpriseId());
+            }
+            if(description.length()>20)jobs.add(recruitment);
         }else if(page.getUrl().regex(regCompany).match()){
             String name=html.xpath("/html/body/div[2]/div[1]/div[1]/h1/text()").get();
             if(!comName.contains(name)){
                 comName.add(name);
-                System.out.println(name);
                 String type=html.xpath("/html/body/div[2]/div[1]/div[1]/table/tbody/tr[1]/td[2]/span/text()").get();
                 int i_type_id=enterpriseType(type);
                 String scale=html.xpath("/html/body/div[2]/div[1]/div[1]/table/tbody/tr[2]/td[2]/span/text()").get();
@@ -163,7 +181,7 @@ public class ZLZP implements PageProcessor,Runnable {
                 enterprise.setIndustry(inds_id);
                 enterprise.setAddress(addr);
                 enterprise.setDescription(desc);
-                enterprise.setDomicile(now_place_id);
+                enterprise.setDomicile(181);
                 enterprise.setFoundingTime(new Timestamp(new Date().getTime()));
                 if(enterprise.getIndustry()!=0&&enterprise.getType()!=0&&enterprise.getAddress()!=null)enterprises.add(enterprise);
             }
@@ -178,8 +196,8 @@ public class ZLZP implements PageProcessor,Runnable {
     public static void main(String[] args) {
         zlzp=new ZLZP();
         Query<Enterprise> query=zlzp.getSession().createQuery("from Enterprise",Enterprise.class);
-        List<Enterprise> list=query.list();
-        for(Enterprise enterprise:list){
+        enterPrise_e=query.list();
+        for(Enterprise enterprise:enterPrise_e){
             comName.add(enterprise.getName());
         }
         Query<Dictionary> query1=zlzp.getSession().createQuery("from Dictionary where type=2",Dictionary.class);
@@ -192,12 +210,18 @@ public class ZLZP implements PageProcessor,Runnable {
         places=query4.list();
         Query<Dictionary> query5=zlzp.getSession().createQuery("from Dictionary where type=5", Dictionary.class);
         skills=query5.list();
+        Query<Dictionary> query6=zlzp.getSession().createQuery("from Dictionary  where type=9", Dictionary.class);
+        xueli=query6.list();
+//        Query<Recruitment> query7=zlzp.getSession().createQuery("from Recruitment", Recruitment.class);
+//        recruitments=query7.list();
+//        for(Recruitment recruitment: recruitments)jobDesc.add(recruitment.getDescription());
         new Thread(zlzp).start();
         Timer timer=new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 System.out.println(new Date());
+                enterPrise_e.addAll(enterprises);
                 for(Enterprise enterprise: enterprises){
                     session.save(enterprise);
                 }
@@ -206,22 +230,27 @@ public class ZLZP implements PageProcessor,Runnable {
                 transaction=session.beginTransaction();
             }
         },3000,3000);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println(new Date()+"存储职位");
+                for(Recruitment recruitment:jobs){
+                    session2.save(recruitment);
+                }
+                jobs.clear();
+                transaction2.commit();
+                transaction2=session2.beginTransaction();
+            }
+        },3000,3000);
     }
 
     @Override
     public void run() {
         List<String> urls=new ArrayList<>();
-        for(int i=0;i<90;i++){
-            for(Dictionary dictionary:places){
-                String place=dictionary.getDictionaryName();
-                if(place.contains("北京")||place.contains("上海")||place.contains("广州")||place.contains("深圳")||place.contains("杭州")
-                        ||place.contains("成都")||place.contains("武汉")||place.contains("重庆")||place.contains("香港")){
-                    now_place_id=dictionary.getDictionaryId();
-                    for (Dictionary dictionary1:skills){
-                        String skill=dictionary1.getDictionaryName();
-                        urls.add("http://sou.zhaopin.com/jobs/searchresult.ashx?jl="+place+"&kw="+skill+"&isadv=0&sg=0390cfbf86794329aa5a271e7fb4029d&p="+(i+1));
-                    }
-                }
+        for(int i=0;i<40;i++){
+            for (Dictionary dictionary1 : skills) {
+                String skill = dictionary1.getDictionaryName();
+                urls.add("http://sou.zhaopin.com/jobs/searchresult.ashx?jl=西安&kw=" + skill + "&isadv=0&sg=0390cfbf86794329aa5a271e7fb4029d&p=" + (i + 1));
             }
         }
         String n="http://sou.zhaopin.com/jobs/searchresult.ashx?jl=深圳&kw=python&isadv=0&sg=0390cfbf86794329aa5a271e7fb4029d&p=";

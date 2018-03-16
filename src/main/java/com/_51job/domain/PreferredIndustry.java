@@ -7,6 +7,16 @@ public class PreferredIndustry {
     private int userId;
     private int industry;
 
+    private String actualIndustry;
+
+    public String getActualIndustry() {
+        return actualIndustry;
+    }
+
+    public void setActualIndustry(String actualIndustry) {
+        this.actualIndustry = actualIndustry;
+    }
+
     public int getPindustryId() {
         return pindustryId;
     }

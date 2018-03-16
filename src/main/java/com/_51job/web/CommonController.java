@@ -1,11 +1,9 @@
 package com._51job.web;
 
-import com._51job.domain.Applicant;
 import com._51job.domain.Enterprise;
 import com._51job.domain.Recruitment;
 import com._51job.domain.User;
 import com._51job.service.CommonService;
-import com._51job.service.MyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +26,7 @@ public class CommonController {
     @RequestMapping(value="/signin",method = RequestMethod.GET)
     @ResponseBody
     public int signin(String account, String password, HttpServletRequest request){
+        System.out.println("fff");
         User user=commonService.signin(account,password);
         if(user==null)
             return 0;
@@ -72,6 +71,11 @@ public class CommonController {
     @ResponseBody
     public void jobNavi(){
         //return：JSON，岗位类型列表
+    }
+
+    @RequestMapping(value = "/front")
+    public String frontPage(){
+        return "job_search";
     }
 
     /*//修改密码
