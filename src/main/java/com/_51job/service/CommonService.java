@@ -39,28 +39,26 @@ public class CommonService {
     }
     //获取用户信息（没有登陆则返回null）
     public Enterprise userInfo(int user_id){
-
         Enterprise userInfo=commonDao.get(Enterprise.class,user_id);
+        userInfo.setActualIndustry(commonDao.getActualAttribute(userInfo.getIndustry(),commonDao.searchType(userInfo.getIndustry())));
+        userInfo.setActualDomicile(commonDao.getActualAttribute(userInfo.getDomicile(),commonDao.searchType(userInfo.getDomicile())));
+        userInfo.setActualFoundingTime(commonDao.getActualTime(userInfo.getFoundingTime()));
+        userInfo.setActualType(commonDao.getActualAttribute(userInfo.getType(),commonDao.searchType(userInfo.getType())));
         return userInfo;
     }
 
     //获取岗位详情
     public Recruitment job(int recuitment_id){
         Recruitment job=commonDao.get(Recruitment.class,recuitment_id);
+        job.setActualMinDegree(commonDao.getActualAttribute(job.getMinDegree(),commonDao.searchType(job.getMinDegree())));
+        String state=(job.getState()==1)?"开放":"关闭";
+        job.setActualState(state);
+        job.setActualFunction(commonDao.getActualAttribute(job.getFunction(),commonDao.searchType(job.getFunction())));
+        job.setActualWorkType(commonDao.getActualAttribute(job.getWorkType(),commonDao.searchType(job.getWorkType())));
+        job.setActualTime(commonDao.getActualTime(job.getTime()));
         return job;
     }
 
-    //获得实际地址、规模、企业类型、技能名称、语种、学历、角色
-    public String getActualAttribute1(int dicId){
-        StringBuffer str=new StringBuffer();
-        Integer id=new Integer(dicId);
-        while(id != null){
-            Dictionary dic=commonDao.get(Dictionary.class,dicId);
-            str.insert(0,dic.getDictionaryName());
-            id=Integer.valueOf(dic.getParent());
-        }
-        return str.toString();
-    }
     //根据city在Redis里搜索到一个enterpriseId集合
     public List<Integer> searchEnterpriseIdByCity(String city){
         int cityID=commonDao.getCityId(city);//模糊查询
@@ -292,13 +290,10 @@ public class CommonService {
         return result;
     }
 
-    public int testdegree(String degree){
-        return commonDao.getDegreeId(degree);
+    ///测试查询类型方法是否可用
+    public int type(int dicID){
+        return commonDao.searchType(dicID);
     }
-    public int testcity(String city){
-        return commonDao.getCityId(city);
-    }
-
 }
 
 

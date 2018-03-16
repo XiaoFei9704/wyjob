@@ -1,5 +1,6 @@
 package com._51job.web;
 
+
 import com._51job.domain.Enterprise;
 import com._51job.domain.Recruitment;
 import com._51job.domain.User;
@@ -26,7 +27,6 @@ public class CommonController {
     @RequestMapping(value="/signin",method = RequestMethod.GET)
     @ResponseBody
     public int signin(String account, String password, HttpServletRequest request){
-        System.out.println("fff");
         User user=commonService.signin(account,password);
         if(user==null)
             return 0;
@@ -42,7 +42,9 @@ public class CommonController {
     public Enterprise userInfo(HttpServletRequest request){
         HttpSession session=request.getSession();
         User user=(User)session.getAttribute("user");
-        if(user==null) return null;
+        if(user==null) {
+            System.out.println("未登陆！");
+            return null;}
         else return commonService.userInfo(user.getUserId());
     }
 
@@ -66,22 +68,4 @@ public class CommonController {
     public List<SearchResults> search(String city, String key, int salary, String degree, int seniority, int page, int count){
         return commonService.search(city, key, salary, degree, seniority, page, count);
     }
-    //  获取岗位类型列表
-    @RequestMapping(value="/jobNavi",method = RequestMethod.GET)
-    @ResponseBody
-    public void jobNavi(){
-        //return：JSON，岗位类型列表
-    }
-
-    @RequestMapping(value = "/front")
-    public String frontPage(){
-        return "job_search";
-    }
-
-    /*//修改密码
-    @RequestMapping(value="/changePassword",method = RequestMethod.POST)
-    @ResponseBody
-    public boolean changePassword(String password){
-        return false;
-    }*/
 }
