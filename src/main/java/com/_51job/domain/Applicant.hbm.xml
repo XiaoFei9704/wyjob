@@ -6,34 +6,34 @@
 
     <class name="com._51job.domain.Applicant" table="applicant" schema="wyjob">
         <id name="userId">
-            <column name="user_id" sql-type="int(11)"/>
+            <column name="user_id" sql-type="int(11)" />
         </id>
         <property name="name">
-            <column name="name" sql-type="varchar(45)" length="45"/>
+            <column name="name" sql-type="varchar(45)" length="45" not-null="false"/>
         </property>
         <property name="gender">
-            <column name="gender" sql-type="tinyint(1) unsigned"/>
+            <column name="gender" sql-type="tinyint(1) unsigned" not-null="false"/>
         </property>
         <property name="domicile">
-            <column name="domicile" sql-type="int(11)" not-null="true"/>
+            <column name="domicile" sql-type="int(11)" not-null="false"/>
         </property>
         <property name="workingStatus">
-            <column name="working_status" sql-type="tinyint(1) unsigned" not-null="true"/>
+            <column name="working_status" sql-type="tinyint(1) unsigned" not-null="false"/>
         </property>
         <property name="mobile">
-            <column name="mobile" sql-type="varchar(15)" length="15" not-null="true"/>
+            <column name="mobile" sql-type="varchar(15)" length="15" not-null="false"/>
         </property>
         <property name="email">
-            <column name="email" sql-type="varchar(45)" length="45" not-null="true"/>
+            <column name="email" sql-type="varchar(45)" length="45" not-null="false"/>
         </property>
         <property name="workType">
-            <column name="work_type" sql-type="tinyint(1)" not-null="true"/>
+            <column name="work_type" sql-type="tinyint(1)" not-null="false"/>
         </property>
         <property name="salaryLowerBound">
-            <column name="salary_lower_bound" sql-type="int(11)" not-null="true"/>
+            <column name="salary_lower_bound" sql-type="int(11)" not-null="false"/>
         </property>
         <property name="birthdate">
-            <column name="birthdate" sql-type="timestamp" not-null="true"/>
+            <column name="birthdate" sql-type="timestamp" not-null="false"/>
         </property>
     </class>
 </hibernate-mapping>

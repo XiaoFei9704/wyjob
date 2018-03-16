@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,59 +28,65 @@ public class ApplicantService {
     private ApplicantDao applicantDao;
     //ok
     //求职者注册
-    public User register(String account, String password) {
+    public Applicant register(String account, String password) {
         User user = new User();
         user.setUserName(account);
         user.setPassword(password);
         user.setRole(1);
         int id = applicantDao.save(user);
+        System.out.println(id);
         user.setUserId(id);
         Applicant applicant = new Applicant();
         applicant.setUserId(id);
         int user_id = applicantDao.save(applicant);
-        if (user_id > 0) {
-            return user;
-        } else return null;
+        if (user_id > 0) return applicant;
+        return null;
+
     }
 
     //列出合适的岗位
-    public List<EnterpriseResume> suitJobs(int start, int end) {
-        List<Recruitment> r_list = applicantDao.getPart(Recruitment.class, start, end);
-        List<EnterpriseResume> lst = null;
-        int l_size = r_list.size();
-        for (int i = 0; i < l_size; i++) {
-            //对recruitment对象进行操作
-            int recruitment_id = r_list.get(i).getRecruitmentId();
-            Recruitment recruitment = applicantDao.get(Recruitment.class, recruitment_id);
-            Recruitment recruitment1 = changeMindegree(recruitment);
-            Enterprise enterprise = returnEnterprise(recruitment);
-            EnterpriseResume enterpriseResume = new EnterpriseResume();
-            enterpriseResume.setRecruitment(recruitment1);
-            enterpriseResume.setEnterprise(enterprise);
-            lst.add(enterpriseResume);
-        }
-        return lst;
-
-    }
+//    public List<EnterpriseResume> suitJobs() {
+//        List<Recruitment> r_list = applicantDao.getPart(Recruitment.class);
+//        List<EnterpriseResume> lst = new ArrayList<>();
+//        int l_size = r_list.size();
+//        for (int i = 0; i < l_size; i++) {
+//            //对recruitment对象进行操作
+//            int recruitment_id = r_list.get(i).getRecruitmentId();
+//            Recruitment recruitment = applicantDao.get(Recruitment.class, recruitment_id);
+//            Recruitment recruitment1 = changeMindegree(recruitment);
+//            Enterprise enterprise = returnEnterprise(recruitment);
+//            EnterpriseResume enterpriseResume = new EnterpriseResume();
+//            enterpriseResume.setRecruitment(recruitment1);
+//            enterpriseResume.setEnterprise(enterprise);
+//            lst.add(enterpriseResume);
+//        }
+//        return lst;
+//
+//    }
     //ok
     //获取投递的岗位以及对应的状态
     public List<PostInfoState> sentJobstate(int id){
-
+        System.out.println("start search");
         List<Application> list = applicantDao.oneToMany(id, Applicant.class, Application.class);
-        List<Recruitment> list1 = null;
-        List<PostInfoState> lst = null;
-        PostInfoState postInfoState = new PostInfoState();
+        List<Recruitment> list1 = new ArrayList<>();
+        List<PostInfoState> lst = new ArrayList<>();
         int lsize = list.size();
         for (int i = 0; i < lsize; i++) {
+            PostInfoState postInfoState = new PostInfoState();
             Application application = list.get(i);
+            System.out.println("get application");
             postInfoState.setApplication(application);
+            System.out.println("set application");
             int recruitment_id = application.getRecruitmentId();
+            System.out.println("recruitment_id:"+recruitment_id);
             Recruitment recruitment = applicantDao.get(Recruitment.class,recruitment_id);
-            //获得设置了actualMinDegree的recruitment实例
             Recruitment recruitment1 = changeMindegree(recruitment);
+            System.out.println("get recruitment1");
             postInfoState.setRecruitment(recruitment1);
             Enterprise enterprise = returnEnterprise(recruitment);
+            System.out.println(enterprise);
             postInfoState.setEnterprise(enterprise);
+            System.out.println(postInfoState);
             lst.add(postInfoState);
         }
         return lst;
@@ -217,15 +224,6 @@ public class ApplicantService {
     }
 
 
-    public StringBuffer getAllpid(Integer id){
-            StringBuffer industry = null;
-            while(id != null){
-                Dictionary dictionary2 = applicantDao.get(Dictionary.class,id);
-                industry.append(dictionary2.getDictionaryName());
-                id = dictionary2.getParent();
-            }
-            return industry;
-        }
 
 
 
@@ -242,7 +240,6 @@ public class ApplicantService {
 
     //返回Enterprise实例
     public Enterprise returnEnterprise(Recruitment recruitment){
-
         int enterprise_id = recruitment.getEnterpriseId();
         Enterprise enterprise = applicantDao.get(Enterprise.class,enterprise_id);
         int scale = enterprise.getScale();
