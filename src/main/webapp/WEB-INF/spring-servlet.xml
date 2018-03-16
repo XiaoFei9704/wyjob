@@ -7,7 +7,7 @@
     <beans>
         <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
               p:viewClass="org.springframework.web.servlet.view.JstlView"
-              p:prefix="/"
+              p:prefix="/html/"
               p:suffix=".html">
         </bean>
     </beans>
