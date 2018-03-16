@@ -1,15 +1,17 @@
 package com._51job.web;
 
+import com._51job.domain.Enterprise;
 import com._51job.domain.User;
-import com._51job.service.EnterpriseService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+        import com._51job.service.EnterpriseService;
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.stereotype.Controller;
+        import org.springframework.web.bind.annotation.RequestMapping;
+        import org.springframework.web.bind.annotation.RequestMethod;
+        import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+        import javax.servlet.http.HttpServletRequest;
+        import javax.servlet.http.HttpSession;
+import java.text.ParseException;
 import java.util.List;
 
 @Controller
@@ -20,6 +22,26 @@ public class EnterpriseController {
     public EnterpriseController(EnterpriseService enterpriseService){
         this.enterpriseService=enterpriseService;
     }
+
+    //保存/修改企业信息
+    @RequestMapping(value = "/saveInfo",method = RequestMethod.POST)
+    @ResponseBody
+    public boolean saveInfo(String str_enterprise,HttpServletRequest request) throws ParseException {
+        HttpSession session = request.getSession();
+        Enterprise enterprise = (Enterprise) session.getAttribute("enterprise");
+        int enterprise_id = enterprise.getEnterpriseId();
+        boolean result = enterpriseService.saveOrupdateInfo(str_enterprise,enterprise_id);
+        return result;
+    }
+
+    //保存/修改招聘信息
+    @RequestMapping(value = "saveJob",method = RequestMethod.POST)
+    @ResponseBody
+    public boolean saveJob(String str_recruitment) throws ParseException {
+        boolean result = enterpriseService.saveOrupdateRecruitment(str_recruitment);
+        return true;
+    }
+
 
     //获取所发布的岗位列表以及状态
     @RequestMapping(value = "/jobs", method = RequestMethod.GET)

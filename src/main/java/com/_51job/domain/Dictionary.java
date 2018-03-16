@@ -1,8 +1,9 @@
 package com._51job.domain;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Dictionary {
+public class Dictionary implements Serializable {
     private int dictionaryId;
     private String dictionaryName;
     private int type;
