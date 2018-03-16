@@ -60,7 +60,7 @@ public class EnterpriseDao extends MyDao {
 
     //根据账号和密码获取userID
     public int getUserId(String account,String password){
-        User user=getSession().createQuery("from User where userName="+account+" and password="+password,User.class).list().get(0);
+        User user=getSession().createQuery("from User where userName='"+account+"' and password='"+password+"'",User.class).list().get(0);
         return user.getUserId();
     }
 
