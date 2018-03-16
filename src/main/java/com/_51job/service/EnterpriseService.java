@@ -6,12 +6,15 @@ import com._51job.tool.DataUtil;
 import com._51job.web.PostInfo;
 import com._51job.web.ResumeInfo;
 import com._51job.web.SimpleResume;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.http.client.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -405,5 +408,99 @@ public class EnterpriseService {
             default: asl="精通";
         }
         return asl;
+    }
+
+    //保存修改企业信息
+    public boolean saveOrupdateInfo(String str_enterprise,int e_id) throws ParseException {
+        Enterprise enterprise = (Enterprise) jsonTojava(str_enterprise,Enterprise.class);
+
+        enterprise.setIndustry(getIntIndustry(enterprise.getActualIndustry()));
+        enterprise.setScale(getIntEnterpriseScale(enterprise.getActualScale()));
+        enterprise.setDomicile(getIntDomicile(enterprise.getActualDomicile()));
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        enterprise.setFoundingTime(new Timestamp(format.parse(enterprise.getActualFoundingTime()).getTime()));
+        enterprise.setType(getIntEnterpriseType(enterprise.getActualType()));
+        enterprise.setEnterpriseId(e_id);
+        enterpriseDao.update(enterprise);
+
+        Enterprise saved_enterprise = enterpriseDao.get(Enterprise.class,e_id);
+        if (enterprise.equals(saved_enterprise)) return true;
+        return false;
+
+
+    }
+
+    //保存修改招聘信息
+    public boolean saveOrupdateRecruitment(String r) throws ParseException {
+        Recruitment recruitment = (Recruitment) jsonTojava(r,Recruitment.class);
+        int recruitment_id = recruitment.getRecruitmentId();
+
+        recruitment.setFunction(getIntFunction(recruitment.getActualFunction()));
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        recruitment.setTime(new Timestamp(format.parse(recruitment.getActualTime()).getTime()));
+        recruitment.setMinDegree(getIntDegree(recruitment.getActualMinDegree()));
+        recruitment.setRecruitmentId(recruitment_id);
+
+        enterpriseDao.update(recruitment);
+
+        Recruitment sd_recruitment = enterpriseDao.get(Recruitment.class,recruitment_id);
+        if (recruitment.equals(sd_recruitment))return true;
+        return false;
+
+
+    }
+
+    public int getIntFunction(String fuc){
+        List<Dictionary> fuctions = DataUtil.allFuctions();
+        int fuction = getIntAttribute(fuc,fuctions);
+        return fuction;
+
+    }
+
+    public int getIntIndustry(String industry){
+        List<Dictionary> industries = DataUtil.allIndystries();
+        int industryyy = getIntAttribute(industry,industries);
+        return industryyy;
+    }
+
+    public int getIntDomicile(String domicile){
+        List<Dictionary> domiciles = DataUtil.allCities();
+        int doml = getIntAttribute(domicile,domiciles);
+        return doml;
+    }
+
+    public int getIntDegree(String dg){
+        List<Dictionary> degrees = DataUtil.allDegrees();
+        int degree = getIntAttribute(dg,degrees);
+        return degree;
+    }
+
+    //由String类型的属性获得int类型的属性
+    public int getIntAttribute(String attribute,List<Dictionary> list){
+        for (int i=0;i<list.size();i++){
+            Dictionary dict = list.get(i);
+            String attrbt = dict.getDictionaryName();
+            if (attribute==attrbt) return dict.getDictionaryId();
+        }
+        return 0;
+    }
+
+    public int getIntEnterpriseScale(String escale){
+        List<Dictionary> scales = DataUtil.allScales();
+        int entscale = getIntAttribute(escale,scales);
+        return  entscale;
+    }
+
+    public int getIntEnterpriseType(String etype){
+        List<Dictionary> enterprisetypes = DataUtil.allEnterpriseType();
+        int enterprisetype = getIntAttribute(etype,enterprisetypes);
+        return enterprisetype;
+
+    }
+
+    public <T> Object jsonTojava(String str,Class<T> tClass){
+        JSONObject jsonObject = JSON.parseObject(str);
+        Object object = jsonObject.toJavaObject(tClass.getClass());
+        return object;
     }
 }

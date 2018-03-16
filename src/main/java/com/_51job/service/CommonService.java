@@ -286,6 +286,7 @@ public class CommonService {
         int end=start+count;
         if(start>sum) return null;
         for(int i=start;i<end;i++){
+            if(i>=allResults.size())break;
             result.add(allResults.get(i));
         }
         return result;
