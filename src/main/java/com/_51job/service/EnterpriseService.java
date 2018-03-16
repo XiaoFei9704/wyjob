@@ -6,14 +6,12 @@ import com._51job.tool.DataUtil;
 import com._51job.web.PostInfo;
 import com._51job.web.ResumeInfo;
 import com._51job.web.SimpleResume;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import org.apache.http.client.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,133 +26,41 @@ public class EnterpriseService {
         this.enterpriseDao = enterpriseDao;
     }
 
-    //保存修改企业信息
-    public boolean saveOrupdateInfo(String str_enterprise,int e_id) throws ParseException {
-        Enterprise enterprise = (Enterprise) jsonTojava(str_enterprise,Enterprise.class);
-
-        enterprise.setIndustry(getIntIndustry(enterprise.getActualIndustry()));
-        enterprise.setScale(getIntEnterpriseScale(enterprise.getActualScale()));
-        enterprise.setDomicile(getIntDomicile(enterprise.getActualDomicile()));
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        enterprise.setFoundingTime(new Timestamp(format.parse(enterprise.getActualFoundingTime()).getTime()));
-        enterprise.setType(getIntEnterpriseType(enterprise.getActualType()));
-        enterprise.setEnterpriseId(e_id);
-        enterpriseDao.update(enterprise);
-
-        Enterprise saved_enterprise = enterpriseDao.get(Enterprise.class,e_id);
-        if (enterprise.equals(saved_enterprise)) return true;
-        return false;
-
-
-    }
-
-    //保存修改招聘信息
-    public boolean saveOrupdateRecruitment(String r) throws ParseException {
-        Recruitment recruitment = (Recruitment) jsonTojava(r,Recruitment.class);
-        int recruitment_id = recruitment.getRecruitmentId();
-
-        recruitment.setFunction(getIntFunction(recruitment.getActualFunction()));
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        recruitment.setTime(new Timestamp(format.parse(recruitment.getActualTime()).getTime()));
-        recruitment.setMinDegree(getIntDegree(recruitment.getActualMinDegree()));
-        recruitment.setRecruitmentId(recruitment_id);
-
-        enterpriseDao.update(recruitment);
-
-        Recruitment sd_recruitment = enterpriseDao.get(Recruitment.class,recruitment_id);
-        if (recruitment.equals(sd_recruitment))return true;
-        return false;
-
-
-    }
-
-    public int getIntFunction(String fuc){
-        List<Dictionary> fuctions = DataUtil.allFuctions();
-        int fuction = getIntAttribute(fuc,fuctions);
-        return fuction;
-
-    }
-
-    public int getIntIndustry(String industry){
-        List<Dictionary> industries = DataUtil.allIndystries();
-        int industryyy = getIntAttribute(industry,industries);
-        return industryyy;
-    }
-
-    public int getIntDomicile(String domicile){
-        List<Dictionary> domiciles = DataUtil.allCities();
-        int doml = getIntAttribute(domicile,domiciles);
-        return doml;
-    }
-
-    public int getIntDegree(String dg){
-        List<Dictionary> degrees = DataUtil.allDegrees();
-        int degree = getIntAttribute(dg,degrees);
-        return degree;
-    }
-
-    //由String类型的属性获得int类型的属性
-    public int getIntAttribute(String attribute,List<Dictionary> list){
-        for (int i=0;i<list.size();i++){
-            Dictionary dict = list.get(i);
-            String attrbt = dict.getDictionaryName();
-            if (attribute==attrbt) return dict.getDictionaryId();
-        }
-        return 0;
-    }
-
-    public int getIntEnterpriseScale(String escale){
-        List<Dictionary> scales = DataUtil.allScales();
-        int entscale = getIntAttribute(escale,scales);
-        return  entscale;
-    }
-
-    public int getIntEnterpriseType(String etype){
-        List<Dictionary> enterprisetypes = DataUtil.allEnterpriseType();
-        int enterprisetype = getIntAttribute(etype,enterprisetypes);
-        return enterprisetype;
-
-    }
-
-
-
-
     //获取所发布的岗位列表以及状态
-    public List<PostInfo> getPost(int companyId){
+    public PostInfo getPost(int companyId){
         PostInfo post=new PostInfo();
         Enterprise en=enterpriseDao.get(Enterprise.class,companyId);
         //获得实际的地址、规模、行业
-        String address=getActualAttribute1(en.getDomicile());
-        String scale=getActualAttribute1(en.getScale());
-        String industry=getActualAttribute2(en.getIndustry());
+        String address=getActualAttribute(en.getDomicile(),1);
+        String scale=getActualAttribute(en.getScale(),7);
+        String industry=getActualAttribute(en.getIndustry(),2);
         en.setActualDomicile(address);
         en.setActualScale(scale);
         en.setActualIndustry(industry);
+        post.setEnterprise(en);
         //获得企业发布的招聘信息
         List<Recruitment> list=enterpriseDao.getRecruitmentList(companyId);
-        List<PostInfo> list1 = null;
         for (int i = 0; i < list.size(); i++) {
-            post.setEnterprise(en);
             //获得实际的岗位开放状态和时间
             String st=getRecruitState(list.get(i).getState());
             list.get(i).setActualState(st);
+            String degree=getActualAttribute(list.get(i).getMinDegree(),9);
+            list.get(i).setActualMinDegree(degree);
             String time=getRecruitTime(list.get(i).getTime());
             list.get(i).setActualTime(time);
-            post.setRecruitment(list.get(i));
-            list1.add(i,post);
         }
-        return list1;
+        post.setRecruitment(list);
+        return post;
     }
 
-    //获取指定岗位投递来的简历列表
+    //获取指定招聘信息投递来的简历列表
     public List<SimpleResume> getSpecificPost(int recruitmentId){
-        SimpleResume simpleResume=new SimpleResume();
-        List<SimpleResume> simpleList=null;
+        List<SimpleResume> simpleList=new ArrayList<>();
         List<Application> applicationList=enterpriseDao.getSpecificApplicationList(recruitmentId);
-        Applicant applicant=new Applicant();
         for (int i = 0; i < applicationList.size(); i++) {
+            SimpleResume simpleResume=new SimpleResume();
             int applicantId=applicationList.get(i).getApplicantId();
-            applicant=enterpriseDao.get(Applicant.class,applicantId);
+            Applicant applicant=enterpriseDao.get(Applicant.class,applicantId);
             simpleResume.setName(applicant.getName());
             simpleResume.setGender(getPersonGender(applicant.getGender()));
             simpleResume.setWorkStatus(getCurrentWorkStatus(applicant.getWorkingStatus()));
@@ -174,28 +80,34 @@ public class EnterpriseService {
         int applicantId=enterpriseDao.getApplicantId(applicationId);
         Applicant applicant=getActualInfoApplicant(applicantId);
         List<Experience> expList=getSpecificExperience(applicantId);
-        List<EducationExperience> eduList=getActualStudyExperience(expList);
-        List<WorkingExperience> workList=getActualWorkExperience(expList);
+        if(expList.size()>0) {
+            List<EducationExperience> eduList = getActualStudyExperience(expList);
+            List<WorkingExperience> workList = getActualWorkExperience(expList);
+            resumeInfo.setExperienceList(expList);
+            resumeInfo.setEducationList(eduList);
+            resumeInfo.setWorkingList(workList);
+        }
+        else{
+            resumeInfo.setExperienceList(null);
+            resumeInfo.setEducationList(null);
+            resumeInfo.setWorkingList(null);
+        }
         List<Skill> skillList=getActualSkill(applicantId);
         List<Language> languagesList=getActualLanguage(applicantId);
         List<PreferredFunction> functionList=getExpectedFunction(applicantId);
         List<PreferredIndustry> industryList=getExpectedIndustry(applicantId);
         List<PreferredLocation> locationList=getExpectedLocation(applicantId);
         resumeInfo.setApplicant(applicant);
-        resumeInfo.setExperienceList(expList);
-        resumeInfo.setEducationList(eduList);
-        resumeInfo.setWorkingList(workList);
         resumeInfo.setSkillList(skillList);
         resumeInfo.setLanguageList(languagesList);
         resumeInfo.setPreFunctionList(functionList);
         resumeInfo.setPreIndustryList(industryList);
         resumeInfo.setPreLocationList(locationList);
-        return new ResumeInfo();
+        return resumeInfo;
     }
 
     //改变投递的简历的状态
     public int changeRecruitState(int state,int resumeId){
-        //Application app=enterpriseDao.getSession().createQuery("from Application where applicationId="+resumeId+"",Application.class).list().get(0);
         Application app=enterpriseDao.get(Application.class,resumeId);
         app.setApplicationState(state);
         enterpriseDao.update(app);
@@ -205,17 +117,10 @@ public class EnterpriseService {
 
     //关闭招聘信息
     public boolean closeRecruit(int jobId){
-        System.out.println("进入关闭函数");
         Recruitment ru=enterpriseDao.get(Recruitment.class,jobId);
-        System.out.println("获得招聘信息ru"+ru.getRecruitmentId());
-        System.out.println(ru.getPost());
         Byte st=2;
-        System.out.println("准备set招聘信息的状态,现在为"+ru.getPost());
         ru.setState(st);
         enterpriseDao.update(ru);
-        System.out.println("设置完成");
-        System.out.println(ru.getPost());
-        System.out.println("更新完成"+ru.getState());
         if(ru.getState()==2) return true;
         else return false;
     }
@@ -242,12 +147,15 @@ public class EnterpriseService {
     public String getHighestDegree(int applicantId){
         List<Experience> exList=enterpriseDao.getExperienceList(applicantId);
         List<EducationExperience> eduList=getActualStudyExperience(exList);
-        int highDegree=0;
-        for (int i = 0; i < eduList.size(); i++) {
+        int highDegree=1047;
+        int i=0;
+        while(i<eduList.size()) {
             int temp=eduList.get(i).getDegree();
             if(temp > highDegree) highDegree=temp;
+            i++;
         }
-        return getActualAttribute1(highDegree);
+        String degree=getActualAttribute(highDegree,9);
+        return degree;
     }
 
     //获得包括实际信息的applicant类
@@ -255,7 +163,7 @@ public class EnterpriseService {
         Applicant applicant=enterpriseDao.get(Applicant.class,applicantId);
         applicant.setActualGender(getPersonGender(applicant.getGender()));
         applicant.setActualBirthdate(getActualTime(applicant.getBirthdate()));
-        applicant.setActualDomicile(getActualAttribute1(applicant.getDomicile()));
+        applicant.setActualDomicile(getActualAttribute(applicant.getDomicile(),1));
         applicant.setActualWorkingStatus(getCurrentWorkStatus(applicant.getWorkingStatus()));
         applicant.setActualWorkType(getExpectedWorkType(applicant.getWorkType()));
         return applicant;
@@ -264,26 +172,31 @@ public class EnterpriseService {
     //获得某个求职者的工作经历列表
     public List<Experience> getSpecificExperience(int applicantId){
         List<Experience> list=enterpriseDao.getExperienceList(applicantId);
-        for (int i = 0; i < list.size(); i++) {
-            String start=getActualTime(list.get(i).getStartTime());
-            String end=getActualTime(list.get(i).getEndTime());
-            list.get(i).setActualStartTime(start);
-            list.get(i).setActualEndTime(end);
+        if(list!=null) {
+            for (int i = 0; i < list.size(); i++) {
+                String start = getActualTime(list.get(i).getStartTime());
+                String end = getActualTime(list.get(i).getEndTime());
+                list.get(i).setActualStartTime(start);
+                list.get(i).setActualEndTime(end);
+            }
+            return list;
         }
-        return list;
+        else return null;
     }
 
     //查找某个求职者的学习经历
     public List<EducationExperience> getActualStudyExperience(List<Experience> expList){
-        List<EducationExperience> eduList = null;
-        EducationExperience edu;
+        List<EducationExperience> eduList = new ArrayList<>();
         for(int i=0;i<expList.size();i++){
             int id=expList.get(i).getExperienceId();
-            edu=enterpriseDao.get(EducationExperience.class,id);
-            if(edu!=null) {
+            if(enterpriseDao.judgeEducation(id)) {
+                EducationExperience edu;
+                edu = enterpriseDao.get(EducationExperience.class, id);
                 edu.setStartTime(expList.get(i).getActualStartTime());
                 edu.setEndTime(expList.get(i).getActualEndTime());
-                edu.setActualDegree(getActualAttribute1(edu.getDegree()));
+                String stuType=getActualStuType(edu.getStudentType());
+                edu.setActualStudentType(stuType);
+                edu.setActualDegree(getActualAttribute(edu.getDegree(),9));
                 eduList.add(edu);
             }
         }
@@ -293,19 +206,19 @@ public class EnterpriseService {
 
     //查找某个求职者的工作经历
     public List<WorkingExperience> getActualWorkExperience(List<Experience> expList){
-        List<WorkingExperience> workList=null;
+        List<WorkingExperience> workList= new ArrayList<>();
         WorkingExperience work;
         for(int i=0;i<expList.size();i++){
             int id=expList.get(i).getExperienceId();
-            work=enterpriseDao.get(WorkingExperience.class,id);
-            if(work!=null) {
+            if(enterpriseDao.judgeWork(id)) {
+                work = enterpriseDao.get(WorkingExperience.class, id);
                 work.setStartTime(expList.get(i).getActualStartTime());
                 work.setEndTime(expList.get(i).getActualEndTime());
-                work.setActualEnterpriseType(getActualAttribute1(work.getEnterpriseType()));
-                work.setActualEnterpriseScale(getActualAttribute1(work.getEnterpriseScale()));
-                work.setActualFunction(getActualAttribute2(work.getFunction()));
-                work.setActualIndustry(getActualAttribute2(work.getIndustry()));
-                work.setActualWorkType(getActualAttribute1(work.getWorkType()));
+                work.setActualEnterpriseType(getActualAttribute(work.getEnterpriseType(),4));
+                work.setActualEnterpriseScale(getActualAttribute(work.getEnterpriseScale(),7));
+                work.setActualFunction(getActualAttribute(work.getFunction(),3));
+                work.setActualIndustry(getActualAttribute(work.getIndustry(),2));
+                work.setActualWorkType(getExpectedWorkType(work.getWorkType()));
                 workList.add(work);
             }
         }
@@ -315,11 +228,13 @@ public class EnterpriseService {
     //获得某个求职者的掌握的技能
     public List<Skill> getActualSkill(int userId){
         List<Skill> list=enterpriseDao.getSkillList(userId);
-        for (int i = 0; i < list.size(); i++) {
-            Byte level=list.get(i).getLevel();
-            int skillId=list.get(i).getSkillName();
-            list.get(i).setActualSkillName(getActualAttribute1(skillId));
-            list.get(i).setActualLevel(getActualSkillLevel(level));
+        if(!list.isEmpty()) {
+            for (int i = 0; i < list.size(); i++) {
+                Byte level = list.get(i).getLevel();
+                int skillId = list.get(i).getSkillName();
+                list.get(i).setActualSkillName(getActualAttribute(skillId,5));
+                list.get(i).setActualLevel(getActualSkillLevel(level));
+            }
         }
         return list;
     }
@@ -327,69 +242,79 @@ public class EnterpriseService {
     //获得某个求职者的语言能力
     public List<Language> getActualLanguage(int userId){
         List<Language> list=enterpriseDao.getLanguageList(userId);
-        for (int i = 0; i < list.size(); i++) {
-            Byte rw=list.get(i).getRwAbility();
-            Byte x=list.get(i).getxAbility();
-            int language=list.get(i).getLanguage();
-            list.get(i).setActualLanguage(getActualAttribute1(language));
-            list.get(i).setActualRwAbility(getActualSkillLevel(rw));
-            list.get(i).setActualXAbility(getActualSkillLevel(x));
+        if(!list.isEmpty()) {
+            for (int i = 0; i < list.size(); i++) {
+                Byte rw = list.get(i).getRwAbility();
+                Byte x = list.get(i).getxAbility();
+                int language = list.get(i).getLanguage();
+                list.get(i).setActualLanguage(getActualAttribute(language,6));
+                list.get(i).setActualRwAbility(getActualSkillLevel(rw));
+                list.get(i).setActualXAbility(getActualSkillLevel(x));
+            }
         }
         return list;
     }
 
     //获取某个求职者的期望行业
     public List<PreferredIndustry> getExpectedIndustry(int userId){
-        List<PreferredIndustry> list=getExpectedIndustry(userId);
-        for (int i = 0; i < list.size(); i++) {
-            int id=list.get(i).getIndustry();
-            list.get(i).setActualIndustry(getActualAttribute2(id));
+        List<PreferredIndustry> list=enterpriseDao.getExpectedIndustyList(userId);
+        if(!list.isEmpty()) {
+            for (int i = 0; i < list.size(); i++) {
+                int id = list.get(i).getIndustry();
+                list.get(i).setActualIndustry(getActualAttribute(id,2));
+            }
         }
         return list;
     }
 
     //获取某个求职者的期望职能
     public List<PreferredFunction> getExpectedFunction(int userId){
-        List<PreferredFunction> list=getExpectedFunction(userId);
-        for (int i = 0; i < list.size(); i++) {
-            int id=list.get(i).getFunction();
-            list.get(i).setActualFunction(getActualAttribute2(id));
+        List<PreferredFunction> list=enterpriseDao.getExpectedFunctionList(userId);
+        if(!list.isEmpty()) {
+            for (int i = 0; i < list.size(); i++) {
+                int id = list.get(i).getFunction();
+                list.get(i).setActualFunction(getActualAttribute(id,3));
+            }
         }
         return list;
     }
 
     //获取某个求职者的期望地点
     public List<PreferredLocation> getExpectedLocation(int userId){
-        List<PreferredLocation> list=getExpectedLocation(userId);
-        for (int i = 0; i < list.size(); i++) {
-            int id=list.get(i).getLoactionId();
-            list.get(i).setActualLocation(getActualAttribute2(id));
+        List<PreferredLocation> list=enterpriseDao.getExpectedLocationList(userId);
+        if(!list.isEmpty()) {
+            for (int i = 0; i < list.size(); i++) {
+                int id = list.get(i).getLoactionId();
+                list.get(i).setActualLocation(getActualAttribute(id,1));
+            }
         }
         return list;
     }
 
-    //获得实际地址、规模、企业类型、技能名称、语种、学历、角色
-    public String getActualAttribute1(int dicId){
-        String str="";
-        Integer id=new Integer(dicId);
-        while(id != null){
-            Dictionary dic=enterpriseDao.get(Dictionary.class,dicId);
-            str=dic.getDictionaryName()+str;
-            id=Integer.valueOf(dic.getParent());
-        }
-        return str;
-    }
+//    //获得实际地址、规模、企业类型、技能名称、语种、学历、角色、行业、职能
+//    public String getActualAttribute(int dicId){
+//        Dictionary dic=enterpriseDao.get(Dictionary.class,dicId);
+//        String str=dic.getDictionaryName();
+//        return str;
+//    }
 
-    //获得实际行业、职能
-    public String getActualAttribute2(int dicId){
-        Dictionary dic=enterpriseDao.get(Dictionary.class,dicId);
-        String str=dic.getDictionaryName();
-        Integer id=Integer.valueOf(dic.getParent());
-        while(id != null){
-            dic=enterpriseDao.get(Dictionary.class,dicId);
-            str=dic.getDictionaryName()+"--"+str;
-            id=Integer.valueOf(dic.getParent());
+    public String getActualAttribute(int dicId,int type){
+        List<Dictionary> dic=new ArrayList<>();
+        String str=new String();
+        switch (type){
+            case 1:dic=DataUtil.allCities();break;
+            case 2:dic=DataUtil.allIndystries();break;
+            case 3:dic=DataUtil.allFuctions();break;
+            case 4:dic=DataUtil.allEnterpriseType();break;
+            case 5:dic=DataUtil.allSkills();break;
+            case 6:dic=DataUtil.allLanguages();break;
+            case 7:dic=DataUtil.allScales();break;
+            case 9:dic=DataUtil.allDegrees();break;
         }
+        for (int i = 0; i < dic.size(); i++) {
+            if(dic.get(i).getDictionaryId()==dicId) str=dic.get(i).getDictionaryName();
+        }
+        System.out.println("str is "+str);
         return str;
     }
 
@@ -427,6 +352,14 @@ public class EnterpriseService {
         if (i==1) gender="男";
         else gender="女";
         return gender;
+    }
+
+    //获得实际学生类型
+    public String getActualStuType(int i){
+        String type;
+        if (i==1) type="统招";
+        else type="非统招";
+        return type;
     }
 
     //获得当前工作状态
@@ -472,12 +405,5 @@ public class EnterpriseService {
             default: asl="精通";
         }
         return asl;
-    }
-
-
-    public <T> Object jsonTojava(String str,Class<T> tClass){
-        JSONObject jsonObject = JSON.parseObject(str);
-        Object object = jsonObject.toJavaObject(tClass.getClass());
-        return object;
     }
 }

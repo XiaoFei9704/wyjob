@@ -44,23 +44,39 @@ public class EnterpriseDao extends MyDao {
     }
 
     //获得某个求职者的期望行业
-    public List<PreferredIndustry> getExpectedIndusty(int userId){
+    public List<PreferredIndustry> getExpectedIndustyList(int userId){
         return getSession().createQuery("from PreferredIndustry where userId="+userId,PreferredIndustry.class).list();
     }
 
     //获得某个求职者的期望职能
-    public List<PreferredFunction> getExpectedFunction(int userId){
+    public List<PreferredFunction> getExpectedFunctionList(int userId){
         return getSession().createQuery("from PreferredFunction where userId="+userId,PreferredFunction.class).list();
     }
 
     //获得某个求职者的期望工作地点
-    public List<PreferredLocation> getExpectedLocation(int userId){
+    public List<PreferredLocation> getExpectedLocationList(int userId){
         return getSession().createQuery("from PreferredLocation where userId="+userId,PreferredLocation.class).list();
     }
 
     //根据账号和密码获取userID
     public int getUserId(String account,String password){
-        User user=getSession().createQuery("from User where userName="+account+" and password="+password,User.class).list().get(0);
+        User user=getSession().createQuery("from User where userName='"+account+"' and password='"+password+"'",User.class).list().get(0);
         return user.getUserId();
+    }
+
+    //判断教育经历是否有相应id记录
+    public boolean judgeEducation(int id){
+        boolean flag=false;
+        List<EducationExperience> edu=getSession().createQuery("from EducationExperience where eexperienceId="+id,EducationExperience.class).list();
+        if(!edu.isEmpty()) flag=true;
+        return flag;
+    }
+
+    //判断工作经历是否有相应id记录
+    public boolean judgeWork(int id){
+        boolean flag=false;
+        List<WorkingExperience> work=getSession().createQuery("from WorkingExperience where wexperienceId="+id,WorkingExperience.class).list();
+        if(!work.isEmpty()) flag=true;
+        return flag;
     }
 }

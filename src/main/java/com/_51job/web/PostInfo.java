@@ -3,18 +3,21 @@ import com._51job.domain.Enterprise;
 import com._51job.domain.Recruitment;
 
 import javax.persistence.Entity;
+import java.util.List;
+
 //岗位信息类
 @Entity
 public class PostInfo {
     private Enterprise enterprise;
-    private Recruitment recruitment;
+    private List<Recruitment> recruitment;
 
-    public PostInfo(Enterprise enterprise, Recruitment recruitment) {
+    public PostInfo(Enterprise enterprise, List<Recruitment> recruitment) {
         this.enterprise = enterprise;
         this.recruitment = recruitment;
     }
 
-    public PostInfo() { }
+    public PostInfo() {
+    }
 
     public Enterprise getEnterprise() {
         return enterprise;
@@ -24,11 +27,11 @@ public class PostInfo {
         this.enterprise = enterprise;
     }
 
-    public Recruitment getRecruitment() {
+    public List<Recruitment> getRecruitment() {
         return recruitment;
     }
 
-    public void setRecruitment(Recruitment recruitment) {
+    public void setRecruitment(List<Recruitment> recruitment) {
         this.recruitment = recruitment;
     }
 }
