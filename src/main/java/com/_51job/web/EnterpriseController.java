@@ -35,7 +35,7 @@ public class EnterpriseController {
     }
 
     //保存/修改招聘信息
-    @RequestMapping(value = "saveJob",method = RequestMethod.POST)
+    @RequestMapping(value = "/saveJob",method = RequestMethod.POST)
     @ResponseBody
     public boolean saveJob(String str_recruitment) throws ParseException {
         boolean result = enterpriseService.saveOrupdateRecruitment(str_recruitment);
