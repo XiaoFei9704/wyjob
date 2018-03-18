@@ -1,0 +1,89 @@
+body {
+    background: #409EFF url(../img/newbg.png) center bottom no-repeat;
+    min-width: 1170px;
+    line-height: 26px;
+    color: #414a60;
+    font-size: 14px;
+    display: block;
+}
+.nowrap {
+	white-space: nowrap;
+}
+#wrap{
+	position: relative;
+	min-height: 100%;
+}
+.sign-wrap {
+    width: 410px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -240px 0 0 -205px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+.sign-form {
+    width: 324px;
+    padding: 35px 43px 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 1px 2px 15px rgba(0,0,0,.3);
+}
+.sign-form .title {
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 32px;
+    color: #409EFF;
+    position: relative;
+    text-align: center;
+    display: block;
+}
+.ipt {
+    min-height: 22px;
+    line-height: 22px;
+    border: 1px solid #e3e7ed;
+    font-size: 13px;
+    vertical-align: middle;
+    width: 286px;
+    min-width: 0;
+    padding: 9px 18px;
+    vertical-align: middle;
+    margin-top: 26px;
+}
+.ipt:focus{
+	box-shadow: 1px 2px 3px #d7f4f1;
+	border-color: #409EFF;
+}
+.btn {
+    background-color: #fff;
+    outline: none;
+    border: 1px solid #e3e7ed;
+    width: 153px;
+    line-height: 34px;
+    margin-right: 13px;
+    display: inline-block;
+    margin-top: 23px;
+}
+.focus-btn {
+    border: 1px #409EFF solid;
+    color: #409EFF;
+    background-color: #fff;
+    outline: none;
+}
+.submit-btn {
+	width: 100%;
+	outline: none;
+	border: none;
+	font-size: 16px;
+    height: 42px;
+    line-height: 42px;
+    cursor: pointer;
+    background-color: #409eff;
+    color: #fff;
+    margin-top: 40px;
+}
+.text-wrap {
+	text-align: center;
+	padding: 20px 0 36px;
+}
+a{text-decoration:none}

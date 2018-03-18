@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>recruitment</title>
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/recruitment.css">
+	<script src="../js/jquery-3.3.1.min.js"></script>
+	<script src="../js/recruitment.js"></script>
+	<script src="../js/dropdown.js"></script>
+	<script type="text/javascript" src="../js/job-add.js"></script>
+	<script src="../js/all_ajax.js"></script>
+</head>
+<body>
+	<div id="header">
+		<div class="inner">
+			<img src="../img/logo.png" alt="" id="logo">
+			<a href="company_info.html" class="nav-a ">企业信息</a>
+			<a href="job_list.html" class="nav-a focus-a">招聘信息</a>
+			<span class="fr user">HELLO,CHAOXX</span>
+			<img src="../img/people.png" alt="" class="fr people">
+		</div>		
+	</div>
+	<div id="section">
+		<div id="primary-info" class="part">
+			<div class="serial">1</div>
+			<div class="ti">
+				<h3 class="title">
+					职位基本信息
+				</h3>
+				<p>加 * 内容，在确认发布成功后，将无法修改</p>
+			</div>
+			<div style="clear: both;"></div>
+			<div class="content">
+				<ul>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							公&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp司：
+						</span>
+						<div class="company-name">
+							<span>华为技术有限公司</span>
+						</div>
+					</li>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							职位名称：
+						</span>
+						<input type="text" class="list-input" autofocus="autofocus" placeholder="请输入职位名称">
+					</li>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							职&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp能：
+						</span>
+						<input type="text" class="list-input" placeholder="请输入职能">
+					</li>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							工作城市：
+						</span>
+						<input type="text" class="list-input" placeholder="请输入工作城市">
+					</li>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							工作地点：
+						</span>
+						<input type="text" class="list-input" id="work-addr" placeholder="请输入工作地点">
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="primary-info" class="part">
+			<div class="serial">2</div>
+			<div class="ti">
+				<h3 class="title">
+					职位要求
+				</h3>
+				<p>我们将通过以下条件，为您精确推荐合适的牛人，请尽量详细填写</p>
+			</div>
+			<div style="clear: both;"></div>
+			<div class="content">
+				<ul>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							工作性质：
+						</span>
+						<div class="select-other selected type">
+							全职
+						</div>
+						<div class="select-other type">
+							兼职
+						</div>
+						<div class="select-other type">
+							实习
+						</div>
+					</li>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							学历经验：
+						</span>
+						<div class="option-box">
+							<span class="dropdown-select">
+							<img src="../img/pull.png" alt="" class="icon-select-arrow">
+							<input value="选择学历" type="text" class="ipt" placeholder="请选择" readonly="">
+							</span>
+							<div class="dropdown-menu">
+			                    <ul> 
+			                        <li>中专及以下</li>  
+					                <li>高中</li>  
+					                <li>大专</li>
+					                <li>本科</li>
+					                <li>硕士</li>
+					                <li>博士</li>  
+			                    </ul>
+			                </div>
+			                <span class="dropdown-select2">
+								<img src="../img/pull.png" alt="" class="icon-select-arrow">
+								<input value="选择经验" type="text" class="ipt2" placeholder="请选择" readonly="">
+							</span>
+							<div class="dropdown-menu2">
+			                    <ul> 
+			                        <li>不限</li>  
+					                <li>应届生</li>  
+					                <li>1年以内</li>
+					                <li>1-3年</li>
+					                <li>3-5年</li>
+					                <li>5-10年</li>
+					                <li>10年以上</li>  
+			                    </ul>
+			                </div>
+						</div>
+						
+					<div style="clear: both;"></div>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							最低月薪：
+						</span>
+						<input type="text" class="list-input" placeholder="请填数字">
+					</li>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							技能要求：
+						</span>
+						<input type="text" class="list-input" placeholder="请输入技能要求">
+					</li>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							职位描述：
+						</span>
+						<textarea rows="6" cols="20" class="list-input" id="brief-introduce" placeholder="请输入职业描述"></textarea>
+					</li>
+					<div style="clear: both;"></div>
+				</ul>
+			</div>
+		</div>
+		<div class="form-btns">
+			<a href="job_list.html">
+				<button class="btn btn-back" type="button" ka="user-resume-user-info-cancel">取消</button>
+			</a>
+			<button class="btn vali-btn" type="submit" ka="user-resume-user-info-ok">发布</button>
+		</div>
+	</div>
+	<div id="foot">	
+		<div class="inner">
+			<span>51JOB招聘平台 版权所有 Copyright © 2004-2018 All Rights Reserved</span>
+		</div>
+	</div>
+	<div class="shade none" id="information">
+		<div class="wrap">
+			<div class="form">
+				<img src="../img/tip.png">
+				<span class="title">提示</span>
+			</div>
+				<p>
+					在确认发布成功后，将无法修改。
+				</p>
+				<p>
+					是否确认发布？
+				</p>
+
+				<button class="cancel-btn">取消</button>
+				<a href="job_list.html">
+					<button class="ok-btn">确定</button>
+				</a>
+		</div>
+	</div>
+</body>
+</html>

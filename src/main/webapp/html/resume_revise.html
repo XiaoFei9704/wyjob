@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>resume</title>
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/resume.css">
+	<script src="../js/jquery-3.3.1.min.js"></script>
+	<script src="../js/dropdown.js"></script>
+	<script src="../js/resume.js"></script>
+	<script src="../js/all_ajax.js"></script>
+</head>
+<body>
+	<div id="header">
+		<div class="inner">
+			<img src="../img/logo.png" alt="" id="logo">
+			<a href="front" class="nav-a">职位搜索</a>
+			<a href="resumePage" class="nav-a focus-a">我的简历</a>
+			<a href="recommendPage" class="nav-a">职位推荐</a>
+			<a href="applicationPage" class="nav-a">我的申请</a>
+			<span class="fr user">HELLO,CHAOXX</span>
+			<a href="loginPage" class="fr none login-a">登录/注册</a>
+			<img src="../img/people.png" alt="" class="fr people">
+		</div>		
+	</div>
+	<div id="main">
+		<div class="inner">
+			<div class="info-section" id="info-person">
+				<h3 class="title">个人信息</h3>
+				<div class="form-row">
+					<dl>
+						<dt>姓名</dt>
+						<dd><input type="text" class="ipt"></dd>
+					</dl>
+					<dl>
+						<dt>当前的求职状态</dt>
+						<dd>
+							<span class="dropdown-select">
+								<img src="../img/pull.png" alt="" class="icon-select-arrow">
+								<input value="在职-暂不考虑" type="text" class="ipt" placeholder="请选择" readonly="">
+							</span>
+							<div class="dropdown-menu">
+			                    <ul>
+			                        <li>离职-随时到岗</li>
+			                        <li>在职-暂不考虑</li>
+			                        <li>在职-考虑机会</li>
+			                    </ul>
+			                </div>
+						</dd>
+					</dl>
+				</div>
+				<div class="form-row">
+					<dl>
+						<dt>性别</dt>
+						<dd>
+							<button class="gender-btn">男</button>
+							<button class="gender-btn focus-btn">女</button>
+						</dd>
+					</dl>
+					<dl>
+						<dt>居住地</dt>
+						<dd>
+							<input type="text" class="small-ipt" placeholder="省份">
+							<input type="text" class="small-ipt" placeholder="城市">
+						</dd>
+					</dl>
+				</div>
+				<div class="form-row">
+					<dl>
+						<dt>出生日期</dt>
+						<dd><input type="text" class="ipt" placeholder="例：19970501"></dd>
+					</dl>
+					<dl>
+						<dt>手机号码</dt>
+						<dd><input type="text" class="ipt"></dd>
+					</dl>
+				</div>
+				<div class="form-row">
+					<dl>
+						<dt>电子邮箱</dt>
+						<dd><input type="text" class="ipt"></dd>
+					</dl>
+				</div>
+			</div>
+			<div  class="info-section" id="info-experience">
+				<h3 class="title">
+					教育经历
+					<a class="add-btn fr" id="education-btn"><img src="../img/add.png" alt="">添加</a>
+				</h3>
+				<div class="form-line">
+					<span>西安交通大学</span>
+					<em class="vline"></em>
+					<span>20070802-20090102</span>
+					<em class="vline"></em>
+					<span>软件工程专业</span>
+					<em class="vline"></em>
+					<span>本科</span>
+					<a class="delete-btn fr">删除</a>
+				</div>
+				<div class="form-line">
+					<span>西安交通啦啦啦啦啦大学</span>
+					<em class="vline"></em>
+					<span>20070802-20090102</span>
+					<em class="vline"></em>
+					<span>软件工程专业</span>
+					<em class="vline"></em>
+					<span>本科</span>
+					<a class="delete-btn fr">删除</a>
+				</div>
+			</div>
+			<div class="info-section" id="info-work">
+				<h3 class="title">
+					工作经历
+					<a id="work-btn" class="add-btn fr"><img src="../img/add.png" alt="">添加</a>
+				</h3>
+				<div class="form-line">
+					<span>华迪公司</span>
+					<em class="vline"></em>
+					<span>20070802-20090102</span>
+					<em class="vline"></em>
+					<span>软件工程师</span>
+					<em class="vline"></em>
+					<span>职位软件高级工程师</span>
+					<em class="vline"></em>
+					<span>全职</span>
+					<a class="delete-btn fr">删除</a>
+				</div>
+				<div class="form-line">
+					<span>华迪公司</span>
+					<em class="vline"></em>
+					<span>20070802-20090102</span>
+					<em class="vline"></em>
+					<span>软件工程师</span>
+					<em class="vline"></em>
+					<span>职位软件高级工程师</span>
+					<em class="vline"></em>
+					<span>全职</span>
+					<a class="delete-btn fr">删除</a>
+				</div>
+			</div>
+			<div class="info-section" id="info-skill">
+				<h3 class="title">
+					专业技能
+					<a id ="expertise-btn" class="add-btn fr"><img src="../img/add.png" alt="">添加</a>
+				</h3>
+				<div class="form-line">
+					<span>HTML</span>
+					<em class="vline"></em>
+					<span>使用时间：</span>
+					<span>2年</span>
+					<em class="vline"></em>
+					<span>熟练</span>
+					<a class="delete-btn fr">删除</a>
+				</div>
+				<div class="form-line">
+					<span>JavaScript</span>
+					<em class="vline"></em>
+					<span>使用时间：</span>
+					<span>2年</span>
+					<em class="vline"></em>
+					<span>熟练</span>
+					<a class="delete-btn fr">删除</a>
+				</div>
+			</div>
+			<div class="info-section" id="info-language">
+				<h3 class="title">
+					语言能力
+					<a id="language-btn" class="add-btn fr"><img src="../img/add.png" alt="">添加</a>
+				</h3>
+				<div class="form-line">
+					<span>英语</span>
+					<em class="vline"></em>
+					<span>读写能力：</span>
+					<span>熟练</span>
+					<em class="vline"></em>
+					<span>听说能力：</span>
+					<span>熟练</span>
+					<a class="delete-btn fr">删除</a>
+				</div>
+				<div class="form-line">
+					<span>外星人语言</span>
+					<em class="vline"></em>
+					<span>读写能力：</span>
+					<span>熟练</span>
+					<em class="vline"></em>
+					<span>听说能力：</span>
+					<span>熟练</span>
+					<a class="delete-btn fr">删除</a>
+				</div>
+			</div>
+			<div class="info-section">
+				<h3 class="title">求职意向</h3>
+				<div class="form-row">
+					<dl>
+						<dt>最低接受薪资</dt>
+						<dd><input type="text" class="ipt"></dd>
+					</dl>
+					<dl>
+						<dt>期望工作性质</dt>
+						<dd>
+							<span class="dropdown-select">
+								<img src="../img/pull.png" alt="" class="icon-select-arrow">
+								<input value="全职" type="text" class="ipt" placeholder="请选择" readonly="">
+							</span>
+							<div class="dropdown-menu">
+			                    <ul>
+			                        <li>全职</li>
+			                        <li>兼职</li>
+			                        <li>实习</li>
+			                    </ul>
+			                </div>
+						</dd>
+					</dl>
+				</div>
+				<div class="form-row">
+					<dl>
+						<dt><a href="javascript:;" id="bias-btn"><img src="../img/add.png" alt="">添加具体意向</a></dt>
+					</dl>
+					<div class="form-line">
+						<span>北京</span>
+						<em class="vline"></em>
+						<span>计算机软件</span>
+						<em class="vline"></em>
+						<span>软件工程师</span>
+						<a class="delete-btn fr">删除</a>
+					</div>
+					<div class="form-line">
+						<span>北京</span>
+						<em class="vline"></em>
+						<span>计算机软件</span>
+						<em class="vline"></em>
+						<span>软件工程师</span>
+						<a class="delete-btn fr">删除</a>
+					</div>
+				</div>
+			</div>
+			<button class="cancel-btn" style="margin-left: 680px;" onclick="location='../html/resume_info.html'">取消</button>
+			<button class="ok-btn"  onclick="location='../html/resume_info.html'">确定</button>
+		</div>
+	</div>
+	<div id="foot">	
+		<div class="inner">
+			<span>51JOB招聘平台 版权所有 Copyright © 2004-2018 All Rights Reserved</span>
+		</div>
+	</div>
+
+
+	<div class="shade none" id="add-education">
+		<div class="wrap">
+			<div class="form">
+				<span class="title">添加教育经历</span>
+				<dl>
+					<dt>时间</dt>
+					<dd>
+						<input type="text" class="ipt small-ipt" placeholder="开始时间">
+						<input type="text" class="ipt small-ipt" placeholder="结束时间">
+					</dd>
+				</dl>
+				<dl>
+					<dt>学校名称</dt>
+					<dd><input type="text" class="ipt" placeholder=""></dd>
+				</dl>
+				<dl>
+					<dt>专业名称</dt>
+					<dd><input type="text" class="ipt" placeholder=""></dd>
+				</dl>
+				<dl>
+					<button class="cancel-btn">取消</button>
+					<button class="ok-btn">确定</button>
+				</dl>
+			</div>
+		</div>
+	</div>
+	<div class="shade none" id="add-language">
+		<div class="wrap">
+			<div class="form">
+				<span class="title">添加语言能力</span>
+				<dl>
+					<dt>语种</dt>
+					<dd><input type="text" class="ipt" placeholder=""></dd>
+				</dl>
+				<dl>
+					<dt>读写能力</dt>
+					<dd>
+						<span class="dropdown-select">
+							<img src="../img/pull.png" alt="" class="icon-select-arrow">
+							<input value="一般" type="text" class="ipt" placeholder="请选择" readonly="">
+						</span>
+						<div class="dropdown-menu">
+		                    <ul>
+		                        <li>一般</li>
+		                        <li>良好</li>
+		                        <li>熟练</li>
+		                        <li>精通</li>
+		                    </ul>
+		                </div>
+		            </dd>
+				</dl>
+				<dl>
+					<dt>听说能力</dt>
+					<dd>
+						<span class="dropdown-select">
+							<img src="../img/pull.png" alt="" class="icon-select-arrow">
+							<input value="一般" type="text" class="ipt" placeholder="请选择" readonly="">
+						</span>
+						<div class="dropdown-menu">
+		                    <ul>
+		                        <li>一般</li>
+		                        <li>良好</li>
+		                        <li>熟练</li>
+		                        <li>精通</li>
+		                    </ul>
+		                </div>
+		            </dd>
+				</dl>
+				<dl>
+					<button class="cancel-btn">取消</button>
+					<button class="ok-btn">确定</button>
+				</dl>
+			</div>
+		</div>
+	</div>
+	<div class="shade none" id="add-expertise">
+		<div class="wrap">
+			<div class="form">
+				<span class="title">添加专业技能</span>
+				<dl>
+					<dt>技能名称</dt>
+					<dd><input type="text" class="ipt" placeholder=""></dd>
+				</dl>
+				<dl>
+					<dt>使用时间</dt>
+					<dd><input type="text" class="ipt" placeholder=""></dd>
+				</dl>
+				<dl>
+					<dt>掌握程度</dt>
+					<dd>
+						<span class="dropdown-select">
+							<img src="../img/pull.png" alt="" class="icon-select-arrow">
+							<input value="一般" type="text" class="ipt" placeholder="请选择" readonly="">
+						</span>
+						<div class="dropdown-menu">
+		                    <ul>
+		                        <li>一般</li>
+		                        <li>良好</li>
+		                        <li>熟练</li>
+		                        <li>精通</li>
+		                    </ul>
+		                </div>
+		            </dd>
+				</dl>
+				<dl>
+					<button class="cancel-btn">取消</button>
+					<button class="ok-btn">确定</button>
+				</dl>
+			</div>
+		</div>
+	</div>
+	<div class="shade none" id="add-bias">
+		<div class="wrap">
+			<div class="form">
+				<span class="title">添加具体意向</span>
+				<dl>
+					<dt>工作地点</dt>
+					<dd><input type="text" class="ipt" placeholder=""></dd>
+				</dl>
+				<dl>
+					<dt>行业</dt>
+					<dd><input type="text" class="ipt" placeholder=""></dd>
+				</dl>
+				<dl>
+					<dt>职能</dt>
+					<dd><input type="text" class="ipt" placeholder=""></dd>
+				</dl>
+				<dl>
+					<button class="cancel-btn">取消</button>
+					<button class="ok-btn">确定</button>
+				</dl>
+			</div>
+		</div>
+	</div>
+	<div class="shade none" id="add-work">
+		<div class="wrap big-wrap">
+			<div class="form big-form">
+				<span class="title">添加工作经历</span>
+				<dl>
+					<dt>时间</dt>
+					<dd>
+						<input type="text" class="ipt small-ipt" placeholder="开始时间">
+						<input type="text" class="ipt small-ipt" placeholder="结束时间">
+					</dd>
+				</dl>
+				<dl>
+					<dt>公司名称</dt>
+					<dd><input type="text" class="ipt" placeholder=""></dd>
+				</dl>
+				<dl>
+					<dt>企业类型</dt>
+					<dd>
+						<span class="dropdown-select">
+							<img src="../img/pull.png" alt="" class="icon-select-arrow">
+							<input value="国企" type="text" class="ipt" placeholder="请选择" readonly="">
+						</span>
+						<div class="dropdown-menu">
+		                    <ul>
+		                        <li>国企</li>
+		                        <li>合资</li>
+		                        <li>私企</li>
+		                        <li>事业单位</li>
+		                    </ul>
+		                </div>
+		            </dd>
+				</dl>
+				<dl>
+					<dt>公司规模</dt>
+					<dd>
+						<span class="dropdown-select">
+							<img src="../img/pull.png" alt="" class="icon-select-arrow">
+							<input value="<50" type="text" class="ipt" placeholder="请选择" readonly="">
+						</span>
+						<div class="dropdown-menu">
+		                    <ul>
+		                        <li><50</li>
+		                        <li>51-100</li>
+		                        <li>101-500</li>
+		                        <li>500-1000</li>
+		                        <li>1000-5000</li>
+		                        <li>5000+</li>
+		                    </ul>
+		                </div>
+		            </dd>
+				</dl>
+				<dl>
+					<dt>行业</dt>
+					<dd><input type="text" class="ipt" placeholder=""></dd>
+				</dl>
+				<dl>
+					<dt>职能</dt>
+					<dd><input type="text" class="ipt" placeholder=""></dd>
+				</dl>
+				<dl>
+					<dt>职位</dt>
+					<dd><input type="text" class="ipt" placeholder=""></dd>
+				</dl>
+				<dl>
+					<dt>月薪</dt>
+					<dd><input type="text" class="ipt" placeholder=""></dd>
+				</dl>
+				<dl>
+					<dt>工作类型</dt>
+					<dd>
+						<span class="dropdown-select">
+							<img src="../img/pull.png" alt="" class="icon-select-arrow">
+							<input value="全职" type="text" class="ipt" placeholder="请选择" readonly="">
+						</span>
+						<div class="dropdown-menu">
+		                    <ul>
+		                        <li>全职</li>
+		                        <li>兼职</li>
+		                        <li>实习</li>
+		                    </ul>
+		                </div>
+		            </dd>
+				</dl>
+				<dl class="info-textarea">
+					<dt>工作描述</dt>
+					<dd><textarea></textarea></dd>
+				</dl>
+				<button class="cancel-btn">取消</button>
+				<button class="ok-btn">确定</button>
+			</div>
+		</div>
+	</div>
+<script>
+	$(document).ready(function () {
+		var name=$.trim($("#info-person").find("> div:nth-child(2) > dl:nth-child(1) > dd > input").val());
+		var work_state=$("#info-person").find("> div:nth-child(2) > dl:nth-child(2) > dd > span > input").attr("value");
+		var gender="女";
+		var city=$("#info-person").find("> div:nth-child(3) > dl:nth-child(2) > dd > input:nth-child(2)").val();
+		var birth=$("#info-person").find("> div:nth-child(4) > dl:nth-child(1) > dd > input").val();
+		var mobile=$("#info-person").find("> div:nth-child(4) > dl:nth-child(2) > dd > input").val();
+		var email=$("#info-person").find("> div:nth-child(5) > dl > dd > input").val();
+		var educations=[];
+		var works=[];
+		var skills=[];
+		var languages=[];
+		$("#info-experience").find("div").each(function (i,item) {
+		    var time=$(this).find("span:nth-child(2)").text();
+		    var a=time.indexOf("-");
+		    var start=time.substring(0,a);
+		    var end=time.substring(a+1);
+			var edu={
+                startTime:start,
+                endTime:end,
+                name:$(this).find("span:first-child").text(),
+                major:$(this).find("span:nth-child(3)").text(),
+                actualDegree:$(this).find("span:nth-child(4)").text()
+			};
+			educations.push(edu);
+        });
+        $("#info-work").find("div").each(function(i,item){
+        	var time=$(this).find("span:nth-child(2)").text();
+        	var a=time.indexOf("-");
+        	var start=time.substring(0,a);
+		    var end=time.substring(a+1);
+		    var work={
+		    	enterpriseName:$(this).find("span:nth-child(1)").text(),
+		    	startTime:start,
+                endTime:end,
+                actualFuntion:$(this).find("span:nth-child(3)").text(),
+                post:$(this).find("span:nth-child(4)").text(),
+                actualWorkType:$(this).find("span:nth-child(5)").text()
+		    };
+		    works.push(work);
+        });
+        $("#info-skill").find("div").each(function(i,item){
+        	var skill={
+        		actualSkillName:$(this).find("span:nth-child(1)").text(),
+        		time:$(this).find("span:nth-child(3)").text(),
+        		actualLevel:$(this).find("span:nth-child(4)").text()
+        	};
+        	skills.push(skill);
+        });
+        $("#info-language").find("div").each(function(i,item){
+        	var language={
+        		actualLanguage:$(this).find("span:nth-child(1)").text(),
+        		actualRwAbility:$(this).find("span:nth-child(3)").text(),
+        		actualXAbility:$(this).find("span:nth-child(5)").text()
+        	};
+        	languages.push(language);
+        });
+    });
+</script>
+</body>
+</html>
+

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>job-search</title>
+	<link rel="stylesheet" href="../css/jobList.css">
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/search.css">
+	<script src="../js/jquery-3.3.1.min.js"></script>
+	<script src="../js/all_ajax.js"></script>
+</head>
+<body>
+	<div id="header">
+		<div class="inner">
+			<img src="../img/logo.png" alt="" id="logo">
+			<a href="front" class="nav-a">职位搜索</a>
+			<a href="resumePage" class="nav-a">我的简历</a>
+			<a href="javascript:void(0)" class="nav-a focus-a">职位推荐</a>
+			<a href="applicationPage" class="nav-a">我的申请</a>
+			<span class="fr user">HELLO,CHAOXX</span>
+			<a href="loginPage" class="fr none login-a">登录/注册</a>
+			<img src="../img/people.png" alt="" class="fr people">
+		</div>		
+	</div>
+	<div class="section">
+		<div class="job-box">
+			<div class="job-list" style="margin-top: 30px;">
+				<ul>
+					<li>
+						<div class="job-primary">
+							<div class="info-primary">
+								<h3 class="name">
+									<a href="">
+										<div class="job-title">
+											高级数据挖掘工程师
+										</div>
+										<span class="red">
+											20k-40k
+										</span>
+									</a>
+								</h3>
+								<p>
+									成都
+									<em class="vline"></em>
+									3-5年
+									<em class="vline"></em>
+									本科
+								</p>
+							</div>
+							<div class="info-company">
+								<div class="company-context">
+									<h3 class="name">
+										<a href="">
+											京东贸易
+										</a>
+									</h3>
+									<p>
+										移动互联网
+										<em class="vline"></em>
+										10000人以上
+									</p>
+								</div>
+							</div>
+							<div class="info-publis">
+								<p class="time">
+									发布于昨天
+								</p>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="job-primary">
+							<div class="info-primary">
+								<h3 class="name">
+									<a href="">
+										<div class="job-title">
+											高级数据挖掘工程师
+										</div>
+										<span class="red">
+											20k-40k
+										</span>
+									</a>
+								</h3>
+								<p>
+									成都
+									<em class="vline"></em>
+									3-5年
+									<em class="vline"></em>
+									本科
+								</p>
+							</div>
+							<div class="info-company">
+								<div class="company-context">
+									<h3 class="name">
+										<a href="">
+											京东贸易
+										</a>
+									</h3>
+									<p>
+										移动互联网
+										<em class="vline"></em>
+										10000人以上
+									</p>
+								</div>
+							</div>
+							<div class="info-publis">
+								<p class="time">
+									发布于昨天
+								</p>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="job-primary">
+							<div class="info-primary">
+								<h3 class="name">
+									<a href="">
+										<div class="job-title">
+											高级数据挖掘工程师
+										</div>
+										<span class="red">
+											20k-40k
+										</span>
+										
+									</a>
+								</h3>
+								<p>
+									成都
+									<em class="vline"></em>
+									3-5年
+									<em class="vline"></em>
+									本科
+								</p>
+							</div>
+							<div class="info-company">
+								<div class="company-context">
+									<h3 class="name">
+										<a href="">
+											京东贸易
+										</a>
+									</h3>
+									<p>
+										移动互联网
+										<em class="vline"></em>
+										10000人以上
+									</p>
+								</div>
+							</div>
+							<div class="info-publis">
+								<p class="time">
+									发布于昨天
+								</p>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div style="clear: both;"></div>
+	<div id="foot">	
+		<div class="inner">
+			<span>51JOB招聘平台 版权所有 Copyright © 2004-2018 All Rights Reserved</span>
+		</div>
+	</div>
+<script>
+	$(document).ready(function () {
+		$.ajax({
+			type:"get",
+			url:"/applicant/suitableJobs",
+			success:function (data) {
+			    $("body > div.section > div > div > ul").empty();
+				$.each(data,function (i,item) {
+				    var content="<li>\n" +
+                        "\t\t\t\t\t\t<div class=\"job-primary\">\n" +
+                        "\t\t\t\t\t\t\t<div class=\"info-primary\">\n" +
+                        "\t\t\t\t\t\t\t\t<h3 class=\"name\">\n" +
+                        "\t\t\t\t\t\t\t\t\t<a href=\"\">\n" +
+                        "\t\t\t\t\t\t\t\t\t\t<div class=\"job-title\">\n" +
+                        "\t\t\t\t\t\t\t\t\t\t\t"+item.recruitment.post+"\n" +
+                        "\t\t\t\t\t\t\t\t\t\t</div>\n" +
+                        "\t\t\t\t\t\t\t\t\t\t<span class=\"red\">\n" +
+                        "\t\t\t\t\t\t\t\t\t\t\t"+item.recruitment.salary+"\n" +
+                        "\t\t\t\t\t\t\t\t\t\t</span>\n" +
+                        "\t\t\t\t\t\t\t\t\t\t\n" +
+                        "\t\t\t\t\t\t\t\t\t</a>\n" +
+                        "\t\t\t\t\t\t\t\t</h3>\n" +
+                        "\t\t\t\t\t\t\t\t<p>\n" +
+                        "\t\t\t\t\t\t\t\t\t"+item.enterprise.actualDomicile+"\n" +
+                        "\t\t\t\t\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                        "\t\t\t\t\t\t\t\t\t"+item.recruitment.minSeniority+"年\n" +
+                        "\t\t\t\t\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                        "\t\t\t\t\t\t\t\t\t"+item.recruitment.actualMinDegree+"\n" +
+                        "\t\t\t\t\t\t\t\t</p>\n" +
+                        "\t\t\t\t\t\t\t</div>\n" +
+                        "\t\t\t\t\t\t\t<div class=\"info-company\">\n" +
+                        "\t\t\t\t\t\t\t\t<div class=\"company-context\">\n" +
+                        "\t\t\t\t\t\t\t\t\t<h3 class=\"name\">\n" +
+                        "\t\t\t\t\t\t\t\t\t\t<a href=\"\">\n" +
+                        "\t\t\t\t\t\t\t\t\t\t\t"+item.enterprise.name+"\n" +
+                        "\t\t\t\t\t\t\t\t\t\t</a>\n" +
+                        "\t\t\t\t\t\t\t\t\t</h3>\n" +
+                        "\t\t\t\t\t\t\t\t\t<p>\n" +
+                        "\t\t\t\t\t\t\t\t\t\t"+item.enterprise.actualIndustry+"\n" +
+                        "\t\t\t\t\t\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                        "\t\t\t\t\t\t\t\t\t\t"+item.enterprise.actualScale+"\n" +
+                        "\t\t\t\t\t\t\t\t\t</p>\n" +
+                        "\t\t\t\t\t\t\t\t</div>\n" +
+                        "\t\t\t\t\t\t\t</div>\n" +
+                        "\t\t\t\t\t\t\t<div class=\"info-publis\">\n" +
+                        "\t\t\t\t\t\t\t\t<p class=\"time\">\n" +
+                        "\t\t\t\t\t\t\t\t\t发布于"+msTimeStampToDate(item.recruitment.time)+"\n" +
+                        "\t\t\t\t\t\t\t\t</p>\n" +
+                        "\t\t\t\t\t\t\t</div>\n" +
+                        "\t\t\t\t\t\t</div>\n" +
+                        "\t\t\t\t\t</li>";
+				    $("body > div.section > div > div > ul").append(content);
+                })
+            }
+		});
+    });
+</script>
+</body>
+</html>

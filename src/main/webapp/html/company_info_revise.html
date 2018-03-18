@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>company_info</title>
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" type="text/css" href="../css/company-info.css">
+	<script src="../js/jquery-3.3.1.min.js"></script>
+	<script src="../js/company-select.js"></script>
+	<script src="../js/all_ajax.js"></script>
+</head>
+<body>
+	<div id="header">
+		<div class="inner">
+			<img src="../img/logo.png" alt="" id="logo">
+			<a href="" class="nav-a focus-a">企业信息</a>
+			<a href="" class="nav-a">招聘信息</a>
+			<span class="fr user">HELLO,CHAOXX</span>
+			<img src="../img/people.png" alt="" class="fr people">
+		</div>		
+	</div>
+	<div id="section">
+		<div id="info-company">
+			<h3 class="title">
+				基本信息
+			</h3>
+			<div class="content">
+				<ul>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							单位名称
+						</span>
+						<input type="text" class="list-input" autofocus="autofocus">
+					</li>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							所在地
+						</span>
+						<input type="text" class="list-input">
+					</li>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							工作地址
+						</span>
+						<input type="text" class="list-input">
+					</li>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							成立时间
+						</span>
+						<input type="text" class="list-input" name="" placeholder="格式例如：2018/03/21">
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="公司详情">
+			<h3 class="title"> 
+				公司详情
+			</h3>
+			<div class="content">
+				<ul>
+					<li class="list" id="scale">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							公司规模
+						</span>
+						<div class="select">
+							<div class="select-other scale">
+							少于50人
+							</div>
+							<div class="select-other scale">
+								50-150人
+							</div>
+							<div class="select-other scale">
+								150-500人
+							</div>
+							<div class="select-other scale">
+								500-1000人
+							</div>
+							<div class="select-other scale">
+								1000-5000人
+							</div>
+							<div class="select-other scale">
+								5000-10000人
+							</div>
+							<div class="select-other selected scale">
+								10000人以上
+							</div>
+						</div>
+						
+					</li>
+					<div style="clear:both"></div>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							行&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp业
+						</span>
+						<div class="select">
+							<div class="select-other industry">
+								互联网
+							</div>
+						</div>
+					</li>
+					<div style="clear:both"></div>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							企业类型
+						</span>
+						<div class="select">
+							<div class="select-other enterprise-type">
+								外资
+							</div>
+							<div class="select-other enterprise-type">
+								合资
+							</div>
+							<div class="select-other enterprise-type">
+								国企
+							</div>
+							<div class="select-other enterprise-type">
+								民营公司
+							</div>
+							<div class="select-other enterprise-type">
+								上市公司
+							</div>
+							<div class="select-other enterprise-type">
+								创业公司
+							</div>
+							<div class="select-other enterprise-type">
+								政府机关
+							</div>
+							<div class="select-other enterprise-type">
+								事业单位
+							</div>
+							<div class="select-other selected enterprise-type">
+								非盈利组织
+							</div>
+						</div>
+					</li>
+					<div style="clear:both"></div>
+					<li class="list" id="company-introduce">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							公司简介
+						</span>
+						<div>
+							<textarea rows="6" cols="25" class="list-input" id="brief-introduce"></textarea>
+						</div>
+					</li>
+					<div style="clear: both;"></div>
+				</ul>
+			</div>
+		</div>
+		<div id="info-contact">
+			<h3 class="title">
+				联系信息
+			</h3>
+			<div class="content">
+				<ul>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							联系人
+						</span>
+						<input type="text" class="list-input">
+					</li>
+					<li class="list">
+						<b class="must-symbol">
+							*
+						</b>
+						<span class="list-title">
+							联系方式
+						</span>
+						<input type="text" class="list-input">
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="form-btns">
+			<button class="btn btn-back" type="button" ka="user-resume-user-info-cancel" onclick="location='../html/company_info.html'">取消</button>
+			<button class="btn vali-btn" type="submit" ka="user-resume-user-info-ok" onclick="location='../html/company_info.html'">完成</button>
+		</div>
+	</div>
+	<div id="foot">	
+		<div class="inner">
+			<span>51JOB招聘平台 版权所有 Copyright © 2004-2018 All Rights Reserved</span>
+		</div>
+	</div>
+</body>
+</html>

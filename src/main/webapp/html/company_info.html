@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>公司信息</title>
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" type="text/css" href="../css/company_info_done.css">
+	<link rel="stylesheet" type="text/css" href="../css/iconfont.css">
+	<script src="../js/jquery-3.3.1.min.js"></script>
+	<script src="../js/iconfont.js"></script>
+    <script src="../js/all_ajax.js"></script>
+</head>
+<body>
+	<div id="header">
+		<div class="inner">
+			<img src="../img/logo.png" alt="" id="logo">
+			<a href="javascript:void(0)" class="nav-a focus-a">企业信息</a>
+			<a href="recPage" class="nav-a">招聘信息</a>
+			<span class="fr user">HELLO,CHAOXX</span>
+			<img src="../img/people.png" alt="" class="fr people">
+		</div>		
+	</div>
+	<div id="section">
+		<div class="banner">
+			<div class="inner">
+				<div class="info-primary fl">
+					<span class="time"><img src="../img/time.png" alt="">最后更新 2018-03-09 14:58</span>
+					<div class="info-company fr">
+						<div class="fr">
+							<h3>华迪公司</h3>
+							<p>
+								1000-9999人
+								<em class="vline"></em>
+								互联网
+							</p>
+						</div>	
+					</div>
+				</div>
+				<div style="clear:both"></div>
+			</div>
+		</div>
+		<a href="../html/company_info_revise.html">
+			<div style="clear: both;"></div>
+		</a>
+		
+		<div class="table">
+			<div id="info-company">
+				<h3 class="title">
+					基本信息
+				</h3>
+				<div class="content">
+					<ul>
+						<li class="list">
+							<span class="list-title">
+								所在地：
+							</span>
+							<span class="list-content">
+								四川省成都市郫县菁蓉镇红旗大道
+							</span>
+
+						</li>
+						
+						<li class="list">
+							<span class="list-title">
+								工作地址：
+							</span>
+							<span class="list-content">
+								四川省成都市郫县菁蓉镇红旗大道
+							</span>
+
+						</li>
+						<div style="clear: both;"></div>
+						<li class="list">
+							<span class="list-title">
+								成立时间：
+							</span>
+							<span class="list-content">
+								2018-03-09
+							</span>
+
+						</li>
+						<div style="clear: both;"></div>
+					</ul>
+				</div>
+			</div>
+			<div id="company-detail">
+				<h3 class="title"> 
+					公司详情
+				</h3>
+				<div class="content">
+					<ul>
+						<li class="list">
+							<span class="list-title">
+								公司规模：
+							</span>
+							<span class="list-content">
+								1000-2000人
+							</span>
+							
+						</li>
+						<li class="list">
+							<span class="list-title">
+								行&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp业：
+							</span>
+							<span class="list-content">
+									互联网
+							</span>
+						</li>
+						<div style="clear:both"></div>
+						<li class="list">
+							<span class="list-title">
+								企业类型：
+							</span>
+							<span class="list-content"> 
+									民营企业
+							</span>
+						</li>
+						<div style="clear:both"></div>
+						<li class="list" id="company-introduce">
+							<span class="list-title">
+								公司简介：
+							</span>
+							<div class="introduce">
+								四川华迪信息技术有限公司创立于2003年，是集产、学、研、用、孵为一体的集团型高科技企业，经国家认定的高新科技企业、"双软"企业、计算机系统集成企业，并通过了CMMI-3评估和ISO9000质量体系认证。四川华迪信息技术有限公司创立于2003年，是集产、学、研、用、孵为一体的集团型高科技企业，经国家认定的高新科技企业、"双软"企业、计算机系统集成企业，并通过了CMMI-3评估和ISO9000质量体系认证。
+							</div>
+								
+							<div style="clear: both;"></div>
+						</li>
+						<div style="clear: both;"></div>
+					</ul>
+				</div>
+				<div style="clear: both;"></div>
+			</div>
+			<div id="info-contact">
+				<h3 class="title">
+					联系信息
+				</h3>
+				<div class="content">
+					<ul>
+						<li class="list">
+							<span class="list-title">
+								联系人：
+							</span>
+							<span class="list-content">
+								田甜甜
+							</span>
+						</li>
+						<li class="list">
+							<span class="list-title">
+								联系方式：
+							</span>
+							<span class="list-content">
+								029-xxxxxxxx
+							</span>
+						</li>
+						<div style="clear: both;"></div>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<button class="revise-btn" onclick="location='../html/company_info_revise.html'">修    改</button>
+	</div>
+	<div id="foot">	
+		<div class="inner">
+			<span>51JOB招聘平台 版权所有 Copyright © 2004-2018 All Rights Reserved</span>
+		</div>
+	</div>
+	<script>
+        $(document).ready(function () {
+            var url=window.location.href;
+            var ina = url.indexOf("?id=");
+            var inb=url.indexOf("&");
+            var id=0;
+            if(ina>0)id=url.substring(ina+4,inb);
+            if(window.location.href.indexOf("id="))$("#section").find("> button").remove();
+            $.ajax({
+                type:"get",
+                url:"/company/enterprise",
+                data:{id:id},
+                success:function (data) {
+                    $("#section").find("> div.banner > div > div.info-primary.fl > div > div > h3").text(data.name);
+                    $("#section").find("> div.banner > div > div.info-primary.fl > div > div > p").html(data.actualScale+"<em class='vline'></em>"+data.actualIndustry);
+                    $("#info-company").find("> div > ul > li:nth-child(1) > span.list-content").text(data.actualDomicile);
+                    $("#info-company").find("> div > ul > li:nth-child(2) > span.list-content").text(data.address);
+                    $("#info-company").find("> div > ul > li:nth-child(4) > span.list-content").text(msTimeStampToDate(data.foundingTime));
+                    $("#company-detail").find("> div.content > ul > li:nth-child(1) > span.list-content").text(data.actualScale);
+                    $("#company-detail").find("> div.content > ul > li:nth-child(2) > span.list-content").text(data.actualIndustry);
+                    $("#company-detail").find("> div.content > ul > li:nth-child(4) > span.list-content").text(data.actualType);
+                    $("#company-introduce").find("> div.introduce").text(data.description);
+                    $("#info-contact").find("> div > ul > li:nth-child(1) > span.list-content").text(data.hrName);
+                    $("#info-contact").find("> div > ul > li:nth-child(2) > span.list-content").text(data.hrMobile);
+                },
+                error:function () {
+                    DJMask.msg("获取企业信息失败，请检查网络...");
+                }
+            })
+        })
+	</script>
+</body>
+</html>

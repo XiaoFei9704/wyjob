@@ -1,0 +1,346 @@
+#main .title {
+    border-bottom: 1px solid #f2f3f3;
+    font-size: 16px;
+    padding: 20px 0 15px;
+    font-weight: 400;
+    margin-left: 30px;
+    margin-right: 50px;
+    margin-bottom: 10px;
+}
+body {
+    background: #f2f2f5;
+}
+#main .ipt {
+    border: 1px solid #e5e5e5;
+    float: left;
+    padding: 9px 12px;
+    font-size: 14px;
+    width: 314px;
+    min-height: 22px;
+    line-height: 22px;
+    vertical-align: middle;
+    min-width: 300px;
+}
+.ipt:focus{
+    box-shadow: 1px 2px 3px #d7f4f1;
+    border-color: #409EFF;
+}
+#main .inner {
+    width: 945px;
+    margin: auto;
+    margin-top: 10px;
+    font-size: 14px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(6,0,1,.05);
+    border-radius: 8px;
+}
+#main dl {
+    display: inline-block;
+    width: 336px;
+    vertical-align: top;
+    margin: 0 50px;
+}
+#main dt {
+    line-height: 40px;
+}
+.dropdown-select .ipt{
+	cursor: pointer;
+}
+.dropdown-select .icon-select-arrow {
+    position: absolute;
+    right: 15px;
+    top: 14px;
+    cursor: pointer;
+}
+.dropdown-select {
+    display: block;
+    position: relative;
+    background-color: #fff;
+}
+.dropdown-menu {
+    position: relative;
+    height: 0;
+    margin-right: 2px;
+    top: 42px;
+    z-index: 2;
+}
+.dropdown-menu ul {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    width: 338px;
+    border: 1px solid #e3e7ed;
+    border-top: 0;
+    background-color: #fff;
+    overflow: auto;
+    max-height: 208px;
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+}
+.dropdown-menu li {
+    line-height: 42px;
+    padding: 0 15px;
+    cursor: pointer;
+}
+.dropdown-menu li:hover {
+    background-color: #f2f5f9;
+}
+.form-row {
+    padding-bottom: 17px;
+}
+.gender-btn {
+    display: inline-block;
+    border: 1px solid #e3e7ed;
+    background-color: #fff;
+    line-height: 40px;
+    min-width: 158px;
+    text-align: center;
+    cursor: pointer;
+    color: #9fa3af;
+}
+.gender-btn+.gender-btn {
+    margin-left: 16px;
+}
+.focus-btn {
+    border: 1px #409EFF solid;
+    color: #409EFF;
+    background-color: #fff;
+    outline: none;
+}
+#main .small-ipt {
+    border: 1px solid #e5e5e5;
+    float: left;
+    padding: 9px 12px;
+    font-size: 14px;
+    width: 130px;
+    min-height: 22px;
+    line-height: 22px;
+    vertical-align: middle;
+    display: inline-block;
+}
+.small-ipt+.small-ipt {
+	margin-left: 24px;
+}
+.small-ipt:focus {
+	box-shadow: 1px 2px 3px #d7f4f1;
+    border-color: #409EFF;
+}
+.form-line span {
+	display: inline-block;
+}
+.form-line {
+	margin: 0 auto;
+	width: 800px;
+	line-height: 40px;
+} 
+.info-section {
+	line-height: 26px;
+    font-size: 14px;
+    margin-top: 5px;
+}
+.vline {
+    display: inline-block;
+    width: 1px;
+    height: 12px;
+    vertical-align: middle;
+    background: #e0e0e0;
+    margin: 0 20px;
+}
+.delete-btn {
+	height: 30px;
+	width: 60px;
+	line-height: 40px;
+	cursor: pointer;
+}
+.add-btn {
+	font-size: 13px;
+	cursor: pointer;
+	margin-top: 10px;
+	margin-right: 20px;
+}
+a:hover {
+	color: #1e89e0;
+}
+.add-btn img {
+	position: relative;
+	top: 3px;
+	right: 2px;
+}
+#main .inner {
+	padding-top: 20px;
+	padding-bottom: 40px;
+}
+dt a img {
+	position: relative;
+	top: 3px;
+	right: 3px;
+}
+
+
+.shade {
+	position: fixed;
+	left:0px;
+	top:0px;
+	bottom: 0px;
+	right: 0px;
+	background:rgba(0, 0, 0, 0.4);
+	z-index: 2;
+}
+.shade .wrap {
+    width: 410px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -240px 0 0 -205px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+.shade .form {
+    width: 324px;
+    padding: 35px 43px 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 1px 2px 15px rgba(0,0,0,.3);
+    padding-bottom: 30px;
+}
+.shade .ipt {
+    min-height: 22px;
+    line-height: 22px;
+    border: 1px solid #e3e7ed;
+    font-size: 13px;
+    vertical-align: middle;
+    width: 286px;
+    min-width: 0;
+    padding: 9px 18px;
+    vertical-align: middle;
+}
+.shade dt {
+	font-size: 14px;
+	line-height: 40px;
+}
+.shade .title {
+	line-height: 40px;
+	color: #409EFF;
+	font-size: 20px;
+	display: block;
+	border-bottom: 1px solid #409EFF;
+}
+.shade .small-ipt {
+	border: 1px solid #e5e5e5;
+    float: left;
+    padding: 9px 12px;
+    font-size: 14px;
+    width: 124px;
+    min-height: 22px;
+    line-height: 22px;
+    vertical-align: middle;
+    display: inline-block;
+}
+.ok-btn, .cancel-btn {
+	display: inline-block;
+    border: 1px solid #e3e7ed;
+    background-color: #fff;
+    line-height: 40px;
+    min-width: 80px;
+    text-align: center;
+    cursor: pointer;
+    color: #9fa3af;
+    margin-top: 20px;
+    border-radius: 4px;
+}
+.ok-btn {
+	margin-left: 10px;
+	background: #409EFF;
+    color: #fff;
+    border-color: #409EFF;
+}
+.cancel-btn {
+	margin-left: 140px;
+}
+.shade .dropdown-menu {
+    top: 0px;
+}
+.shade .dropdown-menu ul {
+    width: 322px;
+}
+.shade .dropdown-menu li {
+    font-size: 14px;
+    line-height: 30px;
+}
+.shade .big-wrap {
+    width: 700px;
+    margin: -310px 0 0 -400px;
+}
+.shade .big-form {
+    width: 700px;
+    padding: 20px 43px 0;
+    padding-bottom: 20px;
+}
+.shade .big-form dl {
+    display: inline-block;
+    width: 324px;
+    vertical-align: top;
+    margin-left: 20px;
+}
+.shade .big-form dt {
+    line-height: 35px;
+}
+.shade .big-form .info-textarea {
+    display: block;
+}
+.info-textarea textarea {
+    min-height: 22px;
+    line-height: 22px;
+    border: 1px solid #e3e7ed;
+    font-size: 13px;
+    vertical-align: middle;
+    width: 636px;
+    min-width: 0;
+    padding: 9px 18px;
+    vertical-align: middle;
+    outline: none;
+}
+.big-form .cancel-btn {
+    margin-left: 500px;
+}
+.big-form .ok-btn {
+    margin-left: 30px;
+}
+
+
+.form-row dl span {
+    color: #006bc7;
+}
+.revise-btn {
+    display: inline-block;
+    line-height: 40px;
+    min-width: 100px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 780px;
+    background: #409EFF;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+}
+.refuse-btn, .recruit-btn {
+    display: inline-block;
+    border: none;
+    line-height: 40px;
+    min-width: 80px;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+    margin-top: 20px;
+    border-radius: 4px;
+}
+.refuse-btn {
+    background-color: #fc703e;
+    margin-left: 710px;
+}
+.recruit-btn {
+    background-color: #409EFF;
+    margin-left: 20px;
+}

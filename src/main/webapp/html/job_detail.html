@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>detail</title>
+	<link rel="stylesheet" href="../css/detail.css">
+	<link rel="stylesheet" href="../css/reset.css">
+	<script src="../js/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="../js/search.js"></script>
+	<script src="../js/all_ajax.js"></script>
+</head>
+<body>
+	<div id="header">
+		<div class="inner">
+			<img src="../img/logo.png" alt="" id="logo">
+			<a href="" class="nav-a">职位搜索</a>
+			<a href="" class="nav-a">我的简历</a>
+			<a href="" class="nav-a">职位推荐</a>
+			<a href="" class="nav-a">我的申请</a>
+			<span class="fr none user">HELLO,CHAOXX</span>
+			<a href="" class="fr login-a">登录/注册</a>
+			<img src="../img/people.png" alt="" class="fr people">
+		</div>		
+	</div>
+	<div id="main">
+		<div class="banner">
+			<div class="inner">
+				<div class="info-primary fl">
+					<span class="time"><img src="../img/time.png" alt="">发布于2018-03-09 14:58</span>
+					<div class="name">
+						<h1>高级前端工程师</h1>
+						<span class="badge">15K-20K</span>
+					</div>
+					<p>
+						城市：成都
+						<em class="vline"></em>
+						经验：经验不限
+						<em class="vline"></em>
+						学历：不限
+					</p>
+				</div>
+				<div class="info-company fr">
+					<div class="fr">
+						<h3>华迪公司</h3>
+						<p>
+							1000-9999人
+							<em class="vline"></em>
+							互联网
+						</p>
+					</div>	
+				</div>
+				<div style="clear:both"></div>
+			</div>
+		</div>
+		<div class="job inner">
+			<div class="job-sec">
+				<h3>职位描述</h3>
+				<div class="text">
+					1、精通Javascript、AJAX、HTML、CSS等技术；
+					</br>
+					2、成功开发过中大型Web应用程序，良好的UI交互实现能力；
+					</br>
+					3、了解一门服务器编程语言如Java等；
+					</br>
+					4、善于学习及了解新技术如HTML5，Mobile App等；
+					</br>
+					5、熟悉面向对象开发概念，具有学习和掌握新技术能力；
+					</br>
+					6、熟悉各种浏览器平台的特性，能够很好地解决兼容问题。
+				</div>
+			</div>
+			<div class="job-sec">
+				<h3>公司介绍</h3>
+				<div class="text">
+					蚂蚁金融服务集团（以下称“蚂蚁金服”）起步于2004年成立的支付宝。2014年10月，蚂蚁金服正式成立。蚂蚁金服以“为世界带来微小而美好的改变”为愿景，致力于打造开放的生态系统，通过“互联网推进器计划”助力金融机构和合作伙伴加速
+				</div>
+			</div>
+			<div class="job-sec">
+				<h3>公司地址</h3>
+				<div class="text">
+					成都武侯区天府软件园D区
+				</div>
+			</div>
+			<button>立即投递简历</button>
+		</div>
+	</div>
+	<div id="foot">	
+		<div class="inner">
+			<span>51JOB招聘平台 版权所有 Copyright © 2004-2018 All Rights Reserved</span>
+		</div>
+	</div>
+<script>
+	$(document).ready(function () {
+        var url=window.location.href;
+        var ina = url.indexOf("?id=");
+        var inb=url.indexOf("&");
+        var id=url.substring(ina+4,inb);
+        $.ajax({
+			type:"get",
+			url:"/company/jobDetail",
+			data:{id:id},
+			success:function (data) {
+                $("#main").find("> div.banner > div > div.info-primary.fl > span").text(msTimeStampToDate(data.recruitment.time));
+                $("#main").find("> div.banner > div > div.info-primary.fl > div > h1").text(data.recruitment.post);
+                $("#main").find("> div.banner > div > div.info-primary.fl > div > span").text(data.recruitment.salary);
+                $("#main").find("> div.banner > div > div.info-primary.fl > p").html("城市：" + data.enterprise.actualDomicile + "<em class=\"vline\"></em>" + "经验：" + data.recruitment.minSeniority + "年以上<em class=\"vline\"></em>" + "学历：" + data.recruitment.actualMinDegree);
+                $("#main").find("> div.banner > div > div.info-company.fr > div > h3").text(data.enterprise.name);
+                $("#main").find("> div.banner > div > div.info-company.fr > div > p").html(data.enterprise.actualScale + "<em class=\"vline\"></em>" + data.enterprise.actualIndustry);
+                $("#main").find("> div.job.inner > div:nth-child(1) > div").text(data.recruitment.description);
+                $("#main").find("> div.job.inner > div:nth-child(2) > div").text(data.enterprise.description);
+                $("#main > div.job.inner > div:nth-child(3) > div").text(data.enterprise.address);
+            }
+		});
+        $("#main ").find("> div.job.inner > button").click(function () {
+            $.ajax({
+				type:"post",
+				url:"getUser",
+				success:function (data) {
+					if(data===""){
+					    window.location.href="loginPage";
+					}else {
+					    $.ajax({
+							type:"post",
+							url:"/applicant/shenqing",
+							data:{id:id},
+							success:function (data) {
+								if(data)DJMask.msg("投递成功！");
+								else DJMask.msg("投递失败了，请稍后再试");
+                            }
+						});
+					}
+                }
+			})
+        });
+    });
+</script>
+</body>
+</html>

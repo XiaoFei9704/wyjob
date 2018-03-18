@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>职位搜索</title>
+	<link rel="stylesheet" href="../css/search.css">
+	<link rel="stylesheet" href="../css/jobList.css">
+	<link rel="stylesheet" href="../css/reset.css">
+	<script src="../js/jquery-3.3.1.min.js"></script>
+	<script src="../js/all_ajax.js"></script>
+</head>
+<body>
+	<div id="header">
+		<div class="inner">
+			<img src="../img/logo.png" alt="" id="logo">
+			<a href="javascript:void(0)" class="nav-a focus-a">职位搜索</a>
+			<a href="resumePage" class="nav-a">我的简历</a>
+			<a href="recommendPage" class="nav-a">职位推荐</a>
+			<a href="applicationPage" class="nav-a">我的申请</a>
+			<span class="fr none user">HELLO,CHAOXX</span>
+			<a href="loginPage" class="fr login-a">登录/注册</a>
+			<img src="../img/people.png" alt="" class="fr people">
+		</div>		
+	</div>
+	<div class="search-box">
+		<input type="text"  class="city-select" placeholder="输入意向城市">
+		<input type="text" name="query" placeholder="搜索公司、职位" class="text-search">
+		<button class="btn btn-search">
+			
+		</button>
+	</div>
+	
+
+	<div class="filter">
+		<div class="filter-item" id="salary">
+			<span class="title">月薪范围 :</span>
+			<ul>
+					<li><a href="javascript:void(0)">所有</a></li>
+					<li><a href="javascript:void(0)">大于3k</a></li>
+					<li><a href="javascript:void(0)">大于6k</a></li>
+					<li><a href="javascript:void(0)">大于8k</a></li>
+					<li><a href="javascript:void(0)">大于10k</a></li>
+					<li><a href="javascript:void(0)">大于15k</a></li>
+					<li><a href="javascript:void(0)">大于20k</a></li>
+					<li><a href="javascript:void(0)">大于30k</a></li>
+			</ul>
+			<!-- <div class="more-multi">
+				<span class="more">更多</span>
+				<span class="multiple-choice" onclick="multipleChoiceShow();">+ 多选</span>
+			</div> -->
+		</div>
+		<div class="filter-item" id="experience">
+			<span class="title">工作经验 :</span>
+			<ul>
+				
+					<li><a href="javascript:void(0)">所有</a></li>
+					<li><a href="javascript:void(0)">1年</a></li>
+					<li><a href="javascript:void(0)">2年</a></li>
+					<li><a href="javascript:void(0)">3年</a></li>
+					<li><a href="javascript:void(0)">4年</a></li>
+					<li><a href="javascript:void(0)">5年</a></li>
+				
+			</ul>
+		</div>
+		<div class="filter-item" id="edu">
+			<span class="title">学历要求 :</span>
+			<ul>
+				<li>
+					<li><a href="javascript:void(0)">所有</a></li>
+					<li><a href="javascript:void(0)">初中</a></li>
+					<li><a href="javascript:void(0)">高中</a></li>
+					<li><a href="javascript:void(0)">大专</a></li>
+					<li><a href="javascript:void(0)">本科</a></li>
+					<li><a href="javascript:void(0)">硕士</a></li>
+					<li><a href="javascript:void(0)">博士</a></li>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="section">
+		<div class="job-box">
+			<div class="job-list">
+				<ul>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div id="foot">	
+		<div class="inner">
+			<span>51JOB招聘平台 版权所有 Copyright © 2004-2018 All Rights Reserved</span>
+		</div>
+	</div>
+</body>
+</html>

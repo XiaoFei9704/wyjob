@@ -1,0 +1,103 @@
+#main .banner {
+	background: #444c60 url(../img/detail_bg.jpg) center center no-repeat;
+    height: 140px;
+    color: #fff;
+    padding-top: 40px;
+}
+#main .info-primary {
+	width: 500px;
+}
+#main .info-company {
+	width: 500px;
+}
+#main .time {
+    padding-top: 0;
+    color: #e3e7ed;
+    font-size: 12px;
+    display: block;
+}
+#main .time img {
+	margin-right: 5px;
+	height: 12px;
+	width: 11px;
+}
+#main .name h1 {
+	font-size: 24px;
+    display: inline-block;
+    font-weight: 400;
+    margin-right: 10px;
+    line-height: 35px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 400px;
+    color: #fff;
+}
+#main .badge {
+	display: inline-block;
+    background: #fa6a43;
+    line-height: 22px;
+    padding: 0 11px;
+    border-radius: 15px;
+    vertical-align: middle;
+    margin-top: -24px;
+    font-size: 14px;
+}
+#main .name {
+    color: #fff;
+    padding: 8px 0 8px;
+}
+#main .vline {
+    background: #9fa3b0;
+    display: inline-block;
+    width: 1px;
+    height: 12px;
+    vertical-align: middle;
+    background: #e0e0e0;
+    margin: 0 10px;
+}
+#main .banner p {
+	font-size: 14px;
+}
+#main .info-company {
+	padding-top: 14px;
+	text-align: right;
+}
+#main .info-company h3 {
+	font-size: 24px;
+	padding-right: 90px;
+}
+#main .info-company p{
+	padding-top: 11px;
+	padding-right: 90px;
+}
+.job-sec h3 {
+    font-weight: 700;
+    font-size: 16px;
+    color: #424a5e;
+    line-height: 50px;
+    padding: 0 0 10px 0;
+    margin-top: 5px;
+    margin-bottom: 0;
+    background: url(../img/line.png) 0 45px no-repeat;
+}
+.job-sec .text {
+    color: #61687c;
+    line-height: 36px;
+    word-break: break-all;
+    word-wrap: break-word;
+    font-size: 15px;
+}
+#main .job button {
+    min-width: 130px;
+    box-sizing: content-box;
+    line-height: 36px;
+    border: 1px #409eff solid;
+    font-size: 16px;
+    color: #fff;
+    letter-spacing: 1px;
+    background: #409eff;
+    cursor: pointer;
+    margin-left: 850px;
+}
+a{text-decoration:none}

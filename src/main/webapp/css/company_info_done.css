@@ -1,0 +1,165 @@
+body{
+	background: #f2f2f5;
+}
+ul li{
+	list-style: none;
+}
+ .banner {
+	background: #444c60 url(../img/detail_bg.jpg) center center no-repeat;
+    height: 140px;
+    color: #fff;
+    padding-top: 20px;
+}
+ .info-company {
+	margin-left: 47px;
+	padding-top: 14px;
+	text-align: left;
+}
+.fl{
+	margin-left: 30px;
+}
+.info-company h3 {
+	font-size: 24px;
+	padding-right: 90px;
+}
+.info-company p{
+	padding-top: 11px;
+	padding-right: 90px;
+}
+ .time {
+    padding: 0 0 0 30px;
+    color: #e3e7ed;
+    font-size: 12px;
+    display: block;
+}
+ .time img {
+	margin-right: 5px;
+	height: 12px;
+	width: 11px;
+}
+.vline {
+    background: #9fa3b0;
+    display: inline-block;
+    width: 1px;
+    height: 12px;
+    vertical-align: middle;
+    background: #e0e0e0;
+    margin: 0 10px;
+}
+#section{
+	width: 1000px;
+	margin: auto;
+	margin-top: 10px;
+	padding-bottom: 30px;
+	font-size: 14px;
+	background-color: #fff;
+    box-shadow: 0 4px 6px rgba(6,0,1,.05);
+    border-radius: 8px;
+}
+.table{
+	margin-left: 35px;
+}
+h2{
+	font-weight: 400;
+	width: 50%;
+	margin-top: 15px;
+}
+.edit{
+	float: right;
+	color: #9e9e9e;
+	margin: 30px 50px 10px 0;
+	font-size: 20px;
+}
+.edit:hover{
+	cursor: pointer;
+	color: #4fc3f7; 
+}
+.company{
+	margin-left: 30px;
+	margin-bottom: 20px;
+	height: 140px;
+    color: #fff;
+    padding-top: 40px;
+}
+.title {
+    border-bottom: 1px solid #f2f3f3;
+    font-size: 16px;
+    padding: 20px 0 15px;
+    font-weight: 400;
+    margin-left: 50px;
+    margin-right: 30px;
+}
+.content {
+    margin-top: 28px;
+    padding-left: 90px;
+}
+.list{
+	display: block;
+	width: 45%;
+	padding: 10px 0px 20px 0px;
+	float: left;
+}
+.list-title{
+	display: inline-block;
+    margin: 0 30px 0 30px;
+    font-size: 14px;
+    float: left;
+}
+.list-content{
+
+}
+/*h6{
+	padding: 5px 10px 5px 10px;
+	border: 1px #4fc3f7 solid;
+	background-color: #4fc3f7;
+	color: #ffffff;
+	float: left;
+	border-radius: 20px;
+	margin-right: 5px;
+}*/
+#info-company{
+	margin-bottom: 30px;
+	margin-top: 20px;
+}
+#company-detail{
+	margin-bottom: 30px;
+}
+#company-introduce{
+	width: 700px;
+	float: left;
+}
+.introduce{
+	text-indent: 2em;
+	line-height: 25px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+}
+.company-introduce{
+	float: right;
+	margin-right: 80px;
+	margin-top: 43px;
+	text-indent: 2em;
+	line-height: 25px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    /*word-wrap:break-word;
+    white-space: normal;*/
+    width: 40%;
+    display:-webkit-box;
+	-webkit-line-clamp:3;
+	-webkit-box-orient:vertical;
+}
+.revise-btn {
+    display: inline-block;
+    line-height: 40px;
+    min-width: 100px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 870px;
+    background: #409EFF;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+}
+a{text-decoration:none}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>job-search</title>
+	<link rel="stylesheet" href="../css/jobList.css">
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/search.css">
+	<script src="../js/jquery-3.3.1.min.js"></script>
+	<script src="../js/all_ajax.js"></script>
+</head>
+<body>
+	<div id="header">
+		<div class="inner">
+			<img src="../img/logo.png" alt="" id="logo">
+			<a href="companyPage" class="nav-a">企业信息</a>
+			<a href="javascript:void(0)" class="nav-a focus-a">招聘信息</a>
+			<span class="fr user">HELLO,CHAOXX</span>
+			<img src="../img/people.png" alt="" class="fr people">
+		</div>		
+	</div>
+	<div class="section">
+		<div class="launch-job">
+			<h3 class="title">
+				招聘信息
+				<a href="job_add.html" class="add-btn fr" id="education-btn"><img src="../img/add.png" alt="">添加</a>
+			</h3>
+		</div>
+		<div style="clear: both;"></div>
+		<div class="job-list">
+			<ul>
+			</ul>
+		</div>
+	</div>
+	<div style="clear: both;"></div>
+	<div id="foot">	
+		<div class="inner">
+			<span>51JOB招聘平台 版权所有 Copyright © 2004-2018 All Rights Reserved</span>
+		</div>
+	</div>
+<script>
+	$(document).ready(function () {
+		$.ajax({
+			type:"get",
+			url:"/company/jobs",
+			success:function (data) {
+				var ul=$("body > div.section > div.job-list > ul");
+				$(ul).empty();
+				$.each(data.recruitment,function (i,item) {
+                    var content="<li>\n" +
+                        "\t\t\t\t\t<div class=\"job-primary\">\n" +
+                        "\t\t\t\t\t\t<div class=\"info-primary\">\n" +
+                        "\t\t\t\t\t\t\t<h3 class=\"name\">\n" +
+                        "\t\t\t\t\t\t\t\t<a target='_blank' href="+"jobPage?id="+item.recruitmentId+">\n" +
+                        "\t\t\t\t\t\t\t\t\t<div class=\"job-title\">\n" +
+                        "\t\t\t\t\t\t\t\t\t\t"+item.post+"\n" +
+                        "\t\t\t\t\t\t\t\t\t</div>\n" +
+                        "\t\t\t\t\t\t\t\t\t<span class=\"red\">\n" +
+                        "\t\t\t\t\t\t\t\t\t\t"+item.salary+"\n" +
+                        "\t\t\t\t\t\t\t\t\t</span>\n" +
+                        "\t\t\t\t\t\t\t\t\t\n" +
+                        "\t\t\t\t\t\t\t\t</a>\n" +
+                        "\t\t\t\t\t\t\t</h3>\n" +
+                        "\t\t\t\t\t\t\t<p>\n" +
+                        "\t\t\t\t\t\t\t\t"+data.enterprise.actualDomicile+"\n" +
+                        "\t\t\t\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                        "\t\t\t\t\t\t\t\t"+item.minSeniority+"年\n" +
+                        "\t\t\t\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                        "\t\t\t\t\t\t\t\t"+item.actualMinDegree+"\n" +
+                        "\t\t\t\t\t\t\t</p>\n" +
+                        "\t\t\t\t\t\t</div>\n" +
+                        "\t\t\t\t\t\t<div class=\"info-company\">\n" +
+                        "\t\t\t\t\t\t\t<div class=\"company-context\">\n" +
+                        "\t\t\t\t\t\t\t\t<h3 class=\"name\">\n" +
+                        "\t\t\t\t\t\t\t\t\t<a href='companyPage'>\n" +
+                        "\t\t\t\t\t\t\t\t\t\t"+data.enterprise.name+"\n" +
+                        "\t\t\t\t\t\t\t\t\t</a>\n" +
+                        "\t\t\t\t\t\t\t\t</h3>\n" +
+                        "\t\t\t\t\t\t\t\t<p>\n" +
+                        "\t\t\t\t\t\t\t\t\t"+data.enterprise.actualIndustry+"\n" +
+                        "\t\t\t\t\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                        "\t\t\t\t\t\t\t\t\t"+data.enterprise.actualScale+"\n" +
+                        "\t\t\t\t\t\t\t\t</p>\n" +
+                        "\t\t\t\t\t\t\t</div>\n" +
+                        "\t\t\t\t\t\t</div>\n" +
+                        "\t\t\t\t\t\t<div class=\"info-publis fl\">\n" +
+                        "\t\t\t\t\t\t\t<a target='_blank' class='checkApps' href='resumeList?id="+item.recruitmentId+"' class=\"name\">\n" +
+                        "\t\t\t\t\t\t\t\t查看简历列表\n" +
+                        "\t\t\t\t\t\t\t</a>\n" +
+                        "\t\t\t\t\t\t\t<p>\n" +
+                        "\t\t\t\t\t\t\t\t发布于: "+msTimeStampToDate(item.time)+"\n" +
+                        "\t\t\t\t\t\t\t</p>\n" +
+                        "\t\t\t\t\t\t</div>\n" +
+                        "\t\t\t\t\t\t<div class=\"close\">\n" +
+                        "\t\t\t\t\t\t\t<button class=\"close-btn\">\n" +
+                        "\t\t\t\t\t\t\t\t关闭招聘\n" +
+                        "\t\t\t\t\t\t\t</button>\n" +
+                        "\t\t\t\t\t\t</div>\n" +
+                        "\t\t\t\t\t</div>\n" +
+                        "\t\t\t\t</li>";
+                    $(ul).append(content);
+                });
+
+            }
+		});
+    })
+</script>
+</body>
+</html>
