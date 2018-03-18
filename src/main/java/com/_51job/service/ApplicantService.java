@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Random;
 
 
 @Service
@@ -45,74 +45,97 @@ public class ApplicantService {
     }
 
     //列出合适的岗位
-//    public List<EnterpriseResume> suitJobs() {
-//        List<Recruitment> r_list = applicantDao.getPart(Recruitment.class);
-//        List<EnterpriseResume> lst = new ArrayList<>();
-//        int l_size = r_list.size();
-//        for (int i = 0; i < l_size; i++) {
-//            //对recruitment对象进行操作
-//            int recruitment_id = r_list.get(i).getRecruitmentId();
-//            Recruitment recruitment = applicantDao.get(Recruitment.class, recruitment_id);
-//            Recruitment recruitment1 = changeMindegree(recruitment);
-//            Enterprise enterprise = returnEnterprise(recruitment);
-//            EnterpriseResume enterpriseResume = new EnterpriseResume();
-//            enterpriseResume.setRecruitment(recruitment1);
-//            enterpriseResume.setEnterprise(enterprise);
-//            lst.add(enterpriseResume);
-//        }
-//        return lst;
-//
-//    }
+    public List<EnterpriseResume> suitJobs(int userid) {
+        List<EnterpriseResume> list=new ArrayList<>();
+        Random random=new Random();
+        if(userid==0){//没有登录，随机推荐20个
+            for(int i=0;i<20;i++){
+                Recruitment recruitment=DataUtil.getRecruitment(random.nextInt(90000));
+                while (recruitment==null){
+                    recruitment=DataUtil.getRecruitment(random.nextInt(90000));
+                    if(recruitment!=null)break;
+                }
+                list.add(new EnterpriseResume(DataUtil.getEnterprise(recruitment.getEnterpriseId()),recruitment));
+            }
+        }else {
+            List<Recruitment> recruitments=DataUtil.recommends(userid);
+            for(Recruitment recruitment: recruitments){
+                list.add(new EnterpriseResume(DataUtil.getEnterprise(recruitment.getEnterpriseId()),recruitment));
+            }
+        }
+        for(EnterpriseResume enterpriseResume: list){
+            enterpriseResume.getEnterprise().setActualDomicile(DataUtil.getDictionary(enterpriseResume.getEnterprise().getDomicile()).getDictionaryName());
+            enterpriseResume.getEnterprise().setActualScale(DataUtil.getDictionary(enterpriseResume.getEnterprise().getScale()).getDictionaryName());
+            enterpriseResume.getEnterprise().setActualIndustry(DataUtil.getDictionary(enterpriseResume.getEnterprise().getIndustry()).getDictionaryName());
+            enterpriseResume.getEnterprise().setActualType(DataUtil.getDictionary(enterpriseResume.getEnterprise().getType()).getDictionaryName());
+            enterpriseResume.getRecruitment().setActualFunction(DataUtil.getDictionary(enterpriseResume.getRecruitment().getFunction()).getDictionaryName());
+            enterpriseResume.getRecruitment().setActualMinDegree(DataUtil.getDictionary(enterpriseResume.getRecruitment().getMinDegree()).getDictionaryName());
+        }
+        return list;
+    }
     //ok
     //获取投递的岗位以及对应的状态
     public List<PostInfoState> sentJobstate(int id){
-        System.out.println("start search");
         List<Application> list = applicantDao.oneToMany(id, Applicant.class, Application.class);
-        List<Recruitment> list1 = new ArrayList<>();
         List<PostInfoState> lst = new ArrayList<>();
-        int lsize = list.size();
-        for (int i = 0; i < lsize; i++) {
+        for (Application aList : list) {
             PostInfoState postInfoState = new PostInfoState();
-            Application application = list.get(i);
-            System.out.println("get application");
-            postInfoState.setApplication(application);
-            System.out.println("set application");
-            int recruitment_id = application.getRecruitmentId();
-            System.out.println("recruitment_id:"+recruitment_id);
-            Recruitment recruitment = applicantDao.get(Recruitment.class,recruitment_id);
-            Recruitment recruitment1 = changeMindegree(recruitment);
-            System.out.println("get recruitment1");
-            postInfoState.setRecruitment(recruitment1);
-            Enterprise enterprise = returnEnterprise(recruitment);
-            System.out.println(enterprise);
+            postInfoState.setApplication(aList);
+            int recruitment_id = aList.getRecruitmentId();
+            Recruitment recruitment = DataUtil.getRecruitment(recruitment_id);
+            recruitment.setActualMinDegree(DataUtil.getDictionary(recruitment.getMinDegree()).getDictionaryName());
+            postInfoState.setRecruitment(recruitment);
+            Enterprise enterprise = DataUtil.getEnterprise(recruitment_id);
+            enterprise.setActualDomicile(DataUtil.getDictionary(enterprise.getDomicile()).getDictionaryName());
+            int scale = enterprise.getScale();
+            enterprise.setActualScale(DataUtil.getDictionary(scale).getDictionaryName());
+            int industry = enterprise.getIndustry();
+            enterprise.setActualIndustry(DataUtil.getDictionary(industry).getDictionaryName());
             postInfoState.setEnterprise(enterprise);
-            System.out.println(postInfoState);
             lst.add(postInfoState);
+            switch (aList.getApplicationState()) {
+                case 1:
+                    aList.setActualApplicationState("审核中");
+                    break;
+                case 2:
+                    aList.setActualApplicationState("已录用");
+                    break;
+                case 3:
+                    aList.setActualApplicationState("未录用");
+                    break;
+            }
         }
         return lst;
-
-        }
+    }
 
 
     //保存求职者简历
     public boolean saveResume(int user_id,String str_applicant,String str_language,
                 String str_skill, String str_workexp,
-                String str_eduexp, String prelocation,
-                String preindustry, String prefunction) throws ParseException {
+                String str_eduexp) throws ParseException {
 
         boolean r1 = saveApplicant(str_applicant);
         boolean r2 = saveLanguage(str_language);
         boolean r3 =saveSkill(str_skill);
         boolean r4 =saveWorkingExperience(user_id,str_workexp);
         boolean r5 =saveEducationExperience(user_id,str_eduexp);
-        boolean r6 =savePreferredLocation(prelocation);
-        boolean r7 =savePreferredIndustry(preindustry);
-        boolean r8 =savePreferredFunction(prefunction);
-        if (r1&&r2&&r3&&r4&&r5&&r6&&r7&&r8)return true;
+        if (r1&&r2&&r3&&r4&&r5)return true;
         return false;
     }
 
-    public boolean saveApplicant(String str_applicant){
+    public boolean applicate(int rId, int userId){
+        Application application=new Application();
+        application.setRecruitmentId(rId);
+        application.setApplicantId(userId);
+        application.setApplicationState(1);
+        application.setApplicationTime(new Timestamp(new Date().getTime()));
+        return applicantDao.save(application)>0;
+    }
+
+    //获取简历信息
+
+
+    private boolean saveApplicant(String str_applicant){
         Applicant applicant = (Applicant) jsonTojava(str_applicant,Applicant.class);
         applicant.setGender(getBytegender(applicant.getActualGender()));
         applicant.setDomicile(getIntDomicile(applicant.getActualDomicile()));
@@ -122,139 +145,89 @@ public class ApplicantService {
         applicant.setUserId(applicant_id);
         if (applicant_id  > 0) return true;
         return false;
-
     }
 
     public boolean saveLanguage(String str_language){
-        Language language = (Language) jsonTojava(str_language,Language.class);
-        language.setLanguage(getIntLanguage(language.getActualLanguage()));
-        language.setxAbility(getByteSkillLevel(language.getActualXAbility()));
-        language.setRwAbility(getByteSkillLevel(language.getActualRwAbility()));
-        int language_id = applicantDao.save(language);
-        language.setLanguageId(language_id);
-        if (language_id  > 0)return true;
-        return false;
+        List<Language> languageList = JSON.parseArray(str_language,Language.class);
+        for (Language language:languageList){
+            language.setLanguage(getIntLanguage(language.getActualLanguage()));
+            language.setxAbility(getByteSkillLevel(language.getActualXAbility()));
+            language.setRwAbility(getByteSkillLevel(language.getActualRwAbility()));
+            applicantDao.save(language);
+            //int language_id = applicantDao.save(language);
+            //language.setLanguageId(language_id);
+        }
+        return true;
     }
 
     public boolean saveSkill(String str_skill){
-        Skill skill = (Skill) jsonTojava(str_skill,Skill.class);
-        skill.setSkillName(getIntSkillName(skill.getActualSkillName()));
-        skill.setLevel(getByteSkillLevel(skill.getActualLevel()));
-        int skill_id = applicantDao.save(skill);
-        skill.setSkillId(skill_id);
-        if (skill_id >0)return true;
-        return false;
-
+        List<Skill> skillList = JSON.parseArray(str_skill,Skill.class);
+        for (Skill skill:skillList){
+            skill.setSkillName(getIntSkillName(skill.getActualSkillName()));
+            skill.setLevel(getByteSkillLevel(skill.getActualLevel()));
+            applicantDao.save(skill);
+//            int skill_id = applicantDao.save(skill);
+//            skill.setSkillId(skill_id);
+        }
+        return true;
     }
 
 
     public boolean saveWorkingExperience(int user_id,String str_workexp) throws ParseException {
-        WorkingExperience workingExperience = (WorkingExperience) jsonTojava(str_workexp,WorkingExperience.class);
-        workingExperience.setEnterpriseType(getIntEnterpriseType(workingExperience.getActualEnterpriseType()));
-        workingExperience.setEnterpriseScale(getIntEnterpriseScale(workingExperience.getActualEnterpriseScale()));
-        workingExperience.setIndustry(getIntIndustry(workingExperience.getActualIndustry()));
-        workingExperience.setFunction(getIntFunction(workingExperience.getActualFunction()));
-        workingExperience.setWorkType(getByteWorkType(workingExperience.getActualWorkType()));
-        Experience experience = new Experience();
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        experience.setStartTime(new Timestamp(format.parse(workingExperience.getStartTime()).getTime()));
-        experience.setEndTime(new Timestamp(format.parse(workingExperience.getEndTime()).getTime()));
-        experience.setUserId(user_id);
-        int experience_id = applicantDao.save(experience);
-        workingExperience.setWexperienceId(experience_id);
-        int wexperience_id = applicantDao.save(workingExperience);
-        if (wexperience_id == experience_id)return true;
-        return false;
+
+        List<WorkingExperience> workingExperienceList = JSON.parseArray(str_workexp,WorkingExperience.class);
+        for (WorkingExperience workingExperience :workingExperienceList){
+            workingExperience.setEnterpriseType(getIntEnterpriseType(workingExperience.getActualEnterpriseType()));
+            workingExperience.setEnterpriseScale(getIntEnterpriseScale(workingExperience.getActualEnterpriseScale()));
+            workingExperience.setIndustry(getIntIndustry(workingExperience.getActualIndustry()));
+            workingExperience.setFunction(getIntFunction(workingExperience.getActualFunction()));
+            workingExperience.setWorkType(getByteWorkType(workingExperience.getActualWorkType()));
+            Experience experience = new Experience();
+            SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            experience.setStartTime(new Timestamp(format.parse(workingExperience.getStartTime()).getTime()));
+            experience.setEndTime(new Timestamp(format.parse(workingExperience.getEndTime()).getTime()));
+            experience.setUserId(user_id);
+            int experience_id = applicantDao.save(experience);
+            workingExperience.setWexperienceId(experience_id);
+            applicantDao.save(workingExperience);
+//            int wexperience_id = applicantDao.save(workingExperience);
+        }
+        return true;
     }
 
 
 
     public boolean saveEducationExperience(int user_id,String str_eduexp) throws ParseException {
-        EducationExperience educationExperience = (EducationExperience) jsonTojava(str_eduexp,EducationExperience.class);
-        educationExperience.setStudentType(getIntStdType(educationExperience.getActualStudentType()));
-        educationExperience.setDegree(getIntDegree(educationExperience.getActualDegree()));
-        Experience experience = new Experience();
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        experience.setStartTime(new Timestamp(format.parse(educationExperience.getStartTime()).getTime()));
-        experience.setEndTime(new Timestamp(format.parse(educationExperience.getEndTime()).getTime()));
-        experience.setUserId(user_id);
-        int experience_id = applicantDao.save(experience);
-        educationExperience.setEexperienceId(experience_id);
-        int eexperience_id = applicantDao.save(educationExperience);
-        educationExperience.setEexperienceId(eexperience_id);
-        if (eexperience_id == experience_id)return true;
-        return false;
-
-    }public boolean savePreferredLocation(String prelocation){
-        PreferredLocation preferredLocation = (PreferredLocation) jsonTojava(prelocation,PreferredLocation.class);
-        preferredLocation.setLoactionId(getIntDomicile(preferredLocation.getActualLocation()));
-        int plocation_id = applicantDao.save(preferredLocation);
-        preferredLocation.setPlocationId(plocation_id);
-        if (plocation_id>0)return true;
-        return false;
-    }
-
-    public boolean savePreferredIndustry(String preindustry){
-        PreferredIndustry preferredIndustry = (PreferredIndustry) jsonTojava(preindustry,PreferredIndustry.class);
-        preferredIndustry.setIndustry(getIntIndustry(preferredIndustry.getActualIndustry()));
-        int pindustry_id = applicantDao.save(preferredIndustry);
-        preferredIndustry.setPindustryId(pindustry_id);
-        if (pindustry_id >0)return true;
-        return false;
+        List<EducationExperience> educationExperienceList = JSON.parseArray(str_eduexp,EducationExperience.class);
+        for (EducationExperience educationExperience :educationExperienceList){
+            educationExperience.setStudentType(getIntStdType(educationExperience.getActualStudentType()));
+            educationExperience.setDegree(getIntDegree(educationExperience.getActualDegree()));
+            Experience experience = new Experience();
+            SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            experience.setStartTime(new Timestamp(format.parse(educationExperience.getStartTime()).getTime()));
+            experience.setEndTime(new Timestamp(format.parse(educationExperience.getEndTime()).getTime()));
+            experience.setUserId(user_id);
+            int experience_id = applicantDao.save(experience);
+            educationExperience.setEexperienceId(experience_id);
+            applicantDao.save(educationExperience);
+//            int eexperience_id = applicantDao.save(educationExperience);
+        }
+        return true;
 
     }
-
-    public boolean savePreferredFunction(String prefunction){
-        PreferredFunction preferredFunction = (PreferredFunction) jsonTojava(prefunction,PreferredFunction.class);
-        preferredFunction.setFunction(getIntFunction(preferredFunction.getActualFunction()));
-        int pfunction_id = applicantDao.save(preferredFunction);
-        preferredFunction.setPfunctionId(pfunction_id);
-        if (pfunction_id>0)return true;
-        return false;
-    }
-
 
 
 
     //将JSON对象转换为Java对象
-    public <T> Object jsonTojava(String str,Class<T> tClass){
+    private <T> Object jsonTojava(String str, Class<T> tClass){
         JSONObject jsonObject = JSON.parseObject(str);
         Object object = jsonObject.toJavaObject(tClass.getClass());
         return object;
     }
 
-
-
-
-
-    //将min_degree转为String
-    public Recruitment changeMindegree(Recruitment recruitment){
-        //将min_degree由int转为string
-        int min_degree = recruitment.getMinDegree();
-        List<Dictionary> degrees =DataUtil.allDegrees();
-        String actualMinDegree = intToString(min_degree,degrees);
-        recruitment.setActualMinDegree(actualMinDegree);
-        return recruitment;
-    }
-
-
-    //返回Enterprise实例
-    public Enterprise returnEnterprise(Recruitment recruitment){
-        int enterprise_id = recruitment.getEnterpriseId();
-        Enterprise enterprise = applicantDao.get(Enterprise.class,enterprise_id);
-        int scale = enterprise.getScale();
-        List<Dictionary> scales = DataUtil.allScales();
-        String actualScale = intToString(scale,scales);
-        enterprise.setActualScale(actualScale);
-        int industry = enterprise.getIndustry();
-        List<Dictionary> industries = DataUtil.allIndystries();
-        String actualIndustry = intToString(industry,industries);
-        enterprise.setActualIndustry(actualIndustry);
-        return enterprise;
-    }
-    public byte getBytegender(String gender){
+    private byte getBytegender(String gender){
         byte sex;
-        if (gender=="男") sex = 0;
+        if (gender.equals("男")) sex = 0;
         else sex = 1;
         return sex;
 
@@ -267,13 +240,7 @@ public class ApplicantService {
     }
 
     public byte getByteWorkStatus(String state){
-        byte status =0;
-        switch (state){
-            case "离岗": status=1; break;
-            case "在岗": status=2; break;
-            case "在岗 & 有换岗需求": status=3;break;
-        }
-        return status;
+        return (byte)1;
     }
 
 
@@ -367,7 +334,7 @@ public class ApplicantService {
         for (int i=0;i<list.size();i++){
             Dictionary dict = list.get(i);
             String attrbt = dict.getDictionaryName();
-            if (attribute==attrbt) return dict.getDictionaryId();
+            if (attribute.contains(attrbt)) return dict.getDictionaryId();
         }
         return 0;
     }

@@ -181,7 +181,7 @@ public class ZLZP implements PageProcessor,Runnable {
                 enterprise.setIndustry(inds_id);
                 enterprise.setAddress(addr);
                 enterprise.setDescription(desc);
-                enterprise.setDomicile(181);
+                enterprise.setDomicile(214);
                 enterprise.setFoundingTime(new Timestamp(new Date().getTime()));
                 if(enterprise.getIndustry()!=0&&enterprise.getType()!=0&&enterprise.getAddress()!=null)enterprises.add(enterprise);
             }
@@ -250,7 +250,7 @@ public class ZLZP implements PageProcessor,Runnable {
         for(int i=0;i<40;i++){
             for (Dictionary dictionary1 : skills) {
                 String skill = dictionary1.getDictionaryName();
-                urls.add("http://sou.zhaopin.com/jobs/searchresult.ashx?jl=西安&kw=" + skill + "&isadv=0&sg=0390cfbf86794329aa5a271e7fb4029d&p=" + (i + 1));
+                urls.add("http://sou.zhaopin.com/jobs/searchresult.ashx?jl=厦门&kw=" + skill + "&isadv=0&sg=0390cfbf86794329aa5a271e7fb4029d&p=" + (i + 1));
             }
         }
         String n="http://sou.zhaopin.com/jobs/searchresult.ashx?jl=深圳&kw=python&isadv=0&sg=0390cfbf86794329aa5a271e7fb4029d&p=";

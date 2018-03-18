@@ -9,6 +9,16 @@ public class User implements Serializable {
     private String password;
     private Integer role;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    private String name;
+
     public int getUserId() {
         return userId;
     }

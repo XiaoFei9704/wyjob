@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -26,7 +27,6 @@ public class CommonController {
     @RequestMapping(value="/signin",method = RequestMethod.GET)
     @ResponseBody
     public int signin(String account, String password, HttpServletRequest request){
-        System.out.println("fff");
         User user=commonService.signin(account,password);
         if(user==null)
             return 0;
@@ -78,10 +78,70 @@ public class CommonController {
         return "job_search";
     }
 
-    /*//修改密码
-    @RequestMapping(value="/changePassword",method = RequestMethod.POST)
+    @RequestMapping(value = "/loginPage")
+    public String loginPage(){
+        return "login";
+    }
+
+    @RequestMapping(value = "/resumePage")
+    public String resumePage(HttpServletRequest request){
+        HttpSession session=request.getSession();
+        User user=(User)session.getAttribute("user");
+        if(user==null)return "login";
+        else{
+            if(user.getRole()==1)return "resume_info";
+            else return "company_info";
+        }
+    }
+    @RequestMapping(value = "/recommendPage")
+    public String recommendPage(HttpServletRequest request){
+        HttpSession session=request.getSession();
+        User user=(User)session.getAttribute("user");
+        if(user!=null&&user.getRole()==1)return "job_recommend";
+        if(user!=null&&user.getRole()==2) return "company_info";
+        if(user==null)return "job_recommend";
+        return "";
+    }
+    @RequestMapping(value = "/applicationPage")
+    public String applicationPage(HttpServletRequest request){
+        HttpSession session=request.getSession();
+        User user=(User)session.getAttribute("user");
+        if(user==null)return "login";
+        else{
+            if(user.getRole()==1)return "application";
+            else return "company_info";
+        }
+    }
+    @RequestMapping(value = "/companyPage")
+    public String companyPage(){
+        return "company_info";
+    }
+    @RequestMapping(value = "/getUser", method = RequestMethod.POST)
     @ResponseBody
-    public boolean changePassword(String password){
-        return false;
-    }*/
+    public User getUser(HttpServletRequest request){
+        HttpSession session=request.getSession();
+        return session.getAttribute("user")!=null?(User)session.getAttribute("user"):null;
+    }
+    @RequestMapping(value = "/recPage")
+    public String recInfo(HttpServletRequest request){
+        HttpSession session=request.getSession();
+        if(session.getAttribute("user")==null)return "login";
+        else return "job_list";
+    }
+    @RequestMapping(value = "/resumeList")
+    public ModelAndView resumeList(int id){
+        ModelAndView modelAndView=new ModelAndView("resume_list");
+        modelAndView.addObject("id",id);
+        return modelAndView;
+    }
+    @RequestMapping(value = "/jobPage")
+    public ModelAndView jobPage(int id){
+        ModelAndView modelAndView=new ModelAndView("job_detail");
+        modelAndView.addObject("id",id);
+        return modelAndView;
+    }
+    @RequestMapping(value = "/resumeRevise")
+    public String resumeRevice(){
+        return "resume_revise";
+    }
 }

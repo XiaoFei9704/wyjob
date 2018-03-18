@@ -4,6 +4,7 @@ import com._51job.dao.EnterpriseDao;
 import com._51job.domain.*;
 import com._51job.tool.DataUtil;
 import com._51job.web.PostInfo;
+import com._51job.web.PostInfoState;
 import com._51job.web.ResumeInfo;
 import com._51job.web.SimpleResume;
 import com.alibaba.fastjson.JSON;
@@ -17,6 +18,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -56,6 +58,21 @@ public class EnterpriseService {
         return post;
     }
 
+    //岗位详情
+    public PostInfoState getRecruitment(int id){
+        PostInfoState postInfoState=new PostInfoState();
+        postInfoState.setRecruitment(DataUtil.getRecruitment(id));
+        postInfoState.setEnterprise(DataUtil.getEnterprise(postInfoState.getRecruitment().getEnterpriseId()));
+        postInfoState.getRecruitment().setActualFunction(DataUtil.getDictionary(postInfoState.getRecruitment().getFunction()).getDictionaryName());
+        postInfoState.getRecruitment().setActualWorkType(DataUtil.getDictionary(postInfoState.getRecruitment().getWorkType()).getDictionaryName());
+        postInfoState.getRecruitment().setActualMinDegree(DataUtil.getDictionary(postInfoState.getRecruitment().getMinDegree()).getDictionaryName());
+        postInfoState.getEnterprise().setActualDomicile(DataUtil.getDictionary(postInfoState.getEnterprise().getDomicile()).getDictionaryName());
+        postInfoState.getEnterprise().setActualScale(DataUtil.getDictionary(postInfoState.getEnterprise().getScale()).getDictionaryName());
+        postInfoState.getEnterprise().setActualIndustry(DataUtil.getDictionary(postInfoState.getEnterprise().getIndustry()).getDictionaryName());
+        postInfoState.getEnterprise().setActualType(DataUtil.getDictionary(postInfoState.getEnterprise().getType()).getDictionaryName());
+        return postInfoState;
+    }
+
     //获取指定招聘信息投递来的简历列表
     public List<SimpleResume> getSpecificPost(int recruitmentId){
         List<SimpleResume> simpleList=new ArrayList<>();
@@ -78,9 +95,11 @@ public class EnterpriseService {
 
 
     //获取指定的简历的详情
-    public ResumeInfo getSpecificResume(int applicationId){
+    public ResumeInfo getSpecificResume(int applicationId, boolean f){
         ResumeInfo resumeInfo=new ResumeInfo();
-        int applicantId=enterpriseDao.getApplicantId(applicationId);
+        int applicantId;
+        if(f)applicantId=enterpriseDao.getApplicantId(applicationId);
+        else applicantId=applicationId;
         Applicant applicant=getActualInfoApplicant(applicantId);
         List<Experience> expList=getSpecificExperience(applicantId);
         if(expList.size()>0) {
@@ -144,6 +163,15 @@ public class EnterpriseService {
             enterpriseDao.save(enterprise);
         }
         return user1;
+    }
+
+    public Enterprise enterprise(int id){
+        Enterprise enterprise = DataUtil.getEnterprise(id);
+        enterprise.setActualType(DataUtil.getDictionary(enterprise.getType()).getDictionaryName());
+        enterprise.setActualScale(DataUtil.getDictionary(enterprise.getScale()).getDictionaryName());
+        enterprise.setActualIndustry(DataUtil.getDictionary(enterprise.getIndustry()).getDictionaryName());
+        enterprise.setActualDomicile(DataUtil.getDictionary(enterprise.getDomicile()).getDictionaryName());
+        return enterprise;
     }
 
     //获得某个求职者的最高学历

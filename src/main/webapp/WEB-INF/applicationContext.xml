@@ -22,9 +22,9 @@
     </bean>
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://47.94.86.98/wyjob?characterEncoding=UTF8&amp;useUnicode=true" />
-        <property name="username" value="testuser"/>
-        <property name="password" value="W1Hw4YuOuEqEC2Gu"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/wyjob?characterEncoding=UTF8&amp;useUnicode=true" />
+        <property name="username" value="root"/>
+        <property name="password" value="123456"/>
     </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" lazy-init="false">

@@ -1,10 +1,8 @@
 package com._51job.service;
 
 import com._51job.dao.CommonDao;
+import com._51job.domain.*;
 import com._51job.domain.Dictionary;
-import com._51job.domain.Enterprise;
-import com._51job.domain.Recruitment;
-import com._51job.domain.User;
 import com._51job.tool.DataUtil;
 import com._51job.tool.SerializeUtil;
 import com._51job.web.SearchResults;
@@ -31,6 +29,10 @@ public class CommonService {
     //登陆
     public User signin(String username,String password){
         User user=commonDao.getMatchCount(username, password);
+        if(user!=null){
+            if(user.getRole()==1)user.setName(commonDao.get(Applicant.class,user.getUserId()).getName());
+            else user.setName(commonDao.get(Enterprise.class,user.getUserId()).getName());
+        }
         return user;
     }
     //账户查重（true:用户名可用；false:用户名重复）
@@ -118,14 +120,18 @@ public class CommonService {
         int min_degree=0;
         List<Dictionary> cities=DataUtil.allCities();
         List<Dictionary> degrees=DataUtil.allDegrees();
-        if(city!=null){
+        if(city!=null&&city.length()>0){
             for(Dictionary dictionary: cities){
-                if(dictionary.getDictionaryName().contains(city))city_id=dictionary.getDictionaryId();
+                if(dictionary.getDictionaryName().contains(city)){
+                    city_id=dictionary.getDictionaryId();break;
+                }
             }
         }
         if(degree!=null){
             for(Dictionary dictionary:degrees){
-                if(dictionary.getDictionaryName().contains(degree))min_degree=dictionary.getDictionaryId();
+                if(dictionary.getDictionaryName().contains(degree)){
+                    min_degree=dictionary.getDictionaryId();break;
+                }
             }
         }
         List<SearchResults> temp=new ArrayList<>();
@@ -145,10 +151,13 @@ public class CommonService {
         //第二次过滤：根据关键词，关键词用空格分开，每个词语可能是公司名或者职位名之部分
         List<SearchResults> temp2=new ArrayList<>();
         if(keyWord!=null){
+            keyWord=keyWord.toUpperCase();
             List<String> words=Arrays.asList(keyWord.split(" "));
             for(String word : words){
                 for(SearchResults searchResults: temp) {
-                    if (searchResults.getRecruitment().getPost().contains(word) || searchResults.getEnterprise().getName().contains(word)) temp2.add(searchResults);
+                    searchResults.getEnterprise().setName(searchResults.getEnterprise().getName().toUpperCase());
+                    searchResults.getRecruitment().setPost(searchResults.getRecruitment().getPost().toUpperCase());
+                    if (searchResults.getRecruitment().getPost().contains(word) || searchResults.getEnterprise().getName().contains(word) || searchResults.getRecruitment().getDescription().contains(keyWord)) temp2.add(searchResults);
                 }
             }
         }else temp2.addAll(temp);
@@ -168,10 +177,19 @@ public class CommonService {
         }else temp2.addAll(temp);
         temp.clear();
         //第五次过滤：工作经验
-        if(seniority>=0){
+        if(seniority>0){
             for(SearchResults searchResults: temp2){
                 if(searchResults.getRecruitment().getMinSeniority()<=seniority)temp.add(searchResults);
             }
+        }else{
+            temp.addAll(temp2);
+        }
+        for(SearchResults searchResults: temp){
+            searchResults.getEnterprise().setActualDomicile(DataUtil.getDictionary(searchResults.getEnterprise().getDomicile()).getDictionaryName());
+            searchResults.getRecruitment().setActualMinDegree(DataUtil.getDictionary(searchResults.getRecruitment().getMinDegree()).getDictionaryName());
+            searchResults.getEnterprise().setActualIndustry(DataUtil.getDictionary(searchResults.getEnterprise().getIndustry()).getDictionaryName());
+            searchResults.getEnterprise().setActualScale(DataUtil.getDictionary(searchResults.getEnterprise().getScale()).getDictionaryName());
+            searchResults.getEnterprise().setActualType(DataUtil.getDictionary(searchResults.getEnterprise().getType()).getDictionaryName());
         }
         return temp;
 

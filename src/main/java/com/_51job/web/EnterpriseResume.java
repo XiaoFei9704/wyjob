@@ -7,6 +7,15 @@ public class EnterpriseResume {
     private Enterprise enterprise;
     private Recruitment recruitment;
 
+    public EnterpriseResume() {
+    }
+
+    public EnterpriseResume(Enterprise enterprise, Recruitment recruitment) {
+
+        this.enterprise = enterprise;
+        this.recruitment = recruitment;
+    }
+
     public Enterprise getEnterprise() {
         return enterprise;
     }

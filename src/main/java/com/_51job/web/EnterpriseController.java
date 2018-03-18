@@ -1,9 +1,12 @@
 package com._51job.web;
 
 import com._51job.domain.Enterprise;
+import com._51job.domain.Recruitment;
 import com._51job.domain.User;
         import com._51job.service.EnterpriseService;
-        import org.springframework.beans.factory.annotation.Autowired;
+import com._51job.tool.DataUtil;
+import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.stereotype.Controller;
         import org.springframework.web.bind.annotation.RequestMapping;
         import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,8 +49,12 @@ public class EnterpriseController {
     //获取所发布的岗位列表以及状态
     @RequestMapping(value = "/jobs", method = RequestMethod.GET)
     @ResponseBody
-    public PostInfo jobs(int company_id){
+    public PostInfo jobs(HttpServletRequest request){
         //指定的岗位列表
+        HttpSession session=request.getSession();
+        User user=(User)session.getAttribute("user");
+        if(user==null)return null;
+        int company_id=user.getUserId();
         PostInfo list=enterpriseService.getPost(company_id);
         return list;
     }
@@ -64,9 +71,16 @@ public class EnterpriseController {
     //获取指定简历详情
     @RequestMapping(value = "/resumeDetail", method = RequestMethod.GET)
     @ResponseBody
-    public ResumeInfo resumeDetail(int resumeId){
+    public ResumeInfo resumeDetail(Integer resumeId,HttpServletRequest request){
         //return：JSON，简历详情
-        ResumeInfo resumeInfo=enterpriseService.getSpecificResume(resumeId);
+        if(resumeId==null){
+            HttpSession session=request.getSession();
+            User user=(User) session.getAttribute("user");
+            resumeId=user.getUserId();
+        }
+        ResumeInfo resumeInfo;
+        if(request.getSession().getAttribute("user")==null)resumeInfo=enterpriseService.getSpecificResume(resumeId,true);
+        else resumeInfo=enterpriseService.getSpecificResume(resumeId,false);
         return resumeInfo;
     }
 
@@ -93,12 +107,31 @@ public class EnterpriseController {
     @RequestMapping(value="/register",method = RequestMethod.GET)
     @ResponseBody
     public boolean companyRegister(String account, String password, String name, HttpServletRequest request){
-        boolean flag=false;
         User user= enterpriseService.getCompanyReg(account,password,name);
-        if (user==null)  return flag;
-        else flag=true;
+        if (user==null)  return false;
         HttpSession session=request.getSession();
         session.setAttribute("user",user);
-        return flag;
+        return true;
+    }
+
+    //企业详情
+    @RequestMapping(value = "/enterprise")
+    @ResponseBody
+    public Enterprise enterprise(HttpServletRequest request,Integer id){
+        HttpSession session=request.getSession();
+        User user=(User)session.getAttribute("user");
+        if(id!=0)return enterpriseService.enterprise(id);
+        else return enterpriseService.enterprise(user.getUserId());
+    }
+
+    @RequestMapping(value = "/jobDetail")
+    @ResponseBody
+    public PostInfoState jobDetail(int id, HttpServletRequest request){
+        HttpSession session=request.getSession();
+        User user=(User) session.getAttribute("user");
+        if(user!=null){//保存浏览记录
+            DataUtil.saveLog(user.getUserId(),id);
+        }
+        return enterpriseService.getRecruitment(id);
     }
 }
