@@ -103,8 +103,15 @@ public class EnterpriseController {
         return result;
     }
 
+    //开启招聘
+    @RequestMapping(value = "/openJob", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean openJob(int jobId){
+        return enterpriseService.openJob(jobId);
+    }
+
     //注册企业
-    @RequestMapping(value="/register",method = RequestMethod.GET)
+    @RequestMapping(value="/register",method = RequestMethod.POST)
     @ResponseBody
     public boolean companyRegister(String account, String password, String name, HttpServletRequest request){
         User user= enterpriseService.getCompanyReg(account,password,name);

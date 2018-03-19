@@ -13,12 +13,12 @@
 	<div id="header">
 		<div class="inner">
 			<img src="../img/logo.png" alt="" id="logo">
-			<a href="" class="nav-a">职位搜索</a>
-			<a href="" class="nav-a">我的简历</a>
-			<a href="" class="nav-a">职位推荐</a>
-			<a href="" class="nav-a">我的申请</a>
+			<a href="front" class="nav-a">职位搜索</a>
+			<a href="resumePage" class="nav-a">我的简历</a>
+			<a href="recommendPage" class="nav-a">职位推荐</a>
+			<a href="applicantPage" class="nav-a">我的申请</a>
 			<span class="fr none user">HELLO,CHAOXX</span>
-			<a href="" class="fr login-a">登录/注册</a>
+			<a href="loginPage" class="fr login-a">登录/注册</a>
 			<img src="../img/people.png" alt="" class="fr people">
 		</div>		
 	</div>
@@ -100,6 +100,7 @@
 			url:"/company/jobDetail",
 			data:{id:id},
 			success:function (data) {
+			    $(document).attr("title",data.recruitment.post);
                 $("#main").find("> div.banner > div > div.info-primary.fl > span").text(msTimeStampToDate(data.recruitment.time));
                 $("#main").find("> div.banner > div > div.info-primary.fl > div > h1").text(data.recruitment.post);
                 $("#main").find("> div.banner > div > div.info-primary.fl > div > span").text(data.recruitment.salary);
@@ -109,6 +110,15 @@
                 $("#main").find("> div.job.inner > div:nth-child(1) > div").text(data.recruitment.description);
                 $("#main").find("> div.job.inner > div:nth-child(2) > div").text(data.enterprise.description);
                 $("#main > div.job.inner > div:nth-child(3) > div").text(data.enterprise.address);
+            }
+		});
+        $.ajax({
+			type:"post",
+			url:"getUser",
+			success:function (data) {
+				if(data!==""){
+				    if(data.role===2)$("#main ").find("> div.job.inner > button").remove();
+				}
             }
 		});
         $("#main ").find("> div.job.inner > button").click(function () {
@@ -125,7 +135,7 @@
 							data:{id:id},
 							success:function (data) {
 								if(data)DJMask.msg("投递成功！");
-								else DJMask.msg("投递失败了，请稍后再试");
+								else DJMask.msg("您已经投递过这份工作了。");
                             }
 						});
 					}

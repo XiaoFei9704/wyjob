@@ -84,6 +84,7 @@ $(document).ready(function () {
         search();
     });
     function search() {
+        $("#loader").removeClass("none");
         $.ajax({
             type:"get",
             url:"search",
@@ -97,6 +98,7 @@ $(document).ready(function () {
                 count:20
             },
             success:function (data) {
+                $("#loader").addClass("none");
                 $("body > div.section > div > div > ul").empty();
                 $.each(data,function (i,job) {
                     var content="<li>\n" +
@@ -205,7 +207,7 @@ $(document).ready(function () {
             url:"/company/register",
             data:{account:username,password:pass,name:name},
             success:function (data) {
-                if(data)window.location.href="";
+                if(data)window.location.href="companyRevise";
                 else DJMask.msg("注册失败。。");
             }
         });

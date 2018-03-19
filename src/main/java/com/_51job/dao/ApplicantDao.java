@@ -8,10 +8,12 @@ import com._51job.domain.Recruitment;
 import com._51job.web.EnterpriseResume;
 import com._51job.web.PostInfoState;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Queue;
 
 @Repository
 public class ApplicantDao extends MyDao{
@@ -44,6 +46,12 @@ public class ApplicantDao extends MyDao{
 //      }
 //      return lst;
 //  }
+
+    public boolean toudi(int a_id, int r_id){
+        Query<Application> query=getSession().createQuery("from Application where applicant_id="+a_id+" and recruitment_id="+r_id, Application.class);
+        return query.list().size()>0;
+
+    }
 
 
 

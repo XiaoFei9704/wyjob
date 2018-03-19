@@ -179,7 +179,7 @@
 					</div>
 				</div>
 			</div>
-			<button class="revise-btn" onclick="location='../html/resume_revise.html'">修    改</button>
+			<button class="revise-btn" onclick="location='resumeRevise'">修    改</button>
 		</div>
 	</div>
 	<div id="foot">	
@@ -227,6 +227,29 @@
                             "\t\t\t\t</div>";
                         $("#main").find("> div > div:nth-child(3)").append(content);
                     }
+                    $.each(data.skillList,function (i,item) {
+						var content="<div class=\"form-line\">\n" +
+                            "\t\t\t\t\t<span>"+item.skillName+"</span>\n" +
+                            "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                            "\t\t\t\t\t<span>使用时间：</span>\n" +
+                            "\t\t\t\t\t<span>"+item.time+"年</span>\n" +
+                            "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                            "\t\t\t\t\t<span>"+item.actualLevel+"</span>\n" +
+                            "\t\t\t\t</div>";
+						$("#main").find("> div > div:nth-child(4)").append(content);
+                    });
+					$.each(data.languageList,function (i,item) {
+						var content="<div class=\"form-line\">\n" +
+                            "\t\t\t\t\t<span>"+item.actualLanguage+"</span>\n" +
+                            "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                            "\t\t\t\t\t<span>读写能力：</span>\n" +
+                            "\t\t\t\t\t<span>"+item.actualRwAbility+"</span>\n" +
+                            "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                            "\t\t\t\t\t<span>听说能力：</span>\n" +
+                            "\t\t\t\t\t<span>"+item.actualXAbility+"</span>\n" +
+                            "\t\t\t\t</div>";
+						$("#main").find("> div > div:nth-child(5)").append(content);
+                    });
                 },
                 error:function () {
                     DJMask.msg("获取个人信息失败，请检查网络...");

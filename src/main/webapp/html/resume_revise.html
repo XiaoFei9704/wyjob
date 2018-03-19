@@ -9,6 +9,8 @@
 	<script src="../js/dropdown.js"></script>
 	<script src="../js/resume.js"></script>
 	<script src="../js/all_ajax.js"></script>
+	<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+	<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 </head>
 <body>
 	<div id="header">
@@ -68,7 +70,7 @@
 				<div class="form-row">
 					<dl>
 						<dt>出生日期</dt>
-						<dd><input type="text" class="ipt" placeholder="例：19970501"></dd>
+						<dd><input type="text" class="ipt" readonly></dd>
 					</dl>
 					<dl>
 						<dt>手机号码</dt>
@@ -87,106 +89,24 @@
 					教育经历
 					<a class="add-btn fr" id="education-btn"><img src="../img/add.png" alt="">添加</a>
 				</h3>
-				<div class="form-line">
-					<span>西安交通大学</span>
-					<em class="vline"></em>
-					<span>20070802-20090102</span>
-					<em class="vline"></em>
-					<span>软件工程专业</span>
-					<em class="vline"></em>
-					<span>本科</span>
-					<a class="delete-btn fr">删除</a>
-				</div>
-				<div class="form-line">
-					<span>西安交通啦啦啦啦啦大学</span>
-					<em class="vline"></em>
-					<span>20070802-20090102</span>
-					<em class="vline"></em>
-					<span>软件工程专业</span>
-					<em class="vline"></em>
-					<span>本科</span>
-					<a class="delete-btn fr">删除</a>
-				</div>
 			</div>
 			<div class="info-section" id="info-work">
 				<h3 class="title">
 					工作经历
 					<a id="work-btn" class="add-btn fr"><img src="../img/add.png" alt="">添加</a>
 				</h3>
-				<div class="form-line">
-					<span>华迪公司</span>
-					<em class="vline"></em>
-					<span>20070802-20090102</span>
-					<em class="vline"></em>
-					<span>软件工程师</span>
-					<em class="vline"></em>
-					<span>职位软件高级工程师</span>
-					<em class="vline"></em>
-					<span>全职</span>
-					<a class="delete-btn fr">删除</a>
-				</div>
-				<div class="form-line">
-					<span>华迪公司</span>
-					<em class="vline"></em>
-					<span>20070802-20090102</span>
-					<em class="vline"></em>
-					<span>软件工程师</span>
-					<em class="vline"></em>
-					<span>职位软件高级工程师</span>
-					<em class="vline"></em>
-					<span>全职</span>
-					<a class="delete-btn fr">删除</a>
-				</div>
 			</div>
 			<div class="info-section" id="info-skill">
 				<h3 class="title">
 					专业技能
 					<a id ="expertise-btn" class="add-btn fr"><img src="../img/add.png" alt="">添加</a>
 				</h3>
-				<div class="form-line">
-					<span>HTML</span>
-					<em class="vline"></em>
-					<span>使用时间：</span>
-					<span>2年</span>
-					<em class="vline"></em>
-					<span>熟练</span>
-					<a class="delete-btn fr">删除</a>
-				</div>
-				<div class="form-line">
-					<span>JavaScript</span>
-					<em class="vline"></em>
-					<span>使用时间：</span>
-					<span>2年</span>
-					<em class="vline"></em>
-					<span>熟练</span>
-					<a class="delete-btn fr">删除</a>
-				</div>
 			</div>
 			<div class="info-section" id="info-language">
 				<h3 class="title">
 					语言能力
 					<a id="language-btn" class="add-btn fr"><img src="../img/add.png" alt="">添加</a>
 				</h3>
-				<div class="form-line">
-					<span>英语</span>
-					<em class="vline"></em>
-					<span>读写能力：</span>
-					<span>熟练</span>
-					<em class="vline"></em>
-					<span>听说能力：</span>
-					<span>熟练</span>
-					<a class="delete-btn fr">删除</a>
-				</div>
-				<div class="form-line">
-					<span>外星人语言</span>
-					<em class="vline"></em>
-					<span>读写能力：</span>
-					<span>熟练</span>
-					<em class="vline"></em>
-					<span>听说能力：</span>
-					<span>熟练</span>
-					<a class="delete-btn fr">删除</a>
-				</div>
 			</div>
 			<div class="info-section">
 				<h3 class="title">求职意向</h3>
@@ -235,10 +155,10 @@
 				</div>
 			</div>
 			<button class="cancel-btn" style="margin-left: 680px;" onclick="location='../html/resume_info.html'">取消</button>
-			<button class="ok-btn"  onclick="location='../html/resume_info.html'">确定</button>
+			<button class="ok-btn">确定</button>
 		</div>
 	</div>
-	<div id="foot">	
+	<div id="foot">
 		<div class="inner">
 			<span>51JOB招聘平台 版权所有 Copyright © 2004-2018 All Rights Reserved</span>
 		</div>
@@ -252,8 +172,8 @@
 				<dl>
 					<dt>时间</dt>
 					<dd>
-						<input type="text" class="ipt small-ipt" placeholder="开始时间">
-						<input type="text" class="ipt small-ipt" placeholder="结束时间">
+						<input type="text" class="ipt small-ipt" placeholder="开始时间" readonly>
+						<input type="text" class="ipt small-ipt" placeholder="结束时间" readonly>
 					</dd>
 				</dl>
 				<dl>
@@ -330,7 +250,7 @@
 				</dl>
 				<dl>
 					<dt>使用时间</dt>
-					<dd><input type="text" class="ipt" placeholder=""></dd>
+					<dd><input type="text" class="ipt"></dd>
 				</dl>
 				<dl>
 					<dt>掌握程度</dt>
@@ -386,8 +306,8 @@
 				<dl>
 					<dt>时间</dt>
 					<dd>
-						<input type="text" class="ipt small-ipt" placeholder="开始时间">
-						<input type="text" class="ipt small-ipt" placeholder="结束时间">
+						<input type="text" class="ipt small-ipt" placeholder="开始时间" readonly>
+						<input type="text" class="ipt small-ipt" placeholder="结束时间" readonly	>
 					</dd>
 				</dl>
 				<dl>
@@ -473,63 +393,98 @@
 	</div>
 <script>
 	$(document).ready(function () {
-		var name=$.trim($("#info-person").find("> div:nth-child(2) > dl:nth-child(1) > dd > input").val());
-		var work_state=$("#info-person").find("> div:nth-child(2) > dl:nth-child(2) > dd > span > input").attr("value");
-		var gender="女";
-		var city=$("#info-person").find("> div:nth-child(3) > dl:nth-child(2) > dd > input:nth-child(2)").val();
-		var birth=$("#info-person").find("> div:nth-child(4) > dl:nth-child(1) > dd > input").val();
-		var mobile=$("#info-person").find("> div:nth-child(4) > dl:nth-child(2) > dd > input").val();
-		var email=$("#info-person").find("> div:nth-child(5) > dl > dd > input").val();
-		var educations=[];
-		var works=[];
-		var skills=[];
-		var languages=[];
-		$("#info-experience").find("div").each(function (i,item) {
-		    var time=$(this).find("span:nth-child(2)").text();
-		    var a=time.indexOf("-");
-		    var start=time.substring(0,a);
-		    var end=time.substring(a+1);
-			var edu={
-                startTime:start,
-                endTime:end,
-                name:$(this).find("span:first-child").text(),
-                major:$(this).find("span:nth-child(3)").text(),
-                actualDegree:$(this).find("span:nth-child(4)").text()
-			};
-			educations.push(edu);
-        });
-        $("#info-work").find("div").each(function(i,item){
-        	var time=$(this).find("span:nth-child(2)").text();
-        	var a=time.indexOf("-");
-        	var start=time.substring(0,a);
-		    var end=time.substring(a+1);
-		    var work={
-		    	enterpriseName:$(this).find("span:nth-child(1)").text(),
-		    	startTime:start,
-                endTime:end,
-                actualFuntion:$(this).find("span:nth-child(3)").text(),
-                post:$(this).find("span:nth-child(4)").text(),
-                actualWorkType:$(this).find("span:nth-child(5)").text()
-		    };
-		    works.push(work);
-        });
-        $("#info-skill").find("div").each(function(i,item){
-        	var skill={
-        		actualSkillName:$(this).find("span:nth-child(1)").text(),
-        		time:$(this).find("span:nth-child(3)").text(),
-        		actualLevel:$(this).find("span:nth-child(4)").text()
-        	};
-        	skills.push(skill);
-        });
-        $("#info-language").find("div").each(function(i,item){
-        	var language={
-        		actualLanguage:$(this).find("span:nth-child(1)").text(),
-        		actualRwAbility:$(this).find("span:nth-child(3)").text(),
-        		actualXAbility:$(this).find("span:nth-child(5)").text()
-        	};
-        	languages.push(language);
-        });
+        $("#main").find("> div > button.ok-btn").click(function () {
+            var name=$.trim($("#info-person").find("> div:nth-child(2) > dl:nth-child(1) > dd > input").val());
+            var work_state=$("#info-person").find("> div:nth-child(2) > dl:nth-child(2) > dd > span > input").attr("value");
+            var gender="女";
+            var city=$("#info-person").find("> div:nth-child(3) > dl:nth-child(2) > dd > input:nth-child(2)").val();
+            var birth=$("#info-person").find("> div:nth-child(4) > dl:nth-child(1) > dd > input").val();
+            var mobile=$("#info-person").find("> div:nth-child(4) > dl:nth-child(2) > dd > input").val();
+            var email=$("#info-person").find("> div:nth-child(5) > dl > dd > input").val();
+            var lowSalary=$("#main").find("> div > div:nth-child(6) > div:nth-child(2) > dl:nth-child(1) > dd > input").val();
+            var workType=$("#main").find("> div > div:nth-child(6) > div:nth-child(2) > dl:nth-child(2) > dd > span > input").attr("value");
+            var educations=[];
+            var works=[];
+            var skills=[];
+            var languages=[];
+            $("#info-experience").find("div").each(function (i,item) {
+                var time=$(this).find("span:nth-child(3)").text();
+                var a=time.indexOf("-");
+                var start=time.substring(0,a);
+                var end=time.substring(a+1);
+                var edu={
+                    startTime:start,
+                    endTime:end,
+                    name:$(this).find("span:first-child").text(),
+                    major:$(this).find("span:nth-child(5)").text(),
+                    actualDegree:$(this).find("span:nth-child(7)").text()
+                };
+                educations.push(edu);
+            });
+            $("#info-work").find("div").each(function(i,item){
+                var time=$(this).find("span:nth-child(3)").text();
+                var a=time.indexOf("-");
+                var start=time.substring(0,a);
+                var end=time.substring(a+1);
+                var work={
+                    enterpriseName:$(this).find("span:nth-child(1)").text(),
+                    startTime:start,
+                    endTime:end,
+                    actualFunction:$(this).find("span:nth-child(5)").text(),
+                    post:$(this).find("span:nth-child(7)").text(),
+                    actualWorkType:$(this).find("span:nth-child(9)").text()
+                };
+                works.push(work);
+            });
+            $("#info-skill").find("div").each(function(i,item){
+                var skill={
+                    actualSkillName:$(this).find("span:nth-child(1)").text(),
+                    time:$(this).find("span:nth-child(3)").text().replace(/[^0-9]/ig,""),
+                    actualLevel:$(this).find("span:nth-child(4)").text()
+                };
+                skills.push(skill);
+            });
+            $("#info-language").find("div").each(function(i,item){
+                var language={
+                    actualLanguage:$(this).find("span:nth-child(1)").text(),
+                    actualRwAbility:$(this).find("span:nth-child(3)").text(),
+                    actualXAbility:$(this).find("span:nth-child(5)").text()
+                };
+                languages.push(language);
+            });
+            $.ajax({
+                type:"post",
+                url:"/applicant/saveResume",
+                data:{
+                    str_applicant:JSON.stringify({
+                        name:name,
+                        actualGender:gender,
+                        actualDomicile:city,
+                        actualWorkingStatus:work_state,
+                        mobile:mobile,
+                        email:email,
+                        actualBirthdate:birth,
+                        salaryLowerBound:lowSalary,
+                        actualWorkType:workType}),
+                    str_language:JSON.stringify(languages),
+                    str_skill:JSON.stringify(skills),
+                    str_workexp:JSON.stringify(works),
+                    str_eduexp:JSON.stringify(educations)
+                },
+                success:function (data) {
+                    if(data){DJMask.msg("保存成功");}
+                },
+                error:function () {
+                    DJMask.msg("简历未成功保存,请检查网络配置...")
+                }
+            });
+        })
     });
+	$("#add-education").find("> div > div > dl:nth-child(2) > dd > input:nth-child(1)").datepicker();
+	$("#add-education > div > div > dl:nth-child(2) > dd > input:nth-child(2)").datepicker();
+	$("#add-work").find("> div > div > dl:nth-child(2) > dd > input:nth-child(1)").datepicker();
+	$("#add-work").find("> div > div > dl:nth-child(2) > dd > input:nth-child(2)").datepicker();
+	$("#info-person").find("> div:nth-child(4) > dl:nth-child(1) > dd > input").datepicker();
 </script>
 </body>
 </html>

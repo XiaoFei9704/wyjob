@@ -56,95 +56,23 @@
 				<h3 class="title">
 					教育经历
 				</h3>
-				<div class="form-line">
-					<span>西安交通大学</span>
-					<em class="vline"></em>
-					<span>20070802-20090102</span>
-					<em class="vline"></em>
-					<span>软件工程专业</span>
-					<em class="vline"></em>
-					<span>本科</span>
-				</div>
-				<div class="form-line">
-					<span>西安交通啦啦啦啦啦大学</span>
-					<em class="vline"></em>
-					<span>20070802-20090102</span>
-					<em class="vline"></em>
-					<span>软件工程专业</span>
-					<em class="vline"></em>
-					<span>本科</span>
-				</div>
+
 			</div>
 			<div class="info-section">
 				<h3 class="title">
 					工作经历
 				</h3>
-				<div class="form-line">
-					<span>华迪公司</span>
-					<em class="vline"></em>
-					<span>20070802-20090102</span>
-					<em class="vline"></em>
-					<span>软件工程师</span>
-					<em class="vline"></em>
-					<span>职位软件高级工程师</span>
-					<em class="vline"></em>
-					<span>全职</span>
-				</div>
-				<div class="form-line">
-					<span>华迪公司</span>
-					<em class="vline"></em>
-					<span>20070802-20090102</span>
-					<em class="vline"></em>
-					<span>软件工程师</span>
-					<em class="vline"></em>
-					<span>职位软件高级工程师</span>
-					<em class="vline"></em>
-					<span>全职</span>
-				</div>
 			</div>
 			<div class="info-section">
 				<h3 class="title">
 					专业技能
 				</h3>
-				<div class="form-line">
-					<span>HTML</span>
-					<em class="vline"></em>
-					<span>使用时间：</span>
-					<span>2年</span>
-					<em class="vline"></em>
-					<span>熟练</span>
-				</div>
-				<div class="form-line">
-					<span>JavaScript</span>
-					<em class="vline"></em>
-					<span>使用时间：</span>
-					<span>2年</span>
-					<em class="vline"></em>
-					<span>熟练</span>
-				</div>
+
 			</div>
 			<div id="">
 				<h3 class="title">
 					语言能力
 				</h3>
-				<div class="form-line">
-					<span>英语</span>
-					<em class="vline"></em>
-					<span>读写能力：</span>
-					<span>熟练</span>
-					<em class="vline"></em>
-					<span>听说能力：</span>
-					<span>熟练</span>
-				</div>
-				<div class="form-line">
-					<span>外星人语言</span>
-					<em class="vline"></em>
-					<span>读写能力：</span>
-					<span>熟练</span>
-					<em class="vline"></em>
-					<span>听说能力：</span>
-					<span>熟练</span>
-				</div>
 			</div>
 			<div class="info-section">
 				<h3 class="title">求职意向</h3>
@@ -160,20 +88,7 @@
 					<dl>
 						<dt>具体意向：</dt>
 					</dl>
-					<div class="form-line">
-						<span>北京</span>
-						<em class="vline"></em>
-						<span>计算机软件</span>
-						<em class="vline"></em>
-						<span>软件工程师</span>
-					</div>
-					<div class="form-line">
-						<span>北京</span>
-						<em class="vline"></em>
-						<span>计算机软件</span>
-						<em class="vline"></em>
-						<span>软件工程师</span>
-					</div>
+
 				</div>
 			</div>
 		</div>
@@ -183,5 +98,79 @@
 			<span>51JOB招聘平台 版权所有 Copyright © 2004-2018 All Rights Reserved</span>
 		</div>
 	</div>
+	<script>
+        $(document).ready(function () {
+            var url=window.location.href;
+            var ina = url.indexOf("?id=");
+            var id=url.substring(ina+4);
+            $.ajax({
+                type:"get",
+                url:"/company/resumeDetail",
+				data:{resumeId:id},
+                success:function (data) {
+                    $("#info-person").find("> div:nth-child(2) > dl:nth-child(1) > dt > span").text(data.applicant.name);
+                    $("#info-person").find("> div:nth-child(2) > dl:nth-child(2) > dt > span").text(data.applicant.workingStatus);
+                    $("#info-person").find("> div:nth-child(3) > dl:nth-child(1) > dt > span").text(data.applicant.gender);
+                    $("#info-person").find("> div:nth-child(3) > dl:nth-child(2) > dt > span").text(data.applicant.domicile);
+                    $("#info-person").find("> div:nth-child(4) > dl:nth-child(1) > dt > span").text(msTimeStampToDate(data.applicant.birthdate));
+                    $("#info-person").find("> div:nth-child(4) > dl:nth-child(2) > dt > span").text(data.applicant.mobile);
+                    $("#info-person").find("> div:nth-child(5) > dl > dt > span").text(data.applicant.email);
+                    for(var d in data.educationList){
+                        var content ="<div class='form-line'>"+
+                            "<span>"+data.educationList[d].name+"</span>"+
+                            "<em class='vline'></em>"+
+                            "<span>"+data.educationList[d].startTime+"-"+data.educationList[d].endTime+"</span>"+
+                            "<em class='vline'></em>"+
+                            "<span>"+data.educationList[d].major+"</span>"+
+                            "<em class='vline'></em>"+
+                            "<span>"+data.educationList[d].degree+"</span>"+
+                            "</div>";
+                        $(".form-line").empty();
+                        $("#info-experience").append(content);
+                    }
+                    for(var d in data.workingList){
+                        var content ="<div class=\"form-line\">\n" +
+                            "\t\t\t\t\t<span>"+data.workingList[d].enterpriseName+"</span>\n" +
+                            "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                            "\t\t\t\t\t<span>"+data.workingList[d].startTime+" - "+data.workingList[d].endTime+"</span>\n" +
+                            "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                            "\t\t\t\t\t<span>"+data.workingList[d].actualFunction+"</span>\n" +
+                            "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                            "\t\t\t\t\t<span>职位: "+data.workingList[d].post+"</span>\n" +
+                            "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                            "\t\t\t\t\t<span>"+data.workingList[d].actualWorkType+"</span>\n" +
+                            "\t\t\t\t</div>";
+                        $("#main").find("> div > div:nth-child(3)").append(content);
+                    }
+                    $.each(data.skillList,function (i,item) {
+                        var content="<div class=\"form-line\">\n" +
+                            "\t\t\t\t\t<span>"+item.skillName+"</span>\n" +
+                            "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                            "\t\t\t\t\t<span>使用时间：</span>\n" +
+                            "\t\t\t\t\t<span>"+item.time+"年</span>\n" +
+                            "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                            "\t\t\t\t\t<span>"+item.actualLevel+"</span>\n" +
+                            "\t\t\t\t</div>";
+                        $("#main").find("> div > div:nth-child(4)").append(content);
+                    })
+                    $.each(data.languageList,function (i,item) {
+                        var content="<div class=\"form-line\">\n" +
+                            "\t\t\t\t\t<span>"+item.actualLanguage+"</span>\n" +
+                            "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                            "\t\t\t\t\t<span>读写能力：</span>\n" +
+                            "\t\t\t\t\t<span>"+item.actualRwAbility+"</span>\n" +
+                            "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                            "\t\t\t\t\t<span>听说能力：</span>\n" +
+                            "\t\t\t\t\t<span>"+item.actualXAbility+"</span>\n" +
+                            "\t\t\t\t</div>";
+                        $("#main").find("> div > div:nth-child(5)").append(content);
+                    })
+                },
+                error:function () {
+                    DJMask.msg("获取个人信息失败，请检查网络...");
+                }
+            });
+        });
+	</script>
 </body>
 </html>

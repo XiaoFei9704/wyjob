@@ -23,12 +23,4 @@ $(document).ready(function(){
     $("#recruit-form").addClass("none");
     $("#login-form").addClass("none");
   });
-  $(".submit-btn").click(function(){
-    if ($("#name").val() == '0') {
-      $(location).attr('href', '../html/job_search.html');
-    }
-    if ($("#name").val() == '1') {
-      $(location).attr('href', '../html/company_info.html');
-    }
-  });
 });

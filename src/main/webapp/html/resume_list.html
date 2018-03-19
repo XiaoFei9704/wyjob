@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>resume-list</title>
+	<title>简历列表</title>
 	<link rel="stylesheet" href="../css/reset.css">
 	<link rel="stylesheet" href="../css/resume-list.css">
 	<script src="../js/jquery-3.3.1.min.js"></script>
@@ -230,7 +230,7 @@
                         "\t\t\t\t\t\t\t"+item.applicationState+"\n" +
                         "\t\t\t\t\t\t</span>\n" +
                         "\t\t\t\t\t</div>\n" +
-                        "\t\t\t\t\t<button class=\"btn\">查看详情</button>\n" +
+                        "\t\t\t\t\t<button data_id='"+item.applicantId+"' class=\"btn\">查看详情</button>\n" +
                         "\t\t\t\t\t<div style=\"clear: both;\"></div>\n" +
                         "\t\t\t\t</div>\n" +
                         "\t\t\t</li>";
@@ -238,6 +238,10 @@
                 })
             }
 		});
+		$(document).on("click","#section > ul > li > div > button",function () {
+		    var id=$(this).attr("data_id");
+		    window.open("/resume_company?id="+id);
+        });
     });
 </script>
 </body>

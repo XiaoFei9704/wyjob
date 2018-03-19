@@ -178,6 +178,7 @@
                 url:"/company/enterprise",
                 data:{id:id},
                 success:function (data) {
+                    $(document).attr("title",data.name);
                     $("#section").find("> div.banner > div > div.info-primary.fl > div > div > h3").text(data.name);
                     $("#section").find("> div.banner > div > div.info-primary.fl > div > div > p").html(data.actualScale+"<em class='vline'></em>"+data.actualIndustry);
                     $("#info-company").find("> div > ul > li:nth-child(1) > span.list-content").text(data.actualDomicile);

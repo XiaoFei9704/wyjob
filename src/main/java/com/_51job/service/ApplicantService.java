@@ -48,8 +48,8 @@ public class ApplicantService {
     public List<EnterpriseResume> suitJobs(int userid) {
         List<EnterpriseResume> list=new ArrayList<>();
         Random random=new Random();
-        if(userid==0){//没有登录，随机推荐20个
-            for(int i=0;i<20;i++){
+        if(userid==0){//没有登录，随机推荐50个
+            for(int i=0;i<50;i++){
                 Recruitment recruitment=DataUtil.getRecruitment(random.nextInt(90000));
                 while (recruitment==null){
                     recruitment=DataUtil.getRecruitment(random.nextInt(90000));
@@ -85,7 +85,7 @@ public class ApplicantService {
             Recruitment recruitment = DataUtil.getRecruitment(recruitment_id);
             recruitment.setActualMinDegree(DataUtil.getDictionary(recruitment.getMinDegree()).getDictionaryName());
             postInfoState.setRecruitment(recruitment);
-            Enterprise enterprise = DataUtil.getEnterprise(recruitment_id);
+            Enterprise enterprise = DataUtil.getEnterprise(recruitment.getEnterpriseId());
             enterprise.setActualDomicile(DataUtil.getDictionary(enterprise.getDomicile()).getDictionaryName());
             int scale = enterprise.getScale();
             enterprise.setActualScale(DataUtil.getDictionary(scale).getDictionaryName());
@@ -114,9 +114,9 @@ public class ApplicantService {
                 String str_skill, String str_workexp,
                 String str_eduexp) throws ParseException {
 
-        boolean r1 = saveApplicant(str_applicant);
-        boolean r2 = saveLanguage(str_language);
-        boolean r3 =saveSkill(str_skill);
+        boolean r1 = saveApplicant(user_id,str_applicant);
+        boolean r2 = saveLanguage(user_id,str_language);
+        boolean r3 =saveSkill(user_id,str_skill);
         boolean r4 =saveWorkingExperience(user_id,str_workexp);
         boolean r5 =saveEducationExperience(user_id,str_eduexp);
         if (r1&&r2&&r3&&r4&&r5)return true;
@@ -124,32 +124,35 @@ public class ApplicantService {
     }
 
     public boolean applicate(int rId, int userId){
+        if(applicantDao.toudi(userId,rId))return false;
         Application application=new Application();
         application.setRecruitmentId(rId);
         application.setApplicantId(userId);
         application.setApplicationState(1);
         application.setApplicationTime(new Timestamp(new Date().getTime()));
-        return applicantDao.save(application)>0;
+        int a = applicantDao.save(application);
+        return a>0;
     }
 
     //获取简历信息
 
 
-    private boolean saveApplicant(String str_applicant){
-        Applicant applicant = (Applicant) jsonTojava(str_applicant,Applicant.class);
+    private boolean saveApplicant(int user_id,String str_applicant){
+        JSONObject object=JSON.parseObject(str_applicant);
+        Applicant applicant = object.toJavaObject(Applicant.class);
         applicant.setGender(getBytegender(applicant.getActualGender()));
         applicant.setDomicile(getIntDomicile(applicant.getActualDomicile()));
         applicant.setWorkingStatus(getByteWorkStatus(applicant.getActualWorkingStatus()));
         applicant.setWorkType(getByteWorkType(applicant.getActualWorkType()));
-        int applicant_id = applicantDao.save(applicant);
-        applicant.setUserId(applicant_id);
-        if (applicant_id  > 0) return true;
-        return false;
+        applicant.setUserId(user_id);
+        applicantDao.update(applicant);
+        return true;
     }
 
-    public boolean saveLanguage(String str_language){
+    public boolean saveLanguage(int userid, String str_language){
         List<Language> languageList = JSON.parseArray(str_language,Language.class);
         for (Language language:languageList){
+            language.setUserId(userid);
             language.setLanguage(getIntLanguage(language.getActualLanguage()));
             language.setxAbility(getByteSkillLevel(language.getActualXAbility()));
             language.setRwAbility(getByteSkillLevel(language.getActualRwAbility()));
@@ -160,9 +163,10 @@ public class ApplicantService {
         return true;
     }
 
-    public boolean saveSkill(String str_skill){
+    public boolean saveSkill(int userid,String str_skill){
         List<Skill> skillList = JSON.parseArray(str_skill,Skill.class);
         for (Skill skill:skillList){
+            skill.setUserId(userid);
             skill.setSkillName(getIntSkillName(skill.getActualSkillName()));
             skill.setLevel(getByteSkillLevel(skill.getActualLevel()));
             applicantDao.save(skill);
@@ -177,13 +181,11 @@ public class ApplicantService {
 
         List<WorkingExperience> workingExperienceList = JSON.parseArray(str_workexp,WorkingExperience.class);
         for (WorkingExperience workingExperience :workingExperienceList){
-            workingExperience.setEnterpriseType(getIntEnterpriseType(workingExperience.getActualEnterpriseType()));
-            workingExperience.setEnterpriseScale(getIntEnterpriseScale(workingExperience.getActualEnterpriseScale()));
-            workingExperience.setIndustry(getIntIndustry(workingExperience.getActualIndustry()));
+
             workingExperience.setFunction(getIntFunction(workingExperience.getActualFunction()));
             workingExperience.setWorkType(getByteWorkType(workingExperience.getActualWorkType()));
             Experience experience = new Experience();
-            SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat format=new SimpleDateFormat("MM/dd/yyyy");
             experience.setStartTime(new Timestamp(format.parse(workingExperience.getStartTime()).getTime()));
             experience.setEndTime(new Timestamp(format.parse(workingExperience.getEndTime()).getTime()));
             experience.setUserId(user_id);
@@ -200,10 +202,9 @@ public class ApplicantService {
     public boolean saveEducationExperience(int user_id,String str_eduexp) throws ParseException {
         List<EducationExperience> educationExperienceList = JSON.parseArray(str_eduexp,EducationExperience.class);
         for (EducationExperience educationExperience :educationExperienceList){
-            educationExperience.setStudentType(getIntStdType(educationExperience.getActualStudentType()));
             educationExperience.setDegree(getIntDegree(educationExperience.getActualDegree()));
             Experience experience = new Experience();
-            SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat format=new SimpleDateFormat("MM/dd/yyyy");
             experience.setStartTime(new Timestamp(format.parse(educationExperience.getStartTime()).getTime()));
             experience.setEndTime(new Timestamp(format.parse(educationExperience.getEndTime()).getTime()));
             experience.setUserId(user_id);
@@ -306,14 +307,6 @@ public class ApplicantService {
 
     }
 
-    public int getIntStdType(String typ){
-        int type;
-        switch (typ){
-            case "统招":type = 1; break;
-            default:type = 2; break;
-        }
-        return type;
-    }
     public int getIntDegree(String dg){
         List<Dictionary> degrees = DataUtil.allDegrees();
         int degree = getIntAttribute(dg,degrees);

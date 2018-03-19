@@ -1,6 +1,15 @@
 package com._51job.web;
 
 public class SimpleResume {
+    public int getApplicantId() {
+        return applicantId;
+    }
+
+    public void setApplicantId(int applicantId) {
+        this.applicantId = applicantId;
+    }
+
+    private int applicantId;
     private String name;
     private String gender;
     private String degree;

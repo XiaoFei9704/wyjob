@@ -81,6 +81,7 @@ public class EnterpriseService {
             SimpleResume simpleResume=new SimpleResume();
             int applicantId=applicationList.get(i).getApplicantId();
             Applicant applicant=enterpriseDao.get(Applicant.class,applicantId);
+            simpleResume.setApplicantId(applicantId);
             simpleResume.setName(applicant.getName());
             simpleResume.setGender(getPersonGender(applicant.getGender()));
             simpleResume.setWorkStatus(getCurrentWorkStatus(applicant.getWorkingStatus()));
@@ -147,6 +148,14 @@ public class EnterpriseService {
         else return false;
     }
 
+    public boolean openJob(int jobId){
+        Recruitment recruitment=enterpriseDao.get(Recruitment.class,jobId);
+        Byte st=1;
+        recruitment.setState(st);
+        enterpriseDao.update(recruitment);
+        return true;
+    }
+
     //注册公司
     public User getCompanyReg(String account,String password,String name){
         User user=new User();
@@ -167,6 +176,7 @@ public class EnterpriseService {
 
     public Enterprise enterprise(int id){
         Enterprise enterprise = DataUtil.getEnterprise(id);
+        if(enterprise==null)return null;
         enterprise.setActualType(DataUtil.getDictionary(enterprise.getType()).getDictionaryName());
         enterprise.setActualScale(DataUtil.getDictionary(enterprise.getScale()).getDictionaryName());
         enterprise.setActualIndustry(DataUtil.getDictionary(enterprise.getIndustry()).getDictionaryName());
@@ -193,10 +203,10 @@ public class EnterpriseService {
     public Applicant getActualInfoApplicant(int applicantId){
         Applicant applicant=enterpriseDao.get(Applicant.class,applicantId);
         applicant.setActualGender(getPersonGender(applicant.getGender()));
-        applicant.setActualBirthdate(getActualTime(applicant.getBirthdate()));
-        applicant.setActualDomicile(getActualAttribute(applicant.getDomicile(),1));
-        applicant.setActualWorkingStatus(getCurrentWorkStatus(applicant.getWorkingStatus()));
-        applicant.setActualWorkType(getExpectedWorkType(applicant.getWorkType()));
+        if(applicant.getBirthdate()!=null)applicant.setActualBirthdate(getActualTime(applicant.getBirthdate()));
+        if(applicant.getDomicile()!=null)applicant.setActualDomicile(getActualAttribute(applicant.getDomicile(),1));
+        if(applicant.getWorkingStatus()!=null)applicant.setActualWorkingStatus(getCurrentWorkStatus(applicant.getWorkingStatus()));
+        if(applicant.getWorkType()!=null)applicant.setActualWorkType(getExpectedWorkType(applicant.getWorkType()));
         return applicant;
     }
 

@@ -63,8 +63,8 @@ public class CommonController {
     //搜索岗位
     @RequestMapping(value="/search",method = RequestMethod.GET)
     @ResponseBody
-    public List<SearchResults> search(String city, String key, int salary, String degree, int seniority, int page, int count){
-        return commonService.search(city, key, salary, degree, seniority, page, count);
+    public List<SearchResults> search(String city, String key, int salary, String degree, int seniority, int page, int count) throws InterruptedException {
+        return commonService.search(city, key, salary, degree, seniority);
     }
     //  获取岗位类型列表
     @RequestMapping(value="/jobNavi",method = RequestMethod.GET)
@@ -126,7 +126,11 @@ public class CommonController {
     public String recInfo(HttpServletRequest request){
         HttpSession session=request.getSession();
         if(session.getAttribute("user")==null)return "login";
-        else return "job_list";
+        else {
+            User user=(User) session.getAttribute("user");
+            if(user.getRole()==2) return "job_list";
+            else return "company_info";
+        }
     }
     @RequestMapping(value = "/resumeList")
     public ModelAndView resumeList(int id){
@@ -143,5 +147,11 @@ public class CommonController {
     @RequestMapping(value = "/resumeRevise")
     public String resumeRevice(){
         return "resume_revise";
+    }
+    @RequestMapping(value = "/companyRevise")
+    public String companyRevise(){return "company_info_revise";}
+    @RequestMapping(value = "/resume_company")
+    public String resumeCompany(){
+        return "resume_info_company";
     }
 }

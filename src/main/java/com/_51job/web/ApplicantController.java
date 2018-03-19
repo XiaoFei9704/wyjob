@@ -25,13 +25,11 @@ public class ApplicantController {
     //保存/修改简历
     @RequestMapping(value = "/saveResume", method = RequestMethod.POST)
     @ResponseBody
-    public boolean saveResume(int user_id,String str_applicant,String str_language,
+    public boolean saveResume(String str_applicant,String str_language,
                               String str_skill, String str_workexp,
-                              String str_eduexp) throws ParseException {
-
-        boolean result  = applicantService.saveResume(user_id,str_applicant, str_language,str_skill,str_workexp,
-                str_eduexp);
-        return result;
+                              String str_eduexp, HttpServletRequest request) throws ParseException {
+        User user = (User) request.getSession().getAttribute("user");
+        return user != null && applicantService.saveResume(user.getUserId(), str_applicant, str_language, str_skill, str_workexp, str_eduexp);
     }
 
     // 职位推荐
@@ -81,8 +79,7 @@ public class ApplicantController {
         HttpSession session=request.getSession();
         User user=(User)session.getAttribute("user");
         if(user==null)return false;
-        else applicantService.applicate(id, user.getUserId());
-        return true;
+        else return applicantService.applicate(id, user.getUserId());
     }
 
 }

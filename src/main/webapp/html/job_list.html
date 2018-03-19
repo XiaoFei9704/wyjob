@@ -44,9 +44,11 @@
 			type:"get",
 			url:"/company/jobs",
 			success:function (data) {
+			    $(document).attr("title",$.trim(data.enterprise.name)+"的简历列表");
 				var ul=$("body > div.section > div.job-list > ul");
 				$(ul).empty();
 				$.each(data.recruitment,function (i,item) {
+				    var closed=item.state===1?"关闭招聘":"已关闭";
                     var content="<li>\n" +
                         "\t\t\t\t\t<div class=\"job-primary\">\n" +
                         "\t\t\t\t\t\t<div class=\"info-primary\">\n" +
@@ -92,17 +94,45 @@
                         "\t\t\t\t\t\t\t</p>\n" +
                         "\t\t\t\t\t\t</div>\n" +
                         "\t\t\t\t\t\t<div class=\"close\">\n" +
-                        "\t\t\t\t\t\t\t<button class=\"close-btn\">\n" +
-                        "\t\t\t\t\t\t\t\t关闭招聘\n" +
+                        "\t\t\t\t\t\t\t<button data_id='"+item.recruitmentId+"' class=\"close-btn\">\n" +
+                        "\t\t\t\t\t\t\t\t"+closed+"\n" +
                         "\t\t\t\t\t\t\t</button>\n" +
                         "\t\t\t\t\t\t</div>\n" +
                         "\t\t\t\t\t</div>\n" +
                         "\t\t\t\t</li>";
                     $(ul).append(content);
                 });
-
             }
 		});
+		$(document).on("click","body > div.section > div.job-list > ul > li > div > div.close > button",function () {
+			var id=$(this).attr("data_id");
+			var button=$(this);
+			if($(button).text().indexOf("关闭招聘")>=0){
+                $.ajax({
+                    type:"post",
+                    url:"/company/closeJob",
+                    data:{jobId:id},
+                    success:function (data) {
+                        if(data){
+                            $(button).text("已关闭");
+                            DJMask.msg("关闭成功")
+                        }else DJMask.msg("关闭失败。")
+                    }
+                });
+			}else{
+			    $.ajax({
+					type:"post",
+					url:"/company/openJob",
+					data:{jobId:id},
+					success:function (data) {
+						if(data){
+                            $(button).text("关闭招聘");
+                            DJMask.msg("开启成功")
+						}else DJMask.msg("开启失败。")
+                    }
+				});
+			}
+        })
     })
 </script>
 </body>

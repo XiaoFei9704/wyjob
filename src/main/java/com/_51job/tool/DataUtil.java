@@ -7,6 +7,8 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,18 +16,19 @@ import java.util.Set;
 
 public class  DataUtil implements Runnable{
     private static SessionFactory sessionFactory;
-    private static Jedis jedis;
     private static List<Recruitment> recruitments;
     private static List<Enterprise> enterprises;
     private static List<Dictionary> dictionaries1;
+    private static JedisPool pool = new JedisPool(new JedisPoolConfig(), "localhost");
+    private static Jedis s_jedis;
 
     static {
-        jedis = new Jedis("localhost");
         Configuration configuration = new Configuration().configure();
         sessionFactory= configuration.buildSessionFactory();
         recruitments=new ArrayList<>();
         enterprises=new ArrayList<>();
         dictionaries1=new ArrayList<>();
+        s_jedis=pool.getResource();
         new Thread(new DataUtil()).start();
     }
 
@@ -38,6 +41,7 @@ public class  DataUtil implements Runnable{
     }
 
     public static void main(String[] args) {
+        Jedis jedis = pool.getResource();
         Session session=getSession();
         Transaction transaction=session.beginTransaction();
         Set<byte[]> keys=jedis.keys("ent*".getBytes());
@@ -54,6 +58,7 @@ public class  DataUtil implements Runnable{
         }
         transaction.commit();
         session.close();
+        jedis.close();
     }
 
     public static List<Recruitment> allRecruitments(){
@@ -65,27 +70,25 @@ public class  DataUtil implements Runnable{
     }
     //根据一个enterpriseId在redis里搜索到该公司的所有招聘信息
     public static List<Recruitment> recruitmentsOfAnEnterprise(int enterpriseId){
+        Jedis jedis = pool.getResource();
         List<Recruitment> recruitments=new ArrayList<>();
         Set<byte[]> keys=jedis.keys("rec*".getBytes());
         for(byte[] key: keys){
             Recruitment recruitment=(Recruitment) SerializeUtil.unserialize(jedis.get(key));
             if(recruitment.getEnterpriseId().equals(enterpriseId))recruitments.add(recruitment);
         }
+        jedis.close();
         return recruitments;
     }
     //根据一个enterpriseId在redis里搜索到该公司的信息
     public static Enterprise getEnterprise(int enterpriseId){
-        if(!jedis.isConnected())jedis=new Jedis("localhost");
-        jedis.select(0);
         byte[] key=String.valueOf("ent"+enterpriseId).getBytes();
-        return (Enterprise) SerializeUtil.unserialize(jedis.get(key));
+        return (Enterprise) SerializeUtil.unserialize(s_jedis.get(key));
     }
     //根据一个recruitmentId在redis里搜索到该公司的信息
     public static Recruitment getRecruitment(int recruitmentId){
-        if(!jedis.isConnected())jedis=new Jedis("localhost");
-        jedis.select(0);
         byte[]key=String.valueOf("rec"+recruitmentId).getBytes();
-        return (Recruitment) SerializeUtil.unserialize(jedis.get(key));
+        return (Recruitment) SerializeUtil.unserialize(s_jedis.get(key));
     }
 
     public static List<Dictionary> allDictionaries(){
@@ -93,14 +96,13 @@ public class  DataUtil implements Runnable{
     }
 
     public static Dictionary getDictionary(int dictionaryId){
-        if(!jedis.isConnected())jedis=new Jedis("localhost");
-        jedis.select(0);
+        s_jedis.select(0);
         byte[] key=("dic"+dictionaryId).getBytes();
-        return (Dictionary)SerializeUtil.unserialize(jedis.get(key));
+        return (Dictionary)SerializeUtil.unserialize(s_jedis.get(key));
     }
 
     public static List<Dictionary> allCities(){
-        if(!jedis.isConnected())jedis=new Jedis("localhost");
+        Jedis jedis = pool.getResource();
         jedis.select(0);
         Set<byte[]> keys=jedis.keys("dic*".getBytes());
         List<Dictionary> dictionaries=new ArrayList<>();
@@ -113,7 +115,7 @@ public class  DataUtil implements Runnable{
     }
 
     public static List<Dictionary> allSkills(){
-        if(!jedis.isConnected())jedis=new Jedis("localhost");
+        Jedis jedis = pool.getResource();
         jedis.select(0);
         Set<byte[]> keys=jedis.keys("dic*".getBytes());
         List<Dictionary> dictionaries=new ArrayList<>();
@@ -121,11 +123,12 @@ public class  DataUtil implements Runnable{
             Dictionary dictionary = (Dictionary) SerializeUtil.unserialize(jedis.get(key));
             if(dictionary.getType()==5)dictionaries.add(dictionary);
         }
+        jedis.close();
         return dictionaries;
     }
 
     public static List<Dictionary> allScales(){
-        if(!jedis.isConnected())jedis=new Jedis("localhost");
+        Jedis jedis = pool.getResource();
         jedis.select(0);
         Set<byte[]> keys=jedis.keys("dic*".getBytes());
         List<Dictionary> dictionaries=new ArrayList<>();
@@ -133,11 +136,12 @@ public class  DataUtil implements Runnable{
             Dictionary dictionary = (Dictionary) SerializeUtil.unserialize(jedis.get(key));
             if(dictionary.getType()==7)dictionaries.add(dictionary);
         }
+        jedis.close();
         return dictionaries;
     }
 
     public static List<Dictionary> allDegrees(){
-        if(!jedis.isConnected())jedis=new Jedis("localhost");
+        Jedis jedis = pool.getResource();
         jedis.select(0);
         Set<byte[]> keys=jedis.keys("dic*".getBytes());
         List<Dictionary> dictionaries=new ArrayList<>();
@@ -145,11 +149,12 @@ public class  DataUtil implements Runnable{
             Dictionary dictionary = (Dictionary) SerializeUtil.unserialize(jedis.get(key));
             if(dictionary.getType()==9)dictionaries.add(dictionary);
         }
+        jedis.close();
         return dictionaries;
     }
 
     public static List<Dictionary> allIndystries(){
-        if(!jedis.isConnected())jedis=new Jedis("localhost");
+        Jedis jedis = pool.getResource();
         jedis.select(0);
         Set<byte[]> keys=jedis.keys("dic*".getBytes());
         List<Dictionary> dictionaries=new ArrayList<>();
@@ -157,11 +162,12 @@ public class  DataUtil implements Runnable{
             Dictionary dictionary = (Dictionary) SerializeUtil.unserialize(jedis.get(key));
             if(dictionary.getType()==2)dictionaries.add(dictionary);
         }
+        jedis.close();
         return dictionaries;
     }
 
     public static List<Dictionary> allLanguages(){
-        if(!jedis.isConnected())jedis=new Jedis("localhost");
+        Jedis jedis = pool.getResource();
         jedis.select(0);
         Set<byte[]> keys=jedis.keys("dic*".getBytes());
         List<Dictionary> dictionaries=new ArrayList<>();
@@ -169,11 +175,12 @@ public class  DataUtil implements Runnable{
             Dictionary dictionary = (Dictionary) SerializeUtil.unserialize(jedis.get(key));
             if(dictionary.getType()==6)dictionaries.add(dictionary);
         }
+        jedis.close();
         return dictionaries;
     }
 
     public static List<Dictionary> allFuctions(){
-        if(!jedis.isConnected())jedis=new Jedis("localhost");
+        Jedis jedis = pool.getResource();
         jedis.select(0);
         Set<byte[]> keys=jedis.keys("dic*".getBytes());
         List<Dictionary> dictionaries=new ArrayList<>();
@@ -181,13 +188,14 @@ public class  DataUtil implements Runnable{
             Dictionary dictionary = (Dictionary) SerializeUtil.unserialize(jedis.get(key));
             if(dictionary.getType()==3)dictionaries.add(dictionary);
         }
+        jedis.close();
         return dictionaries;
     }
 
 
 
     public static List<Dictionary> allEnterpriseType(){
-        if(!jedis.isConnected())jedis=new Jedis("localhost");
+        Jedis jedis = pool.getResource();
         jedis.select(0);
         Set<byte[]> keys=jedis.keys("dic*".getBytes());
         List<Dictionary> dictionaries=new ArrayList<>();
@@ -195,11 +203,12 @@ public class  DataUtil implements Runnable{
             Dictionary dictionary = (Dictionary) SerializeUtil.unserialize(jedis.get(key));
             if(dictionary.getType()==4)dictionaries.add(dictionary);
         }
+        jedis.close();
         return dictionaries;
     }
 
     public static List<Enterprise> getEnterprisesByDomicile(int domicile){
-        if(!jedis.isConnected())jedis=new Jedis("localhost");
+        Jedis jedis = pool.getResource();
         jedis.select(0);
         Set<byte[]> enter_ids=jedis.smembers(("d_p"+domicile).getBytes());
         List<Enterprise> enterprises=new ArrayList<>();
@@ -207,12 +216,14 @@ public class  DataUtil implements Runnable{
             int id=byteArrayToInt(enterid);
             enterprises.add((Enterprise) SerializeUtil.unserialize(jedis.get(("ent"+id).getBytes())));
         }
+        jedis.close();
         return enterprises;
     }
 
 
 
     private static void query(int min, int count,int t){
+        Jedis jedis = pool.getResource();
         Session session=getSession();
         if(t==1){
             Query<Recruitment> query=session.createQuery("from Recruitment",Recruitment.class);
@@ -233,11 +244,13 @@ public class  DataUtil implements Runnable{
             }
         }
         session.close();
+        jedis.close();
     }
 
 
     @Override
     public void run() {
+        Jedis jedis = pool.getResource();
         Session session=sessionFactory.openSession();
         Query<Dictionary> query=session.createQuery("from Dictionary ", Dictionary.class);
         for(Dictionary dictionary: query.list()){
@@ -288,12 +301,15 @@ public class  DataUtil implements Runnable{
     }
     //2号库保存用户浏览记录
     public static void saveLog(int userId, int recruitmentId){
+        Jedis jedis = pool.getResource();
         if(!jedis.isConnected())jedis=new Jedis("localhost");
         jedis.select(2);
         jedis.sadd(intToByteArray(userId),intToByteArray(recruitmentId));
+        jedis.close();
     }
     //获取推荐给id的职位
     public static List<Recruitment> recommends(int userId){
+        Jedis jedis = pool.getResource();
         List<Recruitment> recruitments=new ArrayList<>();
         if(!jedis.isConnected())jedis=new Jedis("localhost");
         jedis.select(1);
@@ -302,6 +318,7 @@ public class  DataUtil implements Runnable{
             Recruitment recruitment=(Recruitment) SerializeUtil.unserialize(jedis.get(key));
             recruitments.add(recruitment);
         }
+        jedis.close();
         return recruitments;
     }
 }

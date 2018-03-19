@@ -4,7 +4,9 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class BeanGetter implements ApplicationContextAware{
@@ -38,6 +40,8 @@ public class BeanGetter implements ApplicationContextAware{
 	public List<String> allBeanNames(){
 		return Arrays.asList(applicationContext.getBeanDefinitionNames());
 	}
-
+	public <T> Collection<T> beansByClass(Class<T> tClass){
+		return applicationContext.getBeansOfType(tClass).values();
+	}
 
 }

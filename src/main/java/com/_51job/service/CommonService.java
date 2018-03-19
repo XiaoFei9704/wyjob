@@ -4,16 +4,11 @@ import com._51job.dao.CommonDao;
 import com._51job.domain.*;
 import com._51job.domain.Dictionary;
 import com._51job.tool.DataUtil;
-import com._51job.tool.SerializeUtil;
 import com._51job.web.SearchResults;
-import com.sun.org.apache.regexp.internal.RE;
-import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import java.time.format.SignStyle;
 import java.util.*;
 
 @Service
@@ -114,8 +109,8 @@ public class CommonService {
 //    }
 
 
-    private List<SearchResults> searchPart(String city, String keyWord, int salary, String degree, int seniority){
-        List<Recruitment> allRecruitments=DataUtil.allRecruitments();
+    public List<SearchResults> search(String city, String keyword, int salary, String degree, int seniority){
+        List<Recruitment> recruitments=DataUtil.allRecruitments();
         int city_id=0;
         int min_degree=0;
         List<Dictionary> cities=DataUtil.allCities();
@@ -135,32 +130,39 @@ public class CommonService {
             }
         }
         List<SearchResults> temp=new ArrayList<>();
-        //第一次过滤：根据城市
         if(city_id!=0){
             List<Enterprise> enterprises=DataUtil.getEnterprisesByDomicile(city_id);
             Map<Integer,Enterprise> map=new HashMap<>();
             for(Enterprise enterprise: enterprises)map.put(enterprise.getEnterpriseId(),enterprise);
-            for(Recruitment recruitment: allRecruitments){
+            for(Recruitment recruitment: recruitments){
                 if(map.keySet().contains(recruitment.getEnterpriseId())){
                     temp.add(new SearchResults(recruitment,map.get(recruitment.getEnterpriseId())));
                 }
             }
         }else{
-            for(Recruitment recruitment: allRecruitments)temp.add(new SearchResults(recruitment,DataUtil.getEnterprise(recruitment.getEnterpriseId())));
+            for(Recruitment recruitment: recruitments)temp.add(new SearchResults(recruitment,DataUtil.getEnterprise(recruitment.getEnterpriseId())));
+        }
+        if((keyword==null||keyword.length()<1)&&salary==0&&min_degree==0&&seniority==0){
+            setActrual(temp);
+            return temp;
         }
         //第二次过滤：根据关键词，关键词用空格分开，每个词语可能是公司名或者职位名之部分
         List<SearchResults> temp2=new ArrayList<>();
-        if(keyWord!=null){
-            keyWord=keyWord.toUpperCase();
-            List<String> words=Arrays.asList(keyWord.split(" "));
+        if(keyword!=null){
+            keyword=keyword.toUpperCase();
+            List<String> words= Arrays.asList(keyword.split(" "));
             for(String word : words){
                 for(SearchResults searchResults: temp) {
                     searchResults.getEnterprise().setName(searchResults.getEnterprise().getName().toUpperCase());
                     searchResults.getRecruitment().setPost(searchResults.getRecruitment().getPost().toUpperCase());
-                    if (searchResults.getRecruitment().getPost().contains(word) || searchResults.getEnterprise().getName().contains(word) || searchResults.getRecruitment().getDescription().contains(keyWord)) temp2.add(searchResults);
+                    if (searchResults.getRecruitment().getPost().contains(word) || searchResults.getEnterprise().getName().contains(word) || searchResults.getRecruitment().getDescription().contains(keyword)) temp2.add(searchResults);
                 }
             }
         }else temp2.addAll(temp);
+        if(salary==0&&min_degree==0&&seniority==0){
+            setActrual(temp2);
+            return temp2;
+        }
         temp.clear();
         //第三次过滤：工资
         if(salary>0){
@@ -169,6 +171,10 @@ public class CommonService {
             }
         }else temp.addAll(temp2);
         temp2.clear();
+        if(min_degree==0&&seniority==0){
+            setActrual(temp);
+            return temp;
+        }
         //第四次过滤：学历
         if(min_degree>0){
             for(SearchResults searchResults : temp){
@@ -176,6 +182,10 @@ public class CommonService {
             }
         }else temp2.addAll(temp);
         temp.clear();
+        if(seniority==0){
+            setActrual(temp2);
+            return temp2;
+        }
         //第五次过滤：工作经验
         if(seniority>0){
             for(SearchResults searchResults: temp2){
@@ -184,16 +194,8 @@ public class CommonService {
         }else{
             temp.addAll(temp2);
         }
-        for(SearchResults searchResults: temp){
-            searchResults.getEnterprise().setActualDomicile(DataUtil.getDictionary(searchResults.getEnterprise().getDomicile()).getDictionaryName());
-            searchResults.getRecruitment().setActualMinDegree(DataUtil.getDictionary(searchResults.getRecruitment().getMinDegree()).getDictionaryName());
-            searchResults.getEnterprise().setActualIndustry(DataUtil.getDictionary(searchResults.getEnterprise().getIndustry()).getDictionaryName());
-            searchResults.getEnterprise().setActualScale(DataUtil.getDictionary(searchResults.getEnterprise().getScale()).getDictionaryName());
-            searchResults.getEnterprise().setActualType(DataUtil.getDictionary(searchResults.getEnterprise().getType()).getDictionaryName());
-        }
+        setActrual(temp);
         return temp;
-
-
 
         //1、如果关键词和地址皆为空，则不需要查询公司信息表，遍历一遍招聘信息找出符合要求的记录即可
 //        if((city_id==0)&&(keyWord == null || keyWord.length()<=0)) {
@@ -296,25 +298,21 @@ public class CommonService {
 //            return rs;
 //        }
     }
-    public List<SearchResults> search(String city,String keyWord, int salary, String degree, int seniority,int page,int count){
-        List<SearchResults> allResults=searchPart(city,keyWord,salary,degree,seniority);
-        List<SearchResults> result=new ArrayList<>();
-        int sum=allResults.size();
-        int start=(page-1)*count;
-        int end=start+count;
-        if(start>sum) return null;
-        for(int i=start;i<end;i++){
-            if(i>=allResults.size())break;
-            result.add(allResults.get(i));
-        }
-        return result;
-    }
-
     public int testdegree(String degree){
         return commonDao.getDegreeId(degree);
     }
     public int testcity(String city){
         return commonDao.getCityId(city);
+    }
+
+    private void setActrual(List<SearchResults> results){
+        for(SearchResults searchResults: results){
+            searchResults.getEnterprise().setActualDomicile(DataUtil.getDictionary(searchResults.getEnterprise().getDomicile()).getDictionaryName());
+            searchResults.getRecruitment().setActualMinDegree(DataUtil.getDictionary(searchResults.getRecruitment().getMinDegree()).getDictionaryName());
+            searchResults.getEnterprise().setActualIndustry(DataUtil.getDictionary(searchResults.getEnterprise().getIndustry()).getDictionaryName());
+            searchResults.getEnterprise().setActualScale(DataUtil.getDictionary(searchResults.getEnterprise().getScale()).getDictionaryName());
+            searchResults.getEnterprise().setActualType(DataUtil.getDictionary(searchResults.getEnterprise().getType()).getDictionaryName());
+        }
     }
 
 }
