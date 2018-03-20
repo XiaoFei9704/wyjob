@@ -10,6 +10,16 @@ public class SimpleResume {
     }
 
     private int applicantId;
+
+    public int getApplicationId() {
+        return applicationId;
+    }
+
+    public void setApplicationId(int applicationId) {
+        this.applicationId = applicationId;
+    }
+
+    private int applicationId;
     private String name;
     private String gender;
     private String degree;

@@ -58,6 +58,19 @@ public class ApplicantService {
                 list.add(new EnterpriseResume(DataUtil.getEnterprise(recruitment.getEnterpriseId()),recruitment));
             }
         }else {
+            Applicant applicant=applicantDao.get(Applicant.class,userid);
+            for(int i=0;i<30;){//先根据求职者信息，随机推荐30个
+                Recruitment recruitment=DataUtil.getRecruitment(random.nextInt(90000));
+                while (recruitment==null){
+                    recruitment=DataUtil.getRecruitment(random.nextInt(90000));
+                    if(recruitment!=null)break;
+                }
+                if(satisfy(applicant,recruitment)) {
+                    i++;
+                    list.add(new EnterpriseResume(DataUtil.getEnterprise(recruitment.getEnterpriseId()),recruitment));
+                }
+            }
+            //再从redis中获取通过协同过滤得到的职位列表
             List<Recruitment> recruitments=DataUtil.recommends(userid);
             for(Recruitment recruitment: recruitments){
                 list.add(new EnterpriseResume(DataUtil.getEnterprise(recruitment.getEnterpriseId()),recruitment));
@@ -137,13 +150,17 @@ public class ApplicantService {
     //获取简历信息
 
 
-    private boolean saveApplicant(int user_id,String str_applicant){
+    private boolean saveApplicant(int user_id,String str_applicant) throws ParseException {
         JSONObject object=JSON.parseObject(str_applicant);
         Applicant applicant = object.toJavaObject(Applicant.class);
         applicant.setGender(getBytegender(applicant.getActualGender()));
         applicant.setDomicile(getIntDomicile(applicant.getActualDomicile()));
         applicant.setWorkingStatus(getByteWorkStatus(applicant.getActualWorkingStatus()));
         applicant.setWorkType(getByteWorkType(applicant.getActualWorkType()));
+        if(applicant.getActualBirthdate()!=null){
+            SimpleDateFormat dateFormat=new SimpleDateFormat("MM/dd/yyyy");
+            applicant.setBirthdate(new Timestamp(dateFormat.parse(applicant.getActualBirthdate()).getTime()));
+        }
         applicant.setUserId(user_id);
         applicantDao.update(applicant);
         return true;
@@ -323,13 +340,24 @@ public class ApplicantService {
     }
 
     //由String类型的属性获得int类型的属性
-    public int getIntAttribute(String attribute,List<Dictionary> list){
+    private int getIntAttribute(String attribute, List<Dictionary> list){
         for (int i=0;i<list.size();i++){
             Dictionary dict = list.get(i);
             String attrbt = dict.getDictionaryName();
-            if (attribute.contains(attrbt)) return dict.getDictionaryId();
+            if (attrbt.contains(attribute)) return dict.getDictionaryId();
         }
         return 0;
+    }
+
+    //判断此岗位是否符合applicant的条件
+    private boolean satisfy(Applicant applicant, Recruitment recruitment){
+        if(applicant.getSalaryLowerBound()!=null){
+            if(recruitment.getSalary()<applicant.getSalaryLowerBound())return false;
+        }
+        if(applicant.getDomicile()!=null&&applicant.getDomicile()!=0){
+            if(DataUtil.getEnterprise(recruitment.getEnterpriseId()).getDomicile()!=applicant.getDomicile())return false;
+        }
+        return false;
     }
 }
 

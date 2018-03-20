@@ -17,7 +17,7 @@ $(document).ready(function () {
     var experience=0;
     var degree=0;
     $("#salary").find("> ul li").click(function () {
-        city=$("body > div.search-box > input.city-select").val();
+        city=$("body > div.search-box > span > input").val();
         key=$("body > div.search-box > input.text-search").val();
         var s=$(this).text();
         $("#salary").find("ul li").each(function (i,item) {
@@ -45,7 +45,7 @@ $(document).ready(function () {
         search();
     });
     $("#experience").find("> ul li").click(function () {
-        city=$("body > div.search-box > input.city-select").val();
+        city=$("body > div.search-box > span > input").val();
         key=$("body > div.search-box > input.text-search").val();
         var s=$(this).text();
         $("#experience").find("ul li").each(function (i,item) {
@@ -69,7 +69,7 @@ $(document).ready(function () {
         search();
     });
     $("#edu").find("> ul li").click(function () {
-        city=$("body > div.search-box > input.city-select").val();
+        city=$("body > div.search-box > span > input").val();
         key=$("body > div.search-box > input.text-search").val();
         degree=$(this).text();
         $("#edu").find("ul li").each(function (i,item) {
@@ -79,7 +79,7 @@ $(document).ready(function () {
         search();
     });
     $("body > div.search-box > button").click(function () {
-        city=$("body > div.search-box > input.city-select").val();
+        city=$("body > div.search-box > span > input").val();
         key=$("body > div.search-box > input.text-search").val();
         search();
     });
@@ -493,4 +493,11 @@ function msTimeStampToDate(timeStamp){
     var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
     var m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes());
     return Y+M+D+h+m;
+}
+function msTimeStampToDate2(timeStamp){
+    var date=new Date(timeStamp);
+    var Y = date.getFullYear();
+    var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1);
+    var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate());
+    return M+"/"+D+"/"+Y;
 }

@@ -197,7 +197,26 @@
 				<span class="title">添加语言能力</span>
 				<dl>
 					<dt>语种</dt>
-					<dd><input type="text" class="ipt" placeholder=""></dd>
+					<dd>
+						<span class="dropdown-select">
+							<img src="../img/pull.png" alt="" class="icon-select-arrow">
+							<input value="英语" type="text" class="ipt" placeholder="请选择" readonly="">
+						</span>
+						<div class="dropdown-menu">
+		                    <ul>
+		                        <li>英语</li>
+		                        <li>日语</li>
+		                        <li>韩语</li>
+		                        <li>阿拉伯语</li>
+		                        <li>俄语</li>
+		                        <li>德语</li>
+		                        <li>西班牙语</li>
+		                        <li>泰语</li>
+		                        <li>法语</li>
+								<li>意大利语</li>
+		                    </ul>
+		                </div>
+		            </dd>
 				</dl>
 				<dl>
 					<dt>读写能力</dt>
@@ -246,7 +265,24 @@
 				<span class="title">添加专业技能</span>
 				<dl>
 					<dt>技能名称</dt>
-					<dd><input type="text" class="ipt" placeholder=""></dd>
+					<dd>
+						<span class="dropdown-select">
+							<img src="../img/pull.png" alt="" class="icon-select-arrow">
+							<input value="JavaScript" type="text" class="ipt" placeholder="请选择" readonly="">
+						</span>
+						<div class="dropdown-menu">
+		                    <ul>
+		                        <li>SQL</li>
+		                        <li>Java</li>
+		                        <li>C/C++</li>
+		                        <li>HTML5</li>
+		                        <li>PHP</li>
+		                        <li>Python</li>
+		                        <li>Linux</li>
+		                        <li>JavaScript</li>
+		                    </ul>
+		                </div>
+		            </dd>
 				</dl>
 				<dl>
 					<dt>使用时间</dt>
@@ -290,7 +326,21 @@
 				</dl>
 				<dl>
 					<dt>职能</dt>
-					<dd><input type="text" class="ipt" placeholder=""></dd>
+					<dd>
+						<span class="dropdown-select">
+							<img src="../img/pull.png" alt="" class="icon-select-arrow">
+							<input value="软件工程师" type="text" class="ipt" placeholder="请选择" readonly="">
+						</span>
+						<div class="dropdown-menu">
+		                    <ul>
+		                        <li>软件工程师</li>
+		                        <li>算法工程师</li>
+		                        <li>需求工程师</li>
+		                        <li>系统分析员</li>
+		                        <li>项目经理</li>
+		                    </ul>
+		                </div>
+		            </dd>
 				</dl>
 				<dl>
 					<button class="cancel-btn">取消</button>
@@ -356,7 +406,21 @@
 				</dl>
 				<dl>
 					<dt>职能</dt>
-					<dd><input type="text" class="ipt" placeholder=""></dd>
+					<dd>
+						<span class="dropdown-select">
+							<img src="../img/pull.png" alt="" class="icon-select-arrow">
+							<input value="软件工程师" type="text" class="ipt" placeholder="请选择" readonly="">
+						</span>
+						<div class="dropdown-menu">
+		                    <ul>
+		                        <li>软件工程师</li>
+		                        <li>算法工程师</li>
+		                        <li>需求工程师</li>
+		                        <li>系统分析员</li>
+		                        <li>项目经理</li>
+		                    </ul>
+		                </div>
+		            </dd>
 				</dl>
 				<dl>
 					<dt>职位</dt>
@@ -461,6 +525,7 @@
                         actualGender:gender,
                         actualDomicile:city,
                         actualWorkingStatus:work_state,
+                        actualBirthdate:birth,
                         mobile:mobile,
                         email:email,
                         actualBirthdate:birth,
@@ -478,7 +543,77 @@
                     DJMask.msg("简历未成功保存,请检查网络配置...")
                 }
             });
-        })
+        });
+        $.ajax({
+            type:"get",
+            url:"/company/resumeDetail",
+            success:function (data) {
+                $("#info-person > div:nth-child(2) > dl:nth-child(1) > dd > input").val(data.applicant.name);
+                $("#info-person > div:nth-child(2) > dl:nth-child(2) > dd > span > input").val(data.applicant.actualWorkingStatus);
+                $("#info-person > div:nth-child(3) > dl:nth-child(2) > dd > input:nth-child(2)").val(data.applicant.actualDomicile);
+                $("#info-person > div:nth-child(4) > dl:nth-child(1) > dd > input").val(msTimeStampToDate2(data.applicant.birthdate));
+                $("#info-person > div:nth-child(4) > dl:nth-child(2) > dd > input").val(data.applicant.mobile);
+                $("#info-person > div:nth-child(5) > dl > dd > input").val(data.applicant.email);
+                $("#main > div > div:nth-child(6) > div:nth-child(2) > dl:nth-child(1) > dd > input").val(data.applicant.salaryLowerBound);
+                for(var d in data.educationList){
+                    var content ="<div class='form-line'>"+
+                        "<span>"+data.educationList[d].name+"</span>"+
+                        "<em class='vline'></em>"+
+                        "<span>"+data.educationList[d].startTime+"-"+data.educationList[d].endTime+"</span>"+
+                        "<em class='vline'></em>"+
+                        "<span>"+data.educationList[d].major+"</span>"+
+                        "<em class='vline'></em>"+
+                        "<span>"+data.educationList[d].degree+"</span>"+
+                        "</div>";
+                    $(".form-line").empty();
+                    $("#info-experience").find("div").remove();
+                    $("#info-experience").append(content);
+                }
+                for(var d in data.workingList){
+                    var content ="<div class=\"form-line\">\n" +
+                        "\t\t\t\t\t<span>"+data.workingList[d].enterpriseName+"</span>\n" +
+                        "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                        "\t\t\t\t\t<span>"+data.workingList[d].startTime+" - "+data.workingList[d].endTime+"</span>\n" +
+                        "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                        "\t\t\t\t\t<span>"+data.workingList[d].actualFunction+"</span>\n" +
+                        "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                        "\t\t\t\t\t<span>职位: "+data.workingList[d].post+"</span>\n" +
+                        "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                        "\t\t\t\t\t<span>"+data.workingList[d].actualWorkType+"</span>\n" +
+                        "\t\t\t\t</div>";
+                    $("#info-work").find("div").remove();
+                    $("#info-work").append(content);
+                }
+                $.each(data.skillList,function (i,item) {
+                    var content="<div class=\"form-line\">\n" +
+                        "\t\t\t\t\t<span>"+item.skillName+"</span>\n" +
+                        "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                        "\t\t\t\t\t<span>使用时间：</span>\n" +
+                        "\t\t\t\t\t<span>"+item.time+"年</span>\n" +
+                        "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                        "\t\t\t\t\t<span>"+item.actualLevel+"</span>\n" +
+                        "\t\t\t\t</div>";
+                    $("#info-skill").find("div").remove();
+                    $("#info-skill").append(content);
+                });
+                $.each(data.languageList,function (i,item) {
+                    var content="<div class=\"form-line\">\n" +
+                        "\t\t\t\t\t<span>"+item.actualLanguage+"</span>\n" +
+                        "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                        "\t\t\t\t\t<span>读写能力：</span>\n" +
+                        "\t\t\t\t\t<span>"+item.actualRwAbility+"</span>\n" +
+                        "\t\t\t\t\t<em class=\"vline\"></em>\n" +
+                        "\t\t\t\t\t<span>听说能力：</span>\n" +
+                        "\t\t\t\t\t<span>"+item.actualXAbility+"</span>\n" +
+                        "\t\t\t\t</div>";
+                    $("#info-language").find("div").remove();
+                    $("#info-language").append(content);
+                });
+            },
+            error:function () {
+                DJMask.msg("获取个人信息失败，请检查网络...");
+            }
+		});
     });
 	$("#add-education").find("> div > div > dl:nth-child(2) > dd > input:nth-child(1)").datepicker();
 	$("#add-education > div > div > dl:nth-child(2) > dd > input:nth-child(2)").datepicker();

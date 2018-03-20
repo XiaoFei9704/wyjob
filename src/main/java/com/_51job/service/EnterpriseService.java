@@ -3,6 +3,7 @@ package com._51job.service;
 import com._51job.dao.EnterpriseDao;
 import com._51job.domain.*;
 import com._51job.tool.DataUtil;
+import com._51job.tool.SerializeUtil;
 import com._51job.web.PostInfo;
 import com._51job.web.PostInfoState;
 import com._51job.web.ResumeInfo;
@@ -12,6 +13,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.http.client.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -82,6 +84,7 @@ public class EnterpriseService {
             int applicantId=applicationList.get(i).getApplicantId();
             Applicant applicant=enterpriseDao.get(Applicant.class,applicantId);
             simpleResume.setApplicantId(applicantId);
+            simpleResume.setApplicationId(applicationList.get(i).getApplicationId());
             simpleResume.setName(applicant.getName());
             simpleResume.setGender(getPersonGender(applicant.getGender()));
             simpleResume.setWorkStatus(getCurrentWorkStatus(applicant.getWorkingStatus()));
@@ -144,8 +147,10 @@ public class EnterpriseService {
         Byte st=2;
         ru.setState(st);
         enterpriseDao.update(ru);
-        if(ru.getState()==2) return true;
-        else return false;
+        Jedis jedis=new Jedis("localhost");
+        jedis.set(("rec"+ru.getRecruitmentId()).getBytes(), SerializeUtil.serialize(ru));
+        jedis.close();
+        return ru.getState() == 2;
     }
 
     public boolean openJob(int jobId){
@@ -153,6 +158,9 @@ public class EnterpriseService {
         Byte st=1;
         recruitment.setState(st);
         enterpriseDao.update(recruitment);
+        Jedis jedis=new Jedis("localhost");
+        jedis.set(("rec"+recruitment.getRecruitmentId()).getBytes(), SerializeUtil.serialize(recruitment));
+        jedis.close();
         return true;
     }
 
@@ -376,7 +384,7 @@ public class EnterpriseService {
 
     //获得实际的时间
     public String getActualTime(Timestamp time){
-        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         String timeStr = sdf.format(time);
         return timeStr;
     }

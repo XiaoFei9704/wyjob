@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="../css/jobList.css">
 	<link rel="stylesheet" href="../css/reset.css">
 	<script src="../js/jquery-3.3.1.min.js"></script>
+	<script src="../js/dropdown.js"></script>
 	<script src="../js/all_ajax.js"></script>
 </head>
 <body>
@@ -23,10 +24,24 @@
 		</div>		
 	</div>
 	<div class="search-box">
-		<input type="text"  class="city-select" placeholder="输入意向城市">
+		<span class="dropdown-select">
+			<img src="../img/pull.png" alt="" class="icon-select-arrow">
+			<input value="全国" type="text" class="ipt" placeholder="请选择" readonly="">
+		</span>
+		<div class="dropdown-menu">
+            <ul>
+                <li>全国</li>
+                <li>北京</li>
+                <li>上海</li>
+                <li>广州</li>
+                <li>深圳</li>
+                <li>杭州</li>
+                <li>成都</li>
+                <li>西安</li>
+            </ul>
+        </div>
 		<input type="text" name="query" placeholder="搜索公司、职位" class="text-search">
 		<button class="btn btn-search">
-			
 		</button>
 	</div>
 	

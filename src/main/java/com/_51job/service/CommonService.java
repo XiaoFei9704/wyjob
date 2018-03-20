@@ -130,32 +130,33 @@ public class CommonService {
             }
         }
         List<SearchResults> temp=new ArrayList<>();
-        if(city_id!=0){
-            List<Enterprise> enterprises=DataUtil.getEnterprisesByDomicile(city_id);
-            Map<Integer,Enterprise> map=new HashMap<>();
-            for(Enterprise enterprise: enterprises)map.put(enterprise.getEnterpriseId(),enterprise);
-            for(Recruitment recruitment: recruitments){
-                if(map.keySet().contains(recruitment.getEnterpriseId())){
-                    temp.add(new SearchResults(recruitment,map.get(recruitment.getEnterpriseId())));
-                }
-            }
-        }else{
-            for(Recruitment recruitment: recruitments)temp.add(new SearchResults(recruitment,DataUtil.getEnterprise(recruitment.getEnterpriseId())));
-        }
-        if((keyword==null||keyword.length()<1)&&salary==0&&min_degree==0&&seniority==0){
-            setActrual(temp);
-            return temp;
-        }
-        //第二次过滤：根据关键词，关键词用空格分开，每个词语可能是公司名或者职位名之部分
-        List<SearchResults> temp2=new ArrayList<>();
-        if(keyword!=null){
+        //第一次过滤：关键词
+        if(keyword!=null&&keyword.length()>0){
             keyword=keyword.toUpperCase();
             List<String> words= Arrays.asList(keyword.split(" "));
             for(String word : words){
-                for(SearchResults searchResults: temp) {
-                    searchResults.getEnterprise().setName(searchResults.getEnterprise().getName().toUpperCase());
-                    searchResults.getRecruitment().setPost(searchResults.getRecruitment().getPost().toUpperCase());
-                    if (searchResults.getRecruitment().getPost().contains(word) || searchResults.getEnterprise().getName().contains(word) || searchResults.getRecruitment().getDescription().contains(keyword)) temp2.add(searchResults);
+                for(Recruitment recruitment: recruitments) {
+                    if(recruitment.getState()==(byte)2)continue;
+                    if (recruitment.getPost().toUpperCase().contains(word) || DataUtil.getEnterprise(recruitment.getEnterpriseId()).getName().toUpperCase().contains(word) || recruitment.getDescription().contains(keyword)) temp.add(new SearchResults(recruitment,DataUtil.getEnterprise(recruitment.getEnterpriseId())));
+                }
+            }
+        }else{
+            for(Recruitment recruitment: recruitments){
+                if(recruitment.getState()==(byte)2)continue;
+                temp.add(new SearchResults(recruitment,DataUtil.getEnterprise(recruitment.getEnterpriseId())));
+            }
+        }
+        if(city_id==0&&salary==0&&min_degree==0&&seniority==0){
+            setActrual(temp);
+            return temp;
+        }
+        //第二次过滤：城市
+        List<SearchResults> temp2=new ArrayList<>();
+        if(city_id!=0){
+            for(SearchResults searchResults: temp){
+                if(searchResults.getRecruitment().getState()==(byte)2)continue;
+                if(searchResults.getEnterprise().getDomicile()==city_id){
+                    temp2.add(searchResults);
                 }
             }
         }else temp2.addAll(temp);

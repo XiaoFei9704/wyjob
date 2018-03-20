@@ -88,6 +88,7 @@ body {
 }
 .form-row {
     padding-bottom: 17px;
+    margin-left: 50px;
 }
 .gender-btn {
     display: inline-block;
@@ -343,4 +344,8 @@ dt a img {
 .recruit-btn {
     background-color: #409EFF;
     margin-left: 20px;
+}
+.state_btn{
+
+    margin-left: 570px;
 }

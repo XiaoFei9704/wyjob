@@ -1,3 +1,57 @@
+.dropdown-select .ipt{
+    cursor: pointer;
+    width: 100px;
+    border: none;
+    height: 42px;
+    padding-left: 10px;
+}
+.dropdown-select .icon-select-arrow {
+    position: absolute;
+    right: 15px;
+    top: 14px;
+    cursor: pointer;
+}
+.dropdown-select {
+    display: block;
+    width: 11%;
+    height: 42px;
+    border: 1px solid #1e89e0;
+    border-right: none;
+    padding-left: 8px;
+    float: left;
+    line-height: 40px;
+    background-color: #fff;
+    position: relative;
+    cursor: pointer;
+}
+.dropdown-menu {
+    position: relative;
+    height: 0;
+    margin-right: 2px;
+    top: 44px;
+    z-index: 2;
+}
+.dropdown-menu ul {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 120px;
+    border: 1px solid #e3e7ed;
+    border-top: 0;
+    background-color: #fff;
+    overflow: auto;
+    max-height: 208px;
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+}
+.dropdown-menu li {
+    line-height: 42px;
+    padding: 0 15px;
+    cursor: pointer;
+}
+.dropdown-menu li:hover {
+    background-color: #f2f5f9;
+}
 .search-box{
 	width: 1000px;
     position: relative;
@@ -74,7 +128,7 @@
 	right: -13px;
 }
 .text-search{
-	width: 70%;
+	width: 76%;
     height: 28px;
     line-height: 30px;
     padding: 7px 15px;

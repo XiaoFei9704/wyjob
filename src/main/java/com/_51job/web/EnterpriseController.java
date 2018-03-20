@@ -89,8 +89,7 @@ public class EnterpriseController {
     @ResponseBody
     public int changeState(int state,int resumeId){
         //返回简历状态
-        int changedState=enterpriseService.changeRecruitState(state,resumeId);
-        return changedState;
+        return enterpriseService.changeRecruitState(state,resumeId);
     }
 
     //关闭招聘信息

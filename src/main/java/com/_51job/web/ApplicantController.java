@@ -3,6 +3,8 @@ package com._51job.web;
 import com._51job.domain.Applicant;
 import com._51job.domain.User;
 import com._51job.service.ApplicantService;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,9 @@ public class ApplicantController {
                               String str_skill, String str_workexp,
                               String str_eduexp, HttpServletRequest request) throws ParseException {
         User user = (User) request.getSession().getAttribute("user");
+        Applicant applicant= JSON.parseObject(str_applicant,Applicant.class);
+        user.setName(applicant.getName());
+        request.getSession().setAttribute("user",user);
         return user != null && applicantService.saveResume(user.getUserId(), str_applicant, str_language, str_skill, str_workexp, str_eduexp);
     }
 

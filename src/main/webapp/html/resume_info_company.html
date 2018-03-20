@@ -12,8 +12,8 @@
 	<div id="header">
 		<div class="inner">
 			<img src="../img/logo.png" alt="" id="logo">
-			<a href="../html/company_info.html" class="nav-a">企业信息</a>
-			<a href="../html/job_list.html" class="nav-a focus-a">招聘信息</a>
+			<a href="companyPage" class="nav-a">企业信息</a>
+			<a href="recPage" class="nav-a focus-a">招聘信息</a>
 			<span class="fr user">HELLO,CHAOXX</span>
 			<img src="../img/people.png" alt="" class="fr people">
 		</div>		
@@ -91,6 +91,14 @@
 
 				</div>
 			</div>
+<!-- 			<div style="clear: both;"></div> -->
+			<div class="state_btn">
+
+				<button class="cancel-btn">拒绝</button>
+				<button class="ok-btn">接受</button>
+
+			</div>
+			
 		</div>
 	</div>
 	<div id="foot">	
@@ -102,19 +110,23 @@
         $(document).ready(function () {
             var url=window.location.href;
             var ina = url.indexOf("?id=");
-            var id=url.substring(ina+4);
+            var inb=url.indexOf("&");
+            var id=url.substring(ina+4,inb);
+            var inc=url.indexOf("?aid=");
+            var applicationId=url.substring(inc+5);
             $.ajax({
                 type:"get",
                 url:"/company/resumeDetail",
 				data:{resumeId:id},
                 success:function (data) {
                     $("#info-person").find("> div:nth-child(2) > dl:nth-child(1) > dt > span").text(data.applicant.name);
-                    $("#info-person").find("> div:nth-child(2) > dl:nth-child(2) > dt > span").text(data.applicant.workingStatus);
-                    $("#info-person").find("> div:nth-child(3) > dl:nth-child(1) > dt > span").text(data.applicant.gender);
-                    $("#info-person").find("> div:nth-child(3) > dl:nth-child(2) > dt > span").text(data.applicant.domicile);
+                    $("#info-person").find("> div:nth-child(2) > dl:nth-child(2) > dt > span").text(data.applicant.actualWorkingStatus);
+                    $("#info-person").find("> div:nth-child(3) > dl:nth-child(1) > dt > span").text(data.applicant.actualGender);
+                    $("#info-person").find("> div:nth-child(3) > dl:nth-child(2) > dt > span").text(data.applicant.actualDomicile);
                     $("#info-person").find("> div:nth-child(4) > dl:nth-child(1) > dt > span").text(msTimeStampToDate(data.applicant.birthdate));
                     $("#info-person").find("> div:nth-child(4) > dl:nth-child(2) > dt > span").text(data.applicant.mobile);
                     $("#info-person").find("> div:nth-child(5) > dl > dt > span").text(data.applicant.email);
+                    $("#main > div > div:nth-child(6) > div:nth-child(2) > dl:nth-child(1) > dt > span").text(data.applicant.salaryLowerBound);
                     for(var d in data.educationList){
                         var content ="<div class='form-line'>"+
                             "<span>"+data.educationList[d].name+"</span>"+
@@ -169,6 +181,30 @@
                 error:function () {
                     DJMask.msg("获取个人信息失败，请检查网络...");
                 }
+            });
+            $("#main > div > div.state_btn > button.cancel-btn").click(function () {
+				$.ajax({
+					type:"post",
+					url:"/company/changeState",
+					data:{state:3,resumeId:applicationId},
+					success:function (data) {
+						if(data===3){
+						    DJMask.msg("您已拒绝该申请。");
+						}
+                    }
+				});
+            });
+            $("#main > div > div.state_btn > button.ok-btn").click(function () {
+				$.ajax({
+					type:"post",
+					url:"/company/changeState",
+					data:{state:2,resumeId:applicationId},
+					success:function (data) {
+						if(data===2){
+						    DJMask.msg("您已接受该申请。");
+						}
+                    }
+				});
             });
         });
 	</script>

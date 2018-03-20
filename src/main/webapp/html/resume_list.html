@@ -23,157 +23,6 @@
 	</div>
 	<div id="section">
 		<ul>
-			<li>
-				<div class="resume-table">
-					<div class="person-primary">
-						<div class="person-name">叉叉叉叉叉</div>
-						<img src="../img/famale.png">
-						<div style="clear: both;"></div>
-						<div class="person-condition">
-							<p>
-								本科生
-								<em class="vline"></em>
-								一年以内
-								<em class="vline"></em>
-								在职-暂不考虑 
-							</p>
-						</div>
-					</div>
-					<div class="match">
-						<img src="../img/match.png">
-						<span>匹配度</span>
-						<div style="clear: both;"></div>
-						<p>85%</p>
-					</div>
-					<div class="app-time">
-						<img src="../img/time-du.png">
-						<span>申请时间</span>
-						<div style="clear: both;"></div>
-						<p>2018 / 03 / 01 &nbsp&nbsp&nbsp&nbsp 17:50</p>
-					</div>
-					<div class="app-state">
-						<span class="state">
-							审核中
-						</span>
-					</div>
-					<button class="btn" onclick="location='../html/resume_info_company.html'">查看详情</button>
-					<div style="clear: both;"></div>
-				</div>
-			</li>
-			<li>
-				<div class="resume-table">
-					<div class="person-primary">
-						<div class="person-name">叉叉叉叉叉叉叉叉叉叉</div>
-						<img src="../img/male.png">
-						<div style="clear: both;"></div>
-						<div class="person-condition">
-							<p>
-								本科生
-								<em class="vline"></em>
-								一年以内
-								<em class="vline"></em>
-								在职-暂不考虑 
-							</p>
-						</div>
-					</div>
-					<div class="match">
-						<img src="../img/match.png">
-						<span>匹配度</span>
-						<div style="clear: both;"></div>
-						<p>85%</p>
-					</div>
-					<div class="app-time">
-						<img src="../img/time-du.png">
-						<span>申请时间</span>
-						<div style="clear: both;"></div>
-						<p>2018 / 03 / 01 &nbsp&nbsp&nbsp&nbsp 17:50</p>
-					</div>
-					<div class="app-state">
-						<span class="state done">
-							已录取
-						</span>
-					</div>
-					<button class="btn">查看详情</button>
-					<div style="clear: both;"></div>
-				</div>
-				
-			</li>
-			<li>
-				<div class="resume-table">
-					<div class="person-primary">
-						<div class="person-name">叉叉叉叉叉</div>
-						<img src="../img/famale.png">
-						<div style="clear: both;"></div>
-						<div class="person-condition">
-							<p>
-								本科生
-								<em class="vline"></em>
-								一年以内
-								<em class="vline"></em>
-								在职-暂不考虑 
-							</p>
-						</div>
-					</div>
-					<div class="match">
-						<img src="../img/match.png">
-						<span>匹配度</span>
-						<div style="clear: both;"></div>
-						<p>85%</p>
-					</div>
-					<div class="app-time">
-						<img src="../img/time-du.png">
-						<span>申请时间</span>
-						<div style="clear: both;"></div>
-						<p>2018 / 03 / 01 &nbsp&nbsp&nbsp&nbsp 17:50</p>
-					</div>
-					<div class="app-state">
-						<span class="state done">
-							已录取
-						</span>
-					</div>
-					<button class="btn">查看详情</button>
-					<div style="clear: both;"></div>
-				</div>
-				
-			</li>
-			<li>
-				<div class="resume-table">
-					<div class="person-primary">
-						<div class="person-name">叉叉叉叉叉</div>
-						<img src="../img/famale.png">
-						<div style="clear: both;"></div>
-						<div class="person-condition">
-							<p>
-								本科生
-								<em class="vline"></em>
-								一年以内
-								<em class="vline"></em>
-								在职-暂不考虑 
-							</p>
-						</div>
-					</div>
-					<div class="match">
-						<img src="../img/match.png">
-						<span>匹配度</span>
-						<div style="clear: both;"></div>
-						<p>85%</p>
-					</div>
-					<div class="app-time">
-						<img src="../img/time-du.png">
-						<span>申请时间</span>
-						<div style="clear: both;"></div>
-						<p>2018 / 03 / 01 &nbsp&nbsp&nbsp&nbsp 17:50</p>
-					</div>
-					<div class="app-state">
-						<span class="state fail">
-							未录取
-						</span>
-					</div>
-					<button class="btn">查看详情</button>
-					<div style="clear: both;"></div>
-				</div>
-				
-			</li>		
 		</ul>
 	</div>
 	<div id="foot">	
@@ -187,6 +36,7 @@
 	    var ina = url.indexOf("?id=");
 	    var inb=url.indexOf("&");
 	    var id=url.substring(ina+4,inb);
+	    var applicationId;
 		$.ajax({
 			type:"get",
 			url:"/company/resumes",
@@ -194,6 +44,7 @@
 			    jobId:id
 			},
 			success:function (data) {
+                applicationId=data.applicationId;
 				var ul=$("#section").find("> ul");
 				$(ul).empty();
 				$.each(data,function (i,item) {
@@ -240,7 +91,7 @@
 		});
 		$(document).on("click","#section > ul > li > div > button",function () {
 		    var id=$(this).attr("data_id");
-		    window.open("/resume_company?id="+id);
+		    window.open("/common/resume_company?id="+id+"&aid="+applicationId);
         });
     });
 </script>
