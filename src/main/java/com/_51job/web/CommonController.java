@@ -64,7 +64,7 @@ public class CommonController {
     @RequestMapping(value="/search",method = RequestMethod.GET)
     @ResponseBody
     public List<SearchResults> search(String city, String key, int salary, String degree, int seniority, int page, int count) throws InterruptedException {
-        return commonService.search(city, key, salary, degree, seniority);
+        return commonService.search(city, key, salary, degree, seniority ,page, count);
     }
     //  获取岗位类型列表
     @RequestMapping(value="/jobNavi",method = RequestMethod.GET)

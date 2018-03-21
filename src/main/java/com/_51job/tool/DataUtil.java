@@ -1,6 +1,7 @@
 package com._51job.tool;
 
 import com._51job.domain.*;
+import com._51job.web.SearchResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -16,20 +17,45 @@ import java.util.Set;
 
 public class  DataUtil implements Runnable{
     private static SessionFactory sessionFactory;
-    private static List<Recruitment> recruitments;
-    private static List<Enterprise> enterprises;
     private static List<Dictionary> dictionaries1;
+
+    public static List<SearchResults> getResults() {
+        return results;
+    }
+
+    private static List<SearchResults> results=new ArrayList<>();
     private static JedisPool pool = new JedisPool(new JedisPoolConfig(), "localhost");
     private static Jedis s_jedis;
+
+    public static List<KeywordFilter> getFilters() {
+        return filters;
+    }
+
+    private static List<KeywordFilter> filters=new ArrayList<>();
+
+    public static List<Thread> getThreads() {
+        return threads;
+    }
+
+    private static List<Thread> threads=new ArrayList<>();
 
     static {
         Configuration configuration = new Configuration().configure();
         sessionFactory= configuration.buildSessionFactory();
-        recruitments=new ArrayList<>();
-        enterprises=new ArrayList<>();
         dictionaries1=new ArrayList<>();
         s_jedis=pool.getResource();
         new Thread(new DataUtil()).start();
+        for(int i=0;i<1000;i++){
+            filters.add(new KeywordFilter());
+            threads.add(new Thread(filters.get(i)));
+        }
+    }
+    public void setThreads(){
+        threads.clear();
+        for (int i=0;i<1000;i++){
+            threads.add(new Thread(filters.get(i)));
+        }
+        System.out.println("已经重置所有搜索线程。");
     }
 
 
@@ -40,46 +66,6 @@ public class  DataUtil implements Runnable{
     public DataUtil() {
     }
 
-    public static void main(String[] args) {
-        Jedis jedis = pool.getResource();
-        Session session=getSession();
-        Transaction transaction=session.beginTransaction();
-        Set<byte[]> keys=jedis.keys("ent*".getBytes());
-        for(byte[] key: keys){
-            enterprises.add((Enterprise)SerializeUtil.unserialize(jedis.get(key)));
-        }
-        for(Enterprise enterprise: enterprises){
-            User user=new User();
-            user.setUserId(enterprise.getEnterpriseId());
-            user.setRole(2);
-            user.setUserName("ent"+enterprise.getEnterpriseId());
-            user.setPassword("123456");
-            session.save(user);
-        }
-        transaction.commit();
-        session.close();
-        jedis.close();
-    }
-
-    public static List<Recruitment> allRecruitments(){
-        return recruitments;
-    }
-
-    public static List<Enterprise> allEnterprises(){
-        return enterprises;
-    }
-    //根据一个enterpriseId在redis里搜索到该公司的所有招聘信息
-    public static List<Recruitment> recruitmentsOfAnEnterprise(int enterpriseId){
-        Jedis jedis = pool.getResource();
-        List<Recruitment> recruitments=new ArrayList<>();
-        Set<byte[]> keys=jedis.keys("rec*".getBytes());
-        for(byte[] key: keys){
-            Recruitment recruitment=(Recruitment) SerializeUtil.unserialize(jedis.get(key));
-            if(recruitment.getEnterpriseId().equals(enterpriseId))recruitments.add(recruitment);
-        }
-        jedis.close();
-        return recruitments;
-    }
     //根据一个enterpriseId在redis里搜索到该公司的信息
     public static Enterprise getEnterprise(int enterpriseId){
         byte[] key=String.valueOf("ent"+enterpriseId).getBytes();
@@ -231,7 +217,6 @@ public class  DataUtil implements Runnable{
             query.setMaxResults(count);
             for(Recruitment recruitment: query.list()){
                 jedis.set(("rec"+ recruitment.getRecruitmentId()).getBytes(), SerializeUtil.serialize(recruitment));
-                recruitments.add(recruitment);
             }
         }else {
             Query<Enterprise> query=session.createQuery("from Enterprise ",Enterprise.class);
@@ -240,7 +225,6 @@ public class  DataUtil implements Runnable{
             for(Enterprise enterprise: query.list()){
                 jedis.set(("ent"+enterprise.getEnterpriseId()).getBytes(),SerializeUtil.serialize(enterprise));
                 jedis.sadd(("d_p"+enterprise.getDomicile()).getBytes(),intToByteArray(enterprise.getEnterpriseId()));
-                enterprises.add(enterprise);
             }
         }
         session.close();
@@ -269,19 +253,18 @@ public class  DataUtil implements Runnable{
             for(int i=0;i<ent_count/2000+1;i++){
                 query(2000*i,2000,2);
             }
-        }else{
-            System.out.println("预加载开始");
-            Set<byte[]> keys=jedis.keys("rec*".getBytes());
-            for(byte[] key: keys){
-                recruitments.add((Recruitment) SerializeUtil.unserialize(jedis.get(key)));
-            }
-            System.out.println("加载完招聘信息");
-            keys=jedis.keys("ent*".getBytes());
-            for(byte[] key: keys){
-                enterprises.add((Enterprise) SerializeUtil.unserialize(jedis.get(key)));
-            }
-            System.out.println("预加载完毕！");
         }
+        System.out.println("预加载开始");
+        Set<byte[]> keys=jedis.keys("rec*".getBytes());
+        for(byte[] key: keys) {
+            Recruitment recruitment = (Recruitment) SerializeUtil.unserialize(jedis.get(key));
+            Enterprise enterprise=getEnterprise(recruitment.getEnterpriseId());
+            if(enterprise != null){
+                results.add(new SearchResults(recruitment, enterprise));
+                System.out.println(recruitment);
+            }
+        }
+        System.out.println("预加载完成");
         jedis.close();
     }
 
@@ -320,5 +303,22 @@ public class  DataUtil implements Runnable{
         }
         jedis.close();
         return recruitments;
+    }
+
+    public void closeJob(int id){
+        for(SearchResults result: results){
+            if(result.getRecruitment().getRecruitmentId()==id){
+                result.getRecruitment().setState((byte)2);break;
+            }
+        }
+        System.out.println("已关闭id为"+id+"的招聘信息");
+    }
+    public void openJob(int id){
+        for(SearchResults result : results){
+            if(result.getRecruitment().getRecruitmentId()==id){
+                result.getRecruitment().setState((byte)1);break;
+            }
+        }
+        System.out.println("已开启id为"+id+"的招聘信息");
     }
 }

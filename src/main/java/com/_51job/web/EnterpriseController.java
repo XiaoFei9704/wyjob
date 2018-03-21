@@ -92,17 +92,14 @@ public class EnterpriseController {
         return enterpriseService.changeRecruitState(state,resumeId);
     }
 
-    //关闭招聘信息
+    //关闭招聘信息，关闭后更新缓存，利用AOP
     @RequestMapping(value = "/closeJob", method = RequestMethod.POST)
     @ResponseBody
     public boolean closeJob(int jobId){
-        //返回关闭结果
-        System.out.println("D1-start");
-        boolean result=enterpriseService.closeRecruit(jobId);
-        return result;
+        return enterpriseService.closeRecruit(jobId);
     }
 
-    //开启招聘
+    //开启招聘，开启后更新缓存，利用AOP
     @RequestMapping(value = "/openJob", method = RequestMethod.POST)
     @ResponseBody
     public boolean openJob(int jobId){

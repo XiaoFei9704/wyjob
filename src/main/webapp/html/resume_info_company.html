@@ -112,7 +112,7 @@
             var ina = url.indexOf("?id=");
             var inb=url.indexOf("&");
             var id=url.substring(ina+4,inb);
-            var inc=url.indexOf("?aid=");
+            var inc=url.indexOf("&aid=");
             var applicationId=url.substring(inc+5);
             $.ajax({
                 type:"get",
@@ -182,7 +182,7 @@
                     DJMask.msg("获取个人信息失败，请检查网络...");
                 }
             });
-            $("#main > div > div.state_btn > button.cancel-btn").click(function () {
+            $("#main").find("> div > div.state_btn > button.cancel-btn").click(function () {
 				$.ajax({
 					type:"post",
 					url:"/company/changeState",

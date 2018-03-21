@@ -1,3 +1,16 @@
+.page button {
+    background-color: #1e89e0;
+    border: none;
+    color: white;
+    font-size: 20px;
+    width: 30px;
+    height: 30px;
+    margin-left: 450px;
+    margin-top: 20px;
+}
+.page button+button {
+    margin-left: 20px;
+}
 .dropdown-select .ipt{
     cursor: pointer;
     width: 100px;

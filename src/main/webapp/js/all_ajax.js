@@ -16,6 +16,7 @@ $(document).ready(function () {
     var salary=0;
     var experience=0;
     var degree=0;
+    var page=1;
     $("#salary").find("> ul li").click(function () {
         city=$("body > div.search-box > span > input").val();
         key=$("body > div.search-box > input.text-search").val();
@@ -42,6 +43,7 @@ $(document).ready(function () {
             case "大于30k":
                 salary=30000;break;
         }
+        page=1;
         search();
     });
     $("#experience").find("> ul li").click(function () {
@@ -66,6 +68,7 @@ $(document).ready(function () {
             case "5年":
                 experience=5;break;
         }
+        page=1;
         search();
     });
     $("#edu").find("> ul li").click(function () {
@@ -76,11 +79,26 @@ $(document).ready(function () {
             $(this).css("background","#fff");
         });
         $(this).css("background","#efefef");
+        page=1;
         search();
     });
     $("body > div.search-box > button").click(function () {
         city=$("body > div.search-box > span > input").val();
         key=$("body > div.search-box > input.text-search").val();
+        page=1;
+        search();
+    });
+    $("#forward").click(function () {
+        if(page===1)return;
+        else {
+            $(document).scrollTop($("#loader").offset().top);
+            page--;
+            search();
+        }
+    });
+    $("#backward").click(function () {
+        $(document).scrollTop($("#loader").offset().top);
+        page++;
         search();
     });
     function search() {
@@ -94,7 +112,7 @@ $(document).ready(function () {
                 salary:salary,
                 degree:degree,
                 seniority:experience,
-                page:1,
+                page:page,
                 count:20
             },
             success:function (data) {

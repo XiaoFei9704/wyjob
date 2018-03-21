@@ -3,12 +3,15 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <context:component-scan base-package="com._51job.dao"/>
     <context:component-scan base-package="com._51job.service"/>
@@ -16,6 +19,7 @@
     <mvc:annotation-driven/>
     <mvc:default-servlet-handler/>
     <context:annotation-config/>
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
 
 	<bean id="beanGetter" class="com._51job.tool.BeanGetter">
         <property name="beanGetter"><ref bean="beanGetter"></ref></property>
@@ -79,4 +83,23 @@
     <bean name="jedis" class="redis.clients.jedis.Jedis">
         <constructor-arg name="host" value="localhost"/>
     </bean>
+
+    <aop:config>
+        <aop:pointcut id="search" expression="execution(* com._51job.service.CommonService.search(..))"/>
+        <aop:aspect id="mAspect" ref="dataUtil">
+            <aop:after method="setThreads" pointcut-ref="search"/>
+        </aop:aspect>
+    </aop:config>
+    <aop:config>
+        <aop:pointcut id="closeJob" expression="execution(* com._51job.web.EnterpriseController.closeJob(*)) and args(jobId)"/>
+        <aop:aspect id="myAspect" ref="dataUtil">
+            <aop:after method="closeJob" pointcut-ref="closeJob" arg-names="jobId"/>
+        </aop:aspect>
+    </aop:config>
+    <aop:config>
+        <aop:pointcut id="openJob" expression="execution(* com._51job.web.EnterpriseController.openJob(*)) and args(jobId)"/>
+        <aop:aspect id="myAspect2" ref="dataUtil">
+            <aop:after method="openJob" pointcut-ref="openJob" arg-names="jobId"/>
+        </aop:aspect>
+    </aop:config>
 </beans>

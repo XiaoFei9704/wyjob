@@ -36,7 +36,6 @@
 	    var ina = url.indexOf("?id=");
 	    var inb=url.indexOf("&");
 	    var id=url.substring(ina+4,inb);
-	    var applicationId;
 		$.ajax({
 			type:"get",
 			url:"/company/resumes",
@@ -44,7 +43,6 @@
 			    jobId:id
 			},
 			success:function (data) {
-                applicationId=data.applicationId;
 				var ul=$("#section").find("> ul");
 				$(ul).empty();
 				$.each(data,function (i,item) {
@@ -81,18 +79,19 @@
                         "\t\t\t\t\t\t\t"+item.applicationState+"\n" +
                         "\t\t\t\t\t\t</span>\n" +
                         "\t\t\t\t\t</div>\n" +
-                        "\t\t\t\t\t<button data_id='"+item.applicantId+"' class=\"btn\">查看详情</button>\n" +
+                        "\t\t\t\t\t<button data_id1='"+item.applicationId+"' data_id='"+item.applicantId+"' class=\"btn\">查看详情</button>\n" +
                         "\t\t\t\t\t<div style=\"clear: both;\"></div>\n" +
                         "\t\t\t\t</div>\n" +
                         "\t\t\t</li>";
 					$(ul).append(content);
-                })
+                });
+                $(document).on("click","#section > ul > li > div > button",function () {
+                    var id=$(this).attr("data_id");
+                    var id1=$(this).attr("data_id1");
+                    window.open("/common/resume_company?id="+id+"&aid="+id1);
+                });
             }
 		});
-		$(document).on("click","#section > ul > li > div > button",function () {
-		    var id=$(this).attr("data_id");
-		    window.open("/common/resume_company?id="+id+"&aid="+applicationId);
-        });
     });
 </script>
 </body>
