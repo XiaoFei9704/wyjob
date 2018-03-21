@@ -95,7 +95,7 @@
 			<div class="state_btn">
 
 				<button class="cancel-btn">拒绝</button>
-				<button class="ok-btn">接受</button>
+				<button class="ok-btn">录用</button>
 
 			</div>
 			
@@ -156,7 +156,7 @@
                     }
                     $.each(data.skillList,function (i,item) {
                         var content="<div class=\"form-line\">\n" +
-                            "\t\t\t\t\t<span>"+item.skillName+"</span>\n" +
+                            "\t\t\t\t\t<span>"+item.actualSkillName+"</span>\n" +
                             "\t\t\t\t\t<em class=\"vline\"></em>\n" +
                             "\t\t\t\t\t<span>使用时间：</span>\n" +
                             "\t\t\t\t\t<span>"+item.time+"年</span>\n" +
@@ -201,7 +201,7 @@
 					data:{state:2,resumeId:applicationId},
 					success:function (data) {
 						if(data===2){
-						    DJMask.msg("您已接受该申请。");
+						    DJMask.msg("您已录用此求职者。");
 						}
                     }
 				});

@@ -112,21 +112,29 @@ public class CommonService {
             List<String> words= Arrays.asList(keyword.split(" "));
             List<KeywordFilter> filters=DataUtil.getFilters();
             List<Thread> threads=DataUtil.getThreads();
-            for(String word : words){
-                for(int i=0;i<75;i++){
-                    KeywordFilter filter=filters.get(i);
+            for(int i=0;i<words.size();i++){
+                String word=words.get(i);
+                for(int j = i * 75; j<75*(i+1); j++){
+                    KeywordFilter filter=filters.get(j);
                     filter.setKeyword(word);
-                    filter.setSources(all.subList(i*1200,(i+1)*1200));
+                    filter.setSources(all.subList((j-(i*75))*1200,(j+1-(i*75))*1200));
                     filter.setResults(temp);
                     filter.setFinished(false);
-                    threads.get(i).start();
+                    while (threads.get(j).getState().equals(Thread.State.RUNNABLE)){
+                        j++;
+                        filters.get(j).setKeyword(word);
+                        filters.get(j).setSources(all.subList((j-(i*75))*1200,(j+1-(i*75))*1200));
+                        filters.get(j).setResults(temp);
+                        filters.get(j).setFinished(false);
+                    }
+                    threads.get(j).start();
                 }
-                KeywordFilter filter=filters.get(75);
+                KeywordFilter filter=filters.get(9999-i);
                 filter.setKeyword(word);
                 filter.setSources(all.subList(90000,90393));
                 filter.setResults(temp);
                 filter.setFinished(false);
-                threads.get(75).start();
+                threads.get(9999-i).start();
             }
             for(int i=0,c=75;i<c;){
                 if(filters.get(i).isFinished())i++;
@@ -315,12 +323,6 @@ public class CommonService {
 //            }
 //            return rs;
 //        }
-    }
-    public int testdegree(String degree){
-        return commonDao.getDegreeId(degree);
-    }
-    public int testcity(String city){
-        return commonDao.getCityId(city);
     }
 
     private void setActrual(List<SearchResults> results){

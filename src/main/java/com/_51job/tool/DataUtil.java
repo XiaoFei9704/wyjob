@@ -45,14 +45,14 @@ public class  DataUtil implements Runnable{
         dictionaries1=new ArrayList<>();
         s_jedis=pool.getResource();
         new Thread(new DataUtil()).start();
-        for(int i=0;i<1000;i++){
+        for(int i=0;i<10000;i++){
             filters.add(new KeywordFilter());
             threads.add(new Thread(filters.get(i)));
         }
     }
     public void setThreads(){
         threads.clear();
-        for (int i=0;i<1000;i++){
+        for (int i=0;i<10000;i++){
             threads.add(new Thread(filters.get(i)));
         }
         System.out.println("已经重置所有搜索线程。");
@@ -287,7 +287,7 @@ public class  DataUtil implements Runnable{
         Jedis jedis = pool.getResource();
         if(!jedis.isConnected())jedis=new Jedis("localhost");
         jedis.select(2);
-        jedis.sadd(intToByteArray(userId),intToByteArray(recruitmentId));
+        jedis.sadd(String.valueOf(userId),String.valueOf(recruitmentId));
         jedis.close();
     }
     //获取推荐给id的职位
@@ -296,9 +296,9 @@ public class  DataUtil implements Runnable{
         List<Recruitment> recruitments=new ArrayList<>();
         if(!jedis.isConnected())jedis=new Jedis("localhost");
         jedis.select(1);
-        Set<byte[]> keys=jedis.smembers(intToByteArray(userId));
-        for(byte[] key: keys){
-            Recruitment recruitment=(Recruitment) SerializeUtil.unserialize(jedis.get(key));
+        Set<String> keys=jedis.smembers(String.valueOf(userId));
+        for(String key: keys){
+            Recruitment recruitment=(Recruitment) SerializeUtil.unserialize(jedis.get(key).getBytes());
             recruitments.add(recruitment);
         }
         jedis.close();

@@ -113,7 +113,7 @@ li, ol, ul {
 .job-title{
 	font-size: 16px;
     font-weight: 400;
-    max-width: 170px;
+    width: 170px;
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;

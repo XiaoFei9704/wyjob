@@ -64,6 +64,7 @@ public class ApplicantController {
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     @ResponseBody
     public boolean register(String account, String password,HttpServletRequest request){
+        if(applicantService.hasUser(account))return false;
         Applicant applicant = applicantService.register(account,password);
         if(applicant!=null){
             User user=new User();
@@ -80,11 +81,10 @@ public class ApplicantController {
     //投递岗位
     @RequestMapping(value = "/shenqing", method = RequestMethod.POST)
     @ResponseBody
-    public boolean applicate(int id , HttpServletRequest request){
-        HttpSession session=request.getSession();
-        User user=(User)session.getAttribute("user");
-        if(user==null)return false;
-        else return applicantService.applicate(id, user.getUserId());
+    public boolean applicate(int id , HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        return user != null && applicantService.applicate(id, user.getUserId());
     }
 
 }

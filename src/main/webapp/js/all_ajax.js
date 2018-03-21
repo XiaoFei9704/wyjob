@@ -17,14 +17,11 @@ $(document).ready(function () {
     var experience=0;
     var degree=0;
     var page=1;
+    var searching=false;
     $("#salary").find("> ul li").click(function () {
         city=$("body > div.search-box > span > input").val();
         key=$("body > div.search-box > input.text-search").val();
         var s=$(this).text();
-        $("#salary").find("ul li").each(function (i,item) {
-            $(this).css("background","#fff");
-        });
-        $(this).css("background","#efefef");
         switch (s){
             case "所有":
                 salary=0;break;
@@ -50,10 +47,6 @@ $(document).ready(function () {
         city=$("body > div.search-box > span > input").val();
         key=$("body > div.search-box > input.text-search").val();
         var s=$(this).text();
-        $("#experience").find("ul li").each(function (i,item) {
-            $(this).css("background","#fff");
-        });
-        $(this).css("background","#efefef");
         switch (s){
             case "所有":
                 experience=0;break;
@@ -75,10 +68,6 @@ $(document).ready(function () {
         city=$("body > div.search-box > span > input").val();
         key=$("body > div.search-box > input.text-search").val();
         degree=$(this).text();
-        $("#edu").find("ul li").each(function (i,item) {
-            $(this).css("background","#fff");
-        });
-        $(this).css("background","#efefef");
         page=1;
         search();
     });
@@ -102,6 +91,8 @@ $(document).ready(function () {
         search();
     });
     function search() {
+        if(searching)return;
+        searching=true;
         $("#loader").removeClass("none");
         $.ajax({
             type:"get",
@@ -116,6 +107,7 @@ $(document).ready(function () {
                 count:20
             },
             success:function (data) {
+                searching=false;
                 $("#loader").addClass("none");
                 $("body > div.section > div > div > ul").empty();
                 $.each(data,function (i,job) {
@@ -177,8 +169,11 @@ $(document).ready(function () {
     }
 
 
+    var logging=false;
     /*登陆*/
     $("#login-form").find("> button").click(function () {
+        if(logging)return;
+        logging=true;
         var name=$.trim($("#name").val());
         var pass=$.trim($("#password").val());
         if(name.length<1||pass.length<1)return;
@@ -190,6 +185,7 @@ $(document).ready(function () {
                 password:pass
             },
             success:function (data) {//返回1：求职者；2：企业；0：登陆失败
+                logging=false;
                 if(data===0) DJMask.msg("登陆失败，请检查用户名和密码！");
                 else {
                     if(data===1)window.location.href="front";
@@ -199,9 +195,11 @@ $(document).ready(function () {
             }
         });
     });
-
+    var registering=false;
     /*求职者注册*/
     $("#find-form").find("> button").click(function () {
+        if(registering)return;
+        registering=true;
         var name=$.trim($("#find-form").find("> input:nth-child(3)").val());
         var pass=$.trim($("#find-form").find("> input:nth-child(4)").val());
         $.ajax({
@@ -209,8 +207,9 @@ $(document).ready(function () {
             url:"/applicant/register",
             data:{account:name,password:pass},
             success:function (data) {
+                registering=false;
                 if(data)window.location.href="resumeRevise";
-                else DJMask.msg("注册失败。。");
+                else DJMask.msg("此账号已经注册过了");
             }
         });
     });

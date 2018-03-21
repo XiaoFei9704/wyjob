@@ -50,10 +50,10 @@ $(document).ready(function(){
         var eType=$("#add-work").find("> div > div > dl:nth-child(4) > dd > span > input").attr("value");
         var eScale=$("#add-work").find("> div > div > dl:nth-child(5) > dd > span > input").attr("value");
         var industry=$("#add-work").find("> div > div > dl:nth-child(6) > dd > input").val();
-        var founc=$("#add-work").find("> div > div > dl:nth-child(7) > dd > input").val();
+        var founc=$("#add-work > div > div > dl:nth-child(7) > dd > span > input").val();
         var post=$("#add-work").find("> div > div > dl:nth-child(8) > dd > input").val();
         var salary=$("#add-work").find("> div > div > dl:nth-child(9) > dd > input").val();
-        var type=$("#add-work").find("> div > div > dl:nth-child(10) > dd > span > input").attr("value");
+        var type=$("#add-work > div > div > dl:nth-child(10) > dd > span > input").attr("value");
         var descripction=$("#add-work").find("> div > div > dl.info-textarea > dd > textarea").val();
         if(start!==""&&end!==""&&eName!==""&&founc!==""&&post!==""&&type!==""){
             var content="<div class=\"form-line\">\n" +
@@ -72,7 +72,7 @@ $(document).ready(function(){
         }
     });
     $(document).on("click","#add-expertise > div > div > dl:nth-child(5) > button.ok-btn",function () {
-        var skillName=$("#add-expertise").find("> div > div > dl:nth-child(2) > dd > input").val();
+        var skillName=$("#add-expertise").find("> div > div > dl:nth-child(2) > dd > span > input").val();
         var usingTime=$("#add-expertise").find ("> div > div > dl:nth-child(3) > dd > input").val();
         var masteryDegree=$("#add-expertise").find("> div > div > dl:nth-child(4) > dd > span > input").attr("value");
         if(skillName!==""&&usingTime!==""&&masteryDegree!==""){
@@ -89,9 +89,9 @@ $(document).ready(function(){
         }
     });
     $(document).on("click","#add-language > div > div > dl:nth-child(5) > button.ok-btn",function(){
-        var language=$("#add-language").find("> div > div > dl:nth-child(2) > dd > input").val();
-        var rwAbility=$("#add-language").find("> div > div > dl:nth-child(3) > dd > span > input").attr("value");
-        var lsAbility=$("#add-language").find("> div > div > dl:nth-child(4) > dd > span > input").attr("value");
+        var language=$("#add-language > div > div > dl:nth-child(2) > dd > span > input").val();
+        var rwAbility=$("#add-language > div > div > dl:nth-child(3) > dd > span > input").val();
+        var lsAbility=$("#add-language > div > div > dl:nth-child(4) > dd > span > input").val();
         if (language!==""&&rwAbility!==""&&lsAbility!="") {
             var content = "<div class=\"form-line\">"+
                 "<span>"+language+"</span>"+

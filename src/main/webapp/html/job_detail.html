@@ -94,7 +94,9 @@
         var url=window.location.href;
         var ina = url.indexOf("?id=");
         var inb=url.indexOf("&");
-        var id=url.substring(ina+4,inb);
+        var id=0;
+		if(inb>0)id=url.substring(ina+4,inb);
+		else id=url.substring(ina+4);
         $.ajax({
 			type:"get",
 			url:"/company/jobDetail",

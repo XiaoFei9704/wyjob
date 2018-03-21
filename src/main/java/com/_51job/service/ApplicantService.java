@@ -34,14 +34,12 @@ public class ApplicantService {
         user.setPassword(password);
         user.setRole(1);
         int id = applicantDao.save(user);
-        System.out.println(id);
         user.setUserId(id);
         Applicant applicant = new Applicant();
         applicant.setUserId(id);
         int user_id = applicantDao.save(applicant);
         if (user_id > 0) return applicant;
         return null;
-
     }
 
     //列出合适的岗位
@@ -121,6 +119,10 @@ public class ApplicantService {
         return lst;
     }
 
+    public boolean hasUser(String username){
+        return applicantDao.hasUser(username);
+    }
+
 
     //保存求职者简历
     public boolean saveResume(int user_id,String str_applicant,String str_language,
@@ -186,6 +188,7 @@ public class ApplicantService {
             skill.setUserId(userid);
             skill.setSkillName(getIntSkillName(skill.getActualSkillName()));
             skill.setLevel(getByteSkillLevel(skill.getActualLevel()));
+            if(skill.getSkillName()==0)skill.setSkillName(922);
             applicantDao.save(skill);
 //            int skill_id = applicantDao.save(skill);
 //            skill.setSkillId(skill_id);
@@ -232,15 +235,6 @@ public class ApplicantService {
         }
         return true;
 
-    }
-
-
-
-    //将JSON对象转换为Java对象
-    private <T> Object jsonTojava(String str, Class<T> tClass){
-        JSONObject jsonObject = JSON.parseObject(str);
-        Object object = jsonObject.toJavaObject(tClass.getClass());
-        return object;
     }
 
     private byte getBytegender(String gender){
@@ -298,25 +292,6 @@ public class ApplicantService {
 
     }
 
-    public int getIntEnterpriseType(String etype){
-        List<Dictionary> enterprisetypes = DataUtil.allEnterpriseType();
-        int enterprisetype = getIntAttribute(etype,enterprisetypes);
-        return enterprisetype;
-
-    }
-
-    public int getIntEnterpriseScale(String escale){
-        List<Dictionary> scales = DataUtil.allScales();
-        int entscale = getIntAttribute(escale,scales);
-        return  entscale;
-    }
-
-    public int getIntIndustry(String industry){
-        List<Dictionary> industries = DataUtil.allIndystries();
-        int industryyy = getIntAttribute(industry,industries);
-        return industryyy;
-    }
-
     public int getIntFunction(String fuc){
         List<Dictionary> fuctions = DataUtil.allFuctions();
         int fuction = getIntAttribute(fuc,fuctions);
@@ -328,15 +303,6 @@ public class ApplicantService {
         List<Dictionary> degrees = DataUtil.allDegrees();
         int degree = getIntAttribute(dg,degrees);
         return degree;
-    }
-
-    //将int转为String
-    public String intToString(int attribute, List<Dictionary> list){
-        for (int i = 0;i<list.size();i++){
-            int attr_id = list.get(i).getDictionaryId();
-            if (attr_id ==attribute){return list.get(i).getDictionaryName();}
-        }
-        return null;
     }
 
     //由String类型的属性获得int类型的属性

@@ -503,16 +503,16 @@
             $("#info-skill").find("div").each(function(i,item){
                 var skill={
                     actualSkillName:$(this).find("span:nth-child(1)").text(),
-                    time:$(this).find("span:nth-child(3)").text().replace(/[^0-9]/ig,""),
-                    actualLevel:$(this).find("span:nth-child(4)").text()
+                    time:$(this).find("span:nth-child(4)").text().replace(/[^0-9]/ig,""),
+                    actualLevel:$(this).find("span:nth-child(6)").text()
                 };
                 skills.push(skill);
             });
             $("#info-language").find("div").each(function(i,item){
                 var language={
                     actualLanguage:$(this).find("span:nth-child(1)").text(),
-                    actualRwAbility:$(this).find("span:nth-child(3)").text(),
-                    actualXAbility:$(this).find("span:nth-child(5)").text()
+                    actualRwAbility:$(this).find("span:nth-child(4)").text(),
+                    actualXAbility:$(this).find("span:nth-child(7)").text()
                 };
                 languages.push(language);
             });
@@ -563,7 +563,7 @@
                         "<em class='vline'></em>"+
                         "<span>"+data.educationList[d].major+"</span>"+
                         "<em class='vline'></em>"+
-                        "<span>"+data.educationList[d].degree+"</span>"+
+                        "<span>"+data.educationList[d].actualDegree+"</span>"+
                         "</div>";
                     $(".form-line").empty();
                     $("#info-experience").find("div").remove();
@@ -586,7 +586,7 @@
                 }
                 $.each(data.skillList,function (i,item) {
                     var content="<div class=\"form-line\">\n" +
-                        "\t\t\t\t\t<span>"+item.skillName+"</span>\n" +
+                        "\t\t\t\t\t<span>"+item.actualSkillName+"</span>\n" +
                         "\t\t\t\t\t<em class=\"vline\"></em>\n" +
                         "\t\t\t\t\t<span>使用时间：</span>\n" +
                         "\t\t\t\t\t<span>"+item.time+"年</span>\n" +

@@ -106,6 +106,7 @@ public class EnterpriseService {
         else applicantId=applicationId;
         Applicant applicant=getActualInfoApplicant(applicantId);
         List<Experience> expList=getSpecificExperience(applicantId);
+        assert expList != null;
         if(expList.size()>0) {
             List<EducationExperience> eduList = getActualStudyExperience(expList);
             List<WorkingExperience> workList = getActualWorkExperience(expList);
@@ -219,14 +220,14 @@ public class EnterpriseService {
     }
 
     //获得某个求职者的工作经历列表
-    public List<Experience> getSpecificExperience(int applicantId){
+    private List<Experience> getSpecificExperience(int applicantId){
         List<Experience> list=enterpriseDao.getExperienceList(applicantId);
         if(list!=null) {
-            for (int i = 0; i < list.size(); i++) {
-                String start = getActualTime(list.get(i).getStartTime());
-                String end = getActualTime(list.get(i).getEndTime());
-                list.get(i).setActualStartTime(start);
-                list.get(i).setActualEndTime(end);
+            for (Experience aList : list) {
+                String start = getActualTime(aList.getStartTime());
+                String end = getActualTime(aList.getEndTime());
+                aList.setActualStartTime(start);
+                aList.setActualEndTime(end);
             }
             return list;
         }

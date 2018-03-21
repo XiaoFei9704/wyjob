@@ -135,7 +135,7 @@
                         "<em class='vline'></em>"+
                         "<span>"+data.educationList[d].major+"</span>"+
                         "<em class='vline'></em>"+
-                        "<span>"+data.educationList[d].degree+"</span>"+
+                        "<span>"+data.educationList[d].actualDegree+"</span>"+
                         "</div>";
                         $(".form-line").empty();
                         $("#info-experience").append(content);
@@ -156,7 +156,7 @@
                     }
                     $.each(data.skillList,function (i,item) {
 						var content="<div class=\"form-line\">\n" +
-                            "\t\t\t\t\t<span>"+item.skillName+"</span>\n" +
+                            "\t\t\t\t\t<span>"+item.actualSkillName+"</span>\n" +
                             "\t\t\t\t\t<em class=\"vline\"></em>\n" +
                             "\t\t\t\t\t<span>使用时间：</span>\n" +
                             "\t\t\t\t\t<span>"+item.time+"年</span>\n" +
