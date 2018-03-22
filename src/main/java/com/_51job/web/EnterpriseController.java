@@ -3,7 +3,8 @@ package com._51job.web;
 import com._51job.domain.Enterprise;
 import com._51job.domain.Recruitment;
 import com._51job.domain.User;
-        import com._51job.service.EnterpriseService;
+import com._51job.service.ApplicantService;
+import com._51job.service.EnterpriseService;
 import com._51job.tool.DataUtil;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.web.bind.annotation.RequestMapping;
         import org.springframework.web.bind.annotation.RequestMethod;
         import org.springframework.web.bind.annotation.ResponseBody;
+import redis.clients.jedis.Jedis;
 
-        import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
         import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.util.List;
@@ -21,6 +23,8 @@ import java.util.List;
 @RequestMapping(value = "/company")
 public class EnterpriseController {
     private final EnterpriseService enterpriseService;
+    @Autowired
+    private ApplicantService applicantService;
     @Autowired
     public EnterpriseController(EnterpriseService enterpriseService){
         this.enterpriseService=enterpriseService;
@@ -31,18 +35,20 @@ public class EnterpriseController {
     @ResponseBody
     public boolean saveInfo(String str_enterprise,HttpServletRequest request) throws ParseException {
         HttpSession session = request.getSession();
-        Enterprise enterprise = (Enterprise) session.getAttribute("enterprise");
+        Enterprise enterprise = (Enterprise) session.getAttribute("user");
         int enterprise_id = enterprise.getEnterpriseId();
-        boolean result = enterpriseService.saveOrupdateInfo(str_enterprise,enterprise_id);
-        return result;
+        return enterpriseService.saveOrupdateInfo(str_enterprise,enterprise_id);
     }
 
     //保存/修改招聘信息
     @RequestMapping(value = "/saveJob",method = RequestMethod.POST)
     @ResponseBody
-    public boolean saveJob(String str_recruitment) throws ParseException {
-        boolean result = enterpriseService.saveOrupdateRecruitment(str_recruitment);
-        return true;
+    public boolean saveJob(String str_recruitment, HttpServletRequest request) throws ParseException {
+        User user= (User) request.getSession().getAttribute("user");
+        int id;
+        if(user==null)return false;
+        else id=user.getUserId();
+        return enterpriseService.saveOrupdateRecruitment(str_recruitment,id);
     }
 
 
@@ -55,8 +61,7 @@ public class EnterpriseController {
         User user=(User)session.getAttribute("user");
         if(user==null)return null;
         int company_id=user.getUserId();
-        PostInfo list=enterpriseService.getPost(company_id);
-        return list;
+        return enterpriseService.getPost(company_id);
     }
 
     //获取指定岗位投递来的简历列表
@@ -64,8 +69,7 @@ public class EnterpriseController {
     @ResponseBody
     public List<SimpleResume> resumes(int jobId){
         //return：JSON，简历列表，简历总数list.size()
-        List<SimpleResume> list=enterpriseService.getSpecificPost(jobId);
-        return list;
+        return enterpriseService.getSpecificPost(jobId);
     }
 
     //获取指定简历详情
@@ -78,9 +82,12 @@ public class EnterpriseController {
             User user=(User) session.getAttribute("user");
             resumeId=user.getUserId();
         }
+        if(request.getSession().getAttribute("user")==null)return null;
         ResumeInfo resumeInfo;
-        if(request.getSession().getAttribute("user")==null)resumeInfo=enterpriseService.getSpecificResume(resumeId,true);
-        else resumeInfo=enterpriseService.getSpecificResume(resumeId,false);
+        resumeInfo=enterpriseService.getSpecificResume(resumeId);
+        Jedis jedis=new Jedis("localhost");
+        jedis.select(10);
+        if(!jedis.exists("app"+resumeId))applicantService.matchAll(request);
         return resumeInfo;
     }
 
@@ -123,7 +130,7 @@ public class EnterpriseController {
     public Enterprise enterprise(HttpServletRequest request,Integer id){
         HttpSession session=request.getSession();
         User user=(User)session.getAttribute("user");
-        if(id!=0)return enterpriseService.enterprise(id);
+        if(id!=null&&id!=0)return enterpriseService.enterprise(id);
         else return enterpriseService.enterprise(user.getUserId());
     }
 

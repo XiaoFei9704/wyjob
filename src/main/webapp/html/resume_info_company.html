@@ -84,12 +84,6 @@
 						<dt>期望工作性质：  <span>清洁工</span></dt>
 					</dl>
 				</div>
-				<div class="form-row">
-					<dl>
-						<dt>具体意向：</dt>
-					</dl>
-
-				</div>
 			</div>
 <!-- 			<div style="clear: both;"></div> -->
 			<div class="state_btn">
@@ -119,6 +113,7 @@
                 url:"/company/resumeDetail",
 				data:{resumeId:id},
                 success:function (data) {
+                    $(document).attr("title",data.applicant.name+"的简历");
                     $("#info-person").find("> div:nth-child(2) > dl:nth-child(1) > dt > span").text(data.applicant.name);
                     $("#info-person").find("> div:nth-child(2) > dl:nth-child(2) > dt > span").text(data.applicant.actualWorkingStatus);
                     $("#info-person").find("> div:nth-child(3) > dl:nth-child(1) > dt > span").text(data.applicant.actualGender);

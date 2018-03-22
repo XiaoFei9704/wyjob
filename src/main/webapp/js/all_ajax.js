@@ -99,7 +99,7 @@ $(document).ready(function () {
             url:"search",
             data:{
                 city:city,
-                key:key,
+                key:$.trim(key),
                 salary:salary,
                 degree:degree,
                 seniority:experience,

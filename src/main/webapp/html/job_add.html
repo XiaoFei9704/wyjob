@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>recruitment</title>
+	<title>发布招聘信息</title>
 	<link rel="stylesheet" href="../css/reset.css">
 	<link rel="stylesheet" href="../css/recruitment.css">
 	<script src="../js/jquery-3.3.1.min.js"></script>
@@ -15,8 +15,8 @@
 	<div id="header">
 		<div class="inner">
 			<img src="../img/logo.png" alt="" id="logo">
-			<a href="company_info.html" class="nav-a ">企业信息</a>
-			<a href="job_list.html" class="nav-a focus-a">招聘信息</a>
+			<a href="companyPage" class="nav-a ">企业信息</a>
+			<a href="recPage" class="nav-a focus-a">招聘信息</a>
 			<span class="fr user">HELLO,CHAOXX</span>
 			<img src="../img/people.png" alt="" class="fr people">
 		</div>		
@@ -69,7 +69,9 @@
 						<span class="list-title">
 							工作城市：
 						</span>
-						<input type="text" class="list-input" placeholder="请输入工作城市">
+						<div class="company-name">
+							<span>华为技术有限公司</span>
+						</div>
 					</li>
 					<li class="list">
 						<b class="must-symbol">
@@ -78,12 +80,14 @@
 						<span class="list-title">
 							工作地点：
 						</span>
-						<input type="text" class="list-input" id="work-addr" placeholder="请输入工作地点">
+						<div class="company-name">
+							<span>华为技术有限公司</span>
+						</div>
 					</li>
 				</ul>
 			</div>
 		</div>
-		<div id="primary-info" class="part">
+		<div id="primary-info1" class="part">
 			<div class="serial">2</div>
 			<div class="ti">
 				<h3 class="title">
@@ -125,7 +129,7 @@
 							</span>
 							<div class="dropdown-menu">
 			                    <ul> 
-			                        <li>中专及以下</li>  
+			                        <li>初中</li>
 					                <li>高中</li>  
 					                <li>大专</li>
 					                <li>本科</li>
@@ -139,13 +143,12 @@
 							</span>
 							<div class="dropdown-menu2">
 			                    <ul> 
-			                        <li>不限</li>  
-					                <li>应届生</li>  
-					                <li>1年以内</li>
-					                <li>1-3年</li>
-					                <li>3-5年</li>
-					                <li>5-10年</li>
-					                <li>10年以上</li>  
+			                        <li>0年</li>
+					                <li>1年</li>
+					                <li>2年</li>
+					                <li>3年</li>
+					                <li>4年</li>
+					                <li>5年</li>
 			                    </ul>
 			                </div>
 						</div>
@@ -183,7 +186,7 @@
 			</div>
 		</div>
 		<div class="form-btns">
-			<a href="job_list.html">
+			<a href="recPage">
 				<button class="btn btn-back" type="button" ka="user-resume-user-info-cancel">取消</button>
 			</a>
 			<button class="btn vali-btn" type="submit" ka="user-resume-user-info-ok">发布</button>
@@ -208,10 +211,44 @@
 				</p>
 
 				<button class="cancel-btn">取消</button>
-				<a href="job_list.html">
+				<a href="javascript:void(0)">
 					<button class="ok-btn">确定</button>
 				</a>
 		</div>
 	</div>
+<script>
+	$(document).ready(function () {
+		$("#information").find("> div > a > button").click(function () {
+		    var job={
+		        post:$("#primary-info").find("> div.content > ul > li:nth-child(2) > input").val(),
+                actualFunction:$("#primary-info > div.content > ul > li:nth-child(3) > input").val(),
+                actualMinDegree:$("#primary-info1 > div.content > ul > li:nth-child(2) > div.option-box > span.dropdown-select > input").val(),
+                minSeniority:$("#primary-info1 > div.content > ul > li:nth-child(2) > div.option-box > span.dropdown-select2 > input").val().replace(/[^0-9]/ig,""),
+                salary:$("#primary-info1 > div.content > ul > li:nth-child(3) > input").val(),
+                description:$("#brief-introduce").val()
+			};
+		    $.ajax({
+				type:"post",
+				url:"/company/saveJob",
+				data:{str_recruitment:JSON.stringify(job)},
+				success:function (data) {
+					if(data){
+					    DJMask.msg("发布成功！");
+					    window.location.href="recPage";
+                    }else DJMask.msg("发布失败了。");
+                }
+			});
+		});
+		$.ajax({
+			type:"get",
+			url:"/company/enterprise",
+			success:function (data) {
+			    $("#primary-info").find("> div.content > ul > li:nth-child(1) > div > span").text(data.name);
+			    $("#primary-info").find("> div.content > ul > li:nth-child(4) > div > span").text(data.actualDomicile);
+			    $("#primary-info").find("> div.content > ul > li:nth-child(5) > div > span").text(data.address);
+            }
+		});
+    });
+</script>
 </body>
 </html>

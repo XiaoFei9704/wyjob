@@ -26,133 +26,6 @@
 		<div class="job-box">
 			<div class="job-list" style="margin-top: 30px;">
 				<ul>
-					<li>
-						<div class="job-primary">
-							<div class="info-primary">
-								<h3 class="name">
-									<a href="">
-										<div class="job-title">
-											高级数据挖掘工程师
-										</div>
-										<span class="red">
-											20k-40k
-										</span>
-									</a>
-								</h3>
-								<p>
-									成都
-									<em class="vline"></em>
-									3-5年
-									<em class="vline"></em>
-									本科
-								</p>
-							</div>
-							<div class="info-company">
-								<div class="company-context">
-									<h3 class="name">
-										<a href="">
-											京东贸易
-										</a>
-									</h3>
-									<p>
-										移动互联网
-										<em class="vline"></em>
-										10000人以上
-									</p>
-								</div>
-							</div>
-							<div class="info-publis">
-								<p class="time">
-									发布于昨天
-								</p>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="job-primary">
-							<div class="info-primary">
-								<h3 class="name">
-									<a href="">
-										<div class="job-title">
-											高级数据挖掘工程师
-										</div>
-										<span class="red">
-											20k-40k
-										</span>
-									</a>
-								</h3>
-								<p>
-									成都
-									<em class="vline"></em>
-									3-5年
-									<em class="vline"></em>
-									本科
-								</p>
-							</div>
-							<div class="info-company">
-								<div class="company-context">
-									<h3 class="name">
-										<a href="">
-											京东贸易
-										</a>
-									</h3>
-									<p>
-										移动互联网
-										<em class="vline"></em>
-										10000人以上
-									</p>
-								</div>
-							</div>
-							<div class="info-publis">
-								<p class="time">
-									发布于昨天
-								</p>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="job-primary">
-							<div class="info-primary">
-								<h3 class="name">
-									<a href="">
-										<div class="job-title">
-											高级数据挖掘工程师
-										</div>
-										<span class="red">
-											20k-40k
-										</span>
-										
-									</a>
-								</h3>
-								<p>
-									成都
-									<em class="vline"></em>
-									3-5年
-									<em class="vline"></em>
-									本科
-								</p>
-							</div>
-							<div class="info-company">
-								<div class="company-context">
-									<h3 class="name">
-										<a href="">
-											京东贸易
-										</a>
-									</h3>
-									<p>
-										移动互联网
-										<em class="vline"></em>
-										10000人以上
-									</p>
-								</div>
-							</div>
-							<div class="info-publis">
-								<p class="time">
-									发布于昨天
-								</p>
-							</div>
-						</div>
-					</li>
 				</ul>
 			</div>
 		</div>
@@ -171,7 +44,7 @@
 			success:function (data) {
 			    $("body > div.section > div > div > ul").empty();
 				$.each(data,function (i,item) {
-				    var content="<li>\n" +
+				    var con="<li>\n" +
                         "\t\t\t\t\t\t<div class=\"job-primary\">\n" +
                         "\t\t\t\t\t\t\t<div class=\"info-primary\">\n" +
                         "\t\t\t\t\t\t\t\t<h3 class=\"name\">\n" +
@@ -182,7 +55,6 @@
                         "\t\t\t\t\t\t\t\t\t\t<span class=\"red\">\n" +
                         "\t\t\t\t\t\t\t\t\t\t\t"+item.recruitment.salary+"\n" +
                         "\t\t\t\t\t\t\t\t\t\t</span>\n" +
-                        "\t\t\t\t\t\t\t\t\t\t\n" +
                         "\t\t\t\t\t\t\t\t\t</a>\n" +
                         "\t\t\t\t\t\t\t\t</h3>\n" +
                         "\t\t\t\t\t\t\t\t<p>\n" +
@@ -207,6 +79,12 @@
                         "\t\t\t\t\t\t\t\t\t</p>\n" +
                         "\t\t\t\t\t\t\t\t</div>\n" +
                         "\t\t\t\t\t\t\t</div>\n" +
+                        "\t\t\t\t\t\t\t<div class=\"match\">\n" +
+                        "\t\t\t\t\t\t\t\t<img src=\"../img/match.png\">\n" +
+                        "\t\t\t\t\t\t\t\t<span>匹配度</span>\n" +
+                        "\t\t\t\t\t\t\t\t<div style=\"clear: both;\"></div>\n" +
+                        "\t\t\t\t\t\t\t\t<p>"+item.score+"%</p>\n" +
+                        "\t\t\t\t\t\t\t</div>\n" +
                         "\t\t\t\t\t\t\t<div class=\"info-publis\">\n" +
                         "\t\t\t\t\t\t\t\t<p class=\"time\">\n" +
                         "\t\t\t\t\t\t\t\t\t发布于"+msTimeStampToDate(item.recruitment.time)+"\n" +
@@ -214,7 +92,7 @@
                         "\t\t\t\t\t\t\t</div>\n" +
                         "\t\t\t\t\t\t</div>\n" +
                         "\t\t\t\t\t</li>";
-				    $("body > div.section > div > div > ul").append(content);
+				    $("body > div.section > div > div > ul").append(con);
                 })
             }
 		});

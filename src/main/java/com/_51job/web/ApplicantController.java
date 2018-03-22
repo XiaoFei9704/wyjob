@@ -27,14 +27,14 @@ public class ApplicantController {
     //保存/修改简历
     @RequestMapping(value = "/saveResume", method = RequestMethod.POST)
     @ResponseBody
-    public boolean saveResume(String str_applicant,String str_language,
+    public boolean saveResume( HttpServletRequest request,String str_applicant,String str_language,
                               String str_skill, String str_workexp,
-                              String str_eduexp, HttpServletRequest request) throws ParseException {
+                              String str_eduexp) throws ParseException {
         User user = (User) request.getSession().getAttribute("user");
         Applicant applicant= JSON.parseObject(str_applicant,Applicant.class);
         user.setName(applicant.getName());
         request.getSession().setAttribute("user",user);
-        return user != null && applicantService.saveResume(user.getUserId(), str_applicant, str_language, str_skill, str_workexp, str_eduexp);
+        return applicantService.saveResume(user.getUserId(), str_applicant, str_language, str_skill, str_workexp, str_eduexp);
     }
 
     // 职位推荐
@@ -46,7 +46,7 @@ public class ApplicantController {
         else {
              User user = (User) session.getAttribute("user");
              int user_id = user.getUserId();
-             return applicantService.suitJobs(0);
+             return applicantService.suitJobs(user_id);
         }
     }
 

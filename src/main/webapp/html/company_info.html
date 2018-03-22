@@ -158,7 +158,7 @@
 				</div>
 			</div>
 		</div>
-		<button class="revise-btn" onclick="location='../html/company_info_revise.html'">修    改</button>
+		<button class="revise-btn" onclick="location='companyRevise'">修    改</button>
 	</div>
 	<div id="foot">	
 		<div class="inner">
@@ -172,7 +172,7 @@
             var inb=url.indexOf("&");
             var id=0;
             if(ina>0)id=url.substring(ina+4,inb);
-            if(window.location.href.indexOf("id="))$("#section").find("> button").remove();
+            if(window.location.href.indexOf("id=")>0)$("#section").find("> button").remove();
             $.ajax({
                 type:"get",
                 url:"/company/enterprise",

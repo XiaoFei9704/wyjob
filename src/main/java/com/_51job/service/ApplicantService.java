@@ -2,30 +2,41 @@ package com._51job.service;
 
 
 import com._51job.dao.ApplicantDao;
+import com._51job.dao.EnterpriseDao;
 import com._51job.domain.*;
+import com._51job.domain.Dictionary;
 import com._51job.tool.DataUtil;
+import com._51job.tool.Pair;
+import com._51job.tool.SerializeUtil;
 import com._51job.web.EnterpriseResume;
 import com._51job.web.PostInfo;
 import com._51job.web.PostInfoState;
+import com._51job.web.SearchResults;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 @Service
 public class ApplicantService {
 
     @Autowired
+    private static Jedis jedis=new Jedis("localhost");
+    @Autowired
     private ApplicantDao applicantDao;
+    @Autowired
+    private EnterpriseDao enterpriseDao;
+    @Autowired
+    private EnterpriseService enterpriseService;
+    private List<String> defaultSkillList=new ArrayList<String>(){{add("SQL");add("Java");add("C/C++");add("HTML5");add("PHP");add("Python");add("Linux ");add("JavaScript");}};
     //ok
     //求职者注册
     public Applicant register(String account, String password) {
@@ -34,12 +45,14 @@ public class ApplicantService {
         user.setPassword(password);
         user.setRole(1);
         int id = applicantDao.save(user);
+        System.out.println(id);
         user.setUserId(id);
         Applicant applicant = new Applicant();
         applicant.setUserId(id);
         int user_id = applicantDao.save(applicant);
         if (user_id > 0) return applicant;
         return null;
+
     }
 
     //列出合适的岗位
@@ -56,22 +69,21 @@ public class ApplicantService {
                 list.add(new EnterpriseResume(DataUtil.getEnterprise(recruitment.getEnterpriseId()),recruitment));
             }
         }else {
-            Applicant applicant=applicantDao.get(Applicant.class,userid);
-            for(int i=0;i<30;){//先根据求职者信息，随机推荐30个
-                Recruitment recruitment=DataUtil.getRecruitment(random.nextInt(90000));
-                while (recruitment==null){
-                    recruitment=DataUtil.getRecruitment(random.nextInt(90000));
-                    if(recruitment!=null)break;
-                }
-                if(satisfy(applicant,recruitment)) {
-                    i++;
-                    list.add(new EnterpriseResume(DataUtil.getEnterprise(recruitment.getEnterpriseId()),recruitment));
-                }
+            Jedis jedis=new Jedis("localhost");
+            Jedis jedis1=new Jedis("localhost");
+            jedis1.select(0);
+            jedis.select(10);
+            Set<String> keys=jedis.hkeys("app"+userid);
+            List<Pair<String,Integer>> scores=new ArrayList<>();
+            for(String key: keys){
+                scores.add(new Pair<>(key,Integer.parseInt(jedis.hget("app"+userid,key))));
             }
-            //再从redis中获取通过协同过滤得到的职位列表
-            List<Recruitment> recruitments=DataUtil.recommends(userid);
-            for(Recruitment recruitment: recruitments){
-                list.add(new EnterpriseResume(DataUtil.getEnterprise(recruitment.getEnterpriseId()),recruitment));
+            scores.sort((o1, o2) -> o2.getB()-o1.getB());
+            for(int i=0;i<100;i++){
+                String key=scores.get(i).getA();
+                int score=Integer.parseInt(jedis.hget("app"+userid,key));
+                Recruitment recruitment=(Recruitment) SerializeUtil.unserialize((jedis1.get(("rec"+key).getBytes())));
+                list.add(new EnterpriseResume(DataUtil.getEnterprise(recruitment.getEnterpriseId()),recruitment,score));
             }
         }
         for(EnterpriseResume enterpriseResume: list){
@@ -117,10 +129,6 @@ public class ApplicantService {
             }
         }
         return lst;
-    }
-
-    public boolean hasUser(String username){
-        return applicantDao.hasUser(username);
     }
 
 
@@ -188,7 +196,6 @@ public class ApplicantService {
             skill.setUserId(userid);
             skill.setSkillName(getIntSkillName(skill.getActualSkillName()));
             skill.setLevel(getByteSkillLevel(skill.getActualLevel()));
-            if(skill.getSkillName()==0)skill.setSkillName(922);
             applicantDao.save(skill);
 //            int skill_id = applicantDao.save(skill);
 //            skill.setSkillId(skill_id);
@@ -235,6 +242,15 @@ public class ApplicantService {
         }
         return true;
 
+    }
+
+
+
+    //将JSON对象转换为Java对象
+    private <T> Object jsonTojava(String str, Class<T> tClass){
+        JSONObject jsonObject = JSON.parseObject(str);
+        Object object = jsonObject.toJavaObject(tClass.getClass());
+        return object;
     }
 
     private byte getBytegender(String gender){
@@ -292,6 +308,25 @@ public class ApplicantService {
 
     }
 
+    public int getIntEnterpriseType(String etype){
+        List<Dictionary> enterprisetypes = DataUtil.allEnterpriseType();
+        int enterprisetype = getIntAttribute(etype,enterprisetypes);
+        return enterprisetype;
+
+    }
+
+    public int getIntEnterpriseScale(String escale){
+        List<Dictionary> scales = DataUtil.allScales();
+        int entscale = getIntAttribute(escale,scales);
+        return  entscale;
+    }
+
+    public int getIntIndustry(String industry){
+        List<Dictionary> industries = DataUtil.allIndystries();
+        int industryyy = getIntAttribute(industry,industries);
+        return industryyy;
+    }
+
     public int getIntFunction(String fuc){
         List<Dictionary> fuctions = DataUtil.allFuctions();
         int fuction = getIntAttribute(fuc,fuctions);
@@ -303,6 +338,15 @@ public class ApplicantService {
         List<Dictionary> degrees = DataUtil.allDegrees();
         int degree = getIntAttribute(dg,degrees);
         return degree;
+    }
+
+    //将int转为String
+    public String intToString(int attribute, List<Dictionary> list){
+        for (int i = 0;i<list.size();i++){
+            int attr_id = list.get(i).getDictionaryId();
+            if (attr_id ==attribute){return list.get(i).getDictionaryName();}
+        }
+        return null;
     }
 
     //由String类型的属性获得int类型的属性
@@ -324,6 +368,108 @@ public class ApplicantService {
             if(DataUtil.getEnterprise(recruitment.getEnterpriseId()).getDomicile()!=applicant.getDomicile())return false;
         }
         return false;
+    }
+    //获得某个求职者最高学历代码
+    public int getHighestDegree(int applicantId){
+        List<Experience> exList= applicantDao.getExperienceList(applicantId);
+        List<EducationExperience> eduList=applicantDao.getEduList(exList);
+        if(eduList==null) return 0;
+        int highDegree=1047;
+        for(EducationExperience edu:eduList){
+            int temp=edu.getDegree();
+            if(temp > highDegree) highDegree=temp;
+        }
+        return highDegree;
+    }
+    //获得某个求职者工作经验总和
+    public long getExperTime(int applicantId){
+        long experTime=0;
+        List<Experience> exList=applicantDao.getExperienceList(applicantId);
+        List<Experience> trainExpList=applicantDao.getTrainList(exList);
+        if(trainExpList!=null) {
+            for (Experience trainExp:trainExpList) {
+                long start=trainExp.getStartTime().getTime();
+                long end=trainExp.getEndTime().getTime();
+                experTime+=end-start;
+            }
+            return experTime;
+        }
+        else return 0;
+    }
+    //获得某个招聘信息的岗位描述中的技能关键词
+    public List<String> getRequiredSkillList(SearchResults rec){
+        List<String> requiredSkill=new ArrayList<>();
+        for(String skill:defaultSkillList){
+            if(rec.getRecruitment().getDescription().toUpperCase().contains(skill.toUpperCase())){
+                requiredSkill.add(skill);
+            }
+        }
+        return requiredSkill;
+    }
+
+    //求职者简历-招聘信息学历匹配
+    public int matchDegree(int highestDegree,int degree){
+        return ((highestDegree>degree||highestDegree==degree)?30:0);
+
+    }
+    //求职者简历-招聘信息工作经验匹配
+    public int matchSeniortity(long trainTime,long time){//time以年为单位
+        long requiredTime=time*360*24*3600*1000;
+        double rs=(double) trainTime/(double) requiredTime;
+        int score=(int) Math.ceil((double) trainTime/(double) requiredTime*30);
+        return (trainTime>requiredTime)?30:score;
+    }
+    //求职者简历-招聘信息最低薪资匹配
+    public int matchSalary(int salary,int Rsalary){
+        return (salary<Rsalary)?20:5;
+    }
+    //求职者简历-招聘信息技能匹配
+    private int matchSkill(List<String> ownedSkill,SearchResults rec){
+        double skillPoint=0;
+        int score=0;
+        double ratio=0;
+        List<String> requiredSkill=getRequiredSkillList(rec);
+        for(String skill:ownedSkill){
+            if(requiredSkill.contains(skill)) skillPoint+=1;
+            int requiredSkillSize=requiredSkill.size();
+            if(requiredSkillSize==0)requiredSkillSize=1;
+            else ratio=skillPoint/requiredSkillSize;
+        }
+        score=(int) ratio*20;
+        return score;
+    }
+    //求职者简历-招聘信息匹配
+    //学历：30%（求职者最高学历为AG,招聘要求为 RG,(AG>RG)?30:0）
+    //最低薪资：20%（求职者要求最低薪资为AS,招聘要求为RG,(AG<RG)?20:5)
+    //工作经验：30%(求职者工作经验时间总和为AT,招聘要求为RT,(AT>RT)?20;AT/RT*20)
+    //技能：20%
+    public void matchAll(HttpServletRequest request){
+        int applicantId=((User)request.getSession().getAttribute("user")).getUserId();
+        int highestDegree=getHighestDegree(applicantId);
+        int salary=applicantDao.getSalary(applicantId);
+        long trainTime=getExperTime(applicantId);
+        List<String> ownedSkill=applicantDao.getSkillList(applicantId);
+        List<SearchResults> list=DataUtil.getResults();
+        for(SearchResults rec:list){
+            int score=0;
+            int degree=rec.getRecruitment().getMinDegree();
+            score+=matchDegree(highestDegree,degree);
+            long time=rec.getRecruitment().getMinSeniority();
+            score+=matchSeniortity(trainTime,time);
+            int Rsalary=rec.getRecruitment().getSalary();
+            score+=matchSalary(salary,Rsalary);
+            score+=matchSkill(ownedSkill,rec);
+            String appID="app"+applicantId;
+            String recID=String.valueOf(rec.getRecruitment().getRecruitmentId());
+            String finalScore=String.valueOf(score);
+            jedis.select(10);
+            jedis.hset(appID,recID,finalScore);
+        }
+
+    }
+	
+	public boolean hasUser(String username){
+        return applicantDao.hasUser(username);
     }
 }
 

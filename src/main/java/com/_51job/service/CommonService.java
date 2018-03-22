@@ -45,44 +45,6 @@ public class CommonService {
         return commonDao.get(Recruitment.class,recuitment_id);
     }
 
-    //获得实际地址、规模、企业类型、技能名称、语种、学历、角色
-    public String getActualAttribute1(int dicId){
-        StringBuffer str=new StringBuffer();
-        Integer id= dicId;
-        while(id != null){
-            Dictionary dic=commonDao.get(Dictionary.class,dicId);
-            str.insert(0,dic.getDictionaryName());
-            id= dic.getParent();
-        }
-        return str.toString();
-    }
-    //根据city在Redis里搜索到一个enterpriseId集合
-    public List<Integer> searchEnterpriseIdByCity(String city){
-        int cityID=commonDao.getCityId(city);//模糊查询
-        String scityID=String.valueOf(cityID);
-        List<Integer>enterIds=new ArrayList<>();
-        Jedis jedis=new Jedis("localhost");
-        Set<String> rs=jedis.smembers(scityID);
-        for(String str:rs){
-            enterIds.add(Integer.valueOf(str));
-        }
-        return enterIds;
-    }
-
-
-    //根据enterpriseId集合在Redis里搜索到一个Recruitment对象列表
-//    public List<Recruitment> searchRecruitments(Set<String> EnterpriseId){
-//        List<Recruitment> allRecruitments=new ArrayList<>();
-//        List<Recruitment> partRecruitments;
-//        for(String enterpriseId:EnterpriseId){
-//            int enterId=Integer.parseInt(enterpriseId);
-//            partRecruitments=DataUtil.recruitmentsOfAnEnterprise(enterId);
-//            allRecruitments.addAll(partRecruitments);
-//        }
-//        return allRecruitments;
-//    }
-
-
     public List<SearchResults> search(String city, String keyword, int salary, String degree, int seniority, int page, int count) throws InterruptedException {
         int city_id=0;
         int min_degree=0;

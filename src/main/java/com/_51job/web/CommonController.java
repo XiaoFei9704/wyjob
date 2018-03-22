@@ -113,8 +113,9 @@ public class CommonController {
         }
     }
     @RequestMapping(value = "/companyPage")
-    public String companyPage(){
-        return "company_info";
+    public String companyPage(HttpServletRequest request){
+        if(request.getSession().getAttribute("user")!=null)return "company_info";
+        else return "login";
     }
     @RequestMapping(value = "/getUser", method = RequestMethod.POST)
     @ResponseBody
@@ -154,4 +155,6 @@ public class CommonController {
     public String resumeCompany(){
         return "resume_info_company";
     }
+    @RequestMapping(value = "jobAdd")
+    public String jobAdd(){return "job_add";}
 }

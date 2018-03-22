@@ -6,6 +6,13 @@ import com._51job.domain.Recruitment;
 public class EnterpriseResume {
     private Enterprise enterprise;
     private Recruitment recruitment;
+    private int score;
+
+    public EnterpriseResume(Enterprise enterprise, Recruitment recruitment, int score) {
+        this.enterprise = enterprise;
+        this.recruitment = recruitment;
+        this.score = score;
+    }
 
     public EnterpriseResume() {
     }
@@ -30,5 +37,13 @@ public class EnterpriseResume {
 
     public void setRecruitment(Recruitment recruitment) {
         this.recruitment = recruitment;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

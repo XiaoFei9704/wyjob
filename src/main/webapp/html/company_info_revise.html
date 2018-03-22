@@ -8,6 +8,8 @@
 	<script src="../js/jquery-3.3.1.min.js"></script>
 	<script src="../js/company-select.js"></script>
 	<script src="../js/all_ajax.js"></script>
+	<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+	<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 </head>
 <body>
 	<div id="header">
@@ -60,7 +62,7 @@
 						<span class="list-title">
 							成立时间
 						</span>
-						<input type="text" class="list-input" name="" placeholder="格式例如：2018/03/21">
+						<input type="text" class="list-input" name="">
 					</li>
 				</ul>
 			</div>
@@ -208,5 +210,10 @@
 			<span>51JOB招聘平台 版权所有 Copyright © 2004-2018 All Rights Reserved</span>
 		</div>
 	</div>
+<script>
+	$(document).ready(function () {
+		$("#info-company > div > ul > li:nth-child(4) > input").datepicker();
+    });
+</script>
 </body>
 </html>

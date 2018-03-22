@@ -102,4 +102,10 @@
             <aop:after method="openJob" pointcut-ref="openJob" arg-names="jobId"/>
         </aop:aspect>
     </aop:config>
+    <aop:config>
+        <aop:pointcut id="saveResume" expression="execution(* com._51job.web.ApplicantController.saveResume(javax.servlet.http.HttpServletRequest,..)) and args(request,..)"/>
+        <aop:aspect id="myAspect3" ref="applicantService">
+            <aop:after method="matchAll" pointcut-ref="saveResume" arg-names="request"/>
+        </aop:aspect>
+    </aop:config>
 </beans>

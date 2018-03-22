@@ -1,6 +1,7 @@
 package com._51job.tool;
 
 import com._51job.domain.*;
+import com._51job.domain.Dictionary;
 import com._51job.web.SearchResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,9 +12,8 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 public class  DataUtil implements Runnable{
     private static SessionFactory sessionFactory;

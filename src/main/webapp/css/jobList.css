@@ -219,3 +219,18 @@ ul li .info-publis a .name：hover{
     color: #414a60;
 }
 a{text-decoration:none}
+.match{
+    float: left;
+    width: 10%;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-right: 1%;
+}
+.match p {
+    margin-left: 47px;
+}
+.match img{
+    margin-top: 3px;
+    margin-right: 3px;
+    float: left;
+}
